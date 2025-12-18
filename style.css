@@ -3655,3 +3655,41 @@ p {
     transition: transform 0.5s ease;
 
 }
+
+@media (max-width: 768px) {
+
+    .hero-slider {
+        height: auto;
+        min-height: auto;
+        padding: 40px 0;
+    }
+
+    .slide-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 30px;
+    }
+
+    .slide-text {
+        text-align: center;
+    }
+
+    .slide-image img {
+        max-width: 280px;
+        margin: 0 auto;
+        display: block;
+    }
+
+    .slider-btn {
+        width: 40px;
+        height: 40px;
+    }
+
+    .prev-btn {
+        right: 10px;
+    }
+
+    .next-btn {
+        left: 10px;
+    }
+}
