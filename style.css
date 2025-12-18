@@ -3687,7 +3687,7 @@ p {
     }
 
     .slide-image img {
-        
+
         max-width: 260px;
         margin: 0 auto;
         display: block;
@@ -3695,5 +3695,45 @@ p {
 
     .slider-dots {
         bottom: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .hero-slider {
+        height: auto;
+        min-height: auto;
+        margin-top: 60px;
+        padding-bottom: 80px;
+    }
+
+    .slide {
+        position: relative; /* 🔴 هذا هو المفتاح */
+        height: auto;
+        opacity: 1;
+    }
+
+    .slide-content {
+        display: flex;
+        flex-direction: column;
+        height: auto;
+        padding-top: 30px;
+    }
+
+    .slide-image {
+        margin-top: 25px;
+    }
+
+    .slide-image img {
+        width: 100%;
+        max-width: 280px;
+        height: auto;
+        display: block;
+        margin: 0 auto;
+    }
+
+    .slider-btn {
+        top: auto;
+        bottom: 20px;
     }
 }
