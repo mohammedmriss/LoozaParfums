@@ -2993,11 +2993,40 @@ p {
 
     
 
-    .slide-image {
+   @media (max-width: 768px) {
 
-        display: none;
+  .hero-slider {
+    min-height: 85vh;
+    height: auto;
+  }
 
-    }
+  .slide {
+    position: relative;
+  }
+
+  .slide-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+    padding-top: 40px;
+  }
+
+  .slide-image {
+    display: block;
+    width: 100%;
+    max-width: 280px;
+    margin: 0 auto;
+  }
+
+  .slide-image img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+
+}
+
 
     
 
