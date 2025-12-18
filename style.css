@@ -3655,41 +3655,45 @@ p {
     transition: transform 0.5s ease;
 
 }
-
 @media (max-width: 768px) {
 
     .hero-slider {
-        height: auto;
-        min-height: auto;
-        padding: 40px 0;
+        height: 100vh;
+        min-height: 100vh;
+        margin-top: 60px; /* باش ما تدخلش فالnavbar */
+        padding: 20px 0;
+        overflow: visible;
     }
 
     .slide-content {
         grid-template-columns: 1fr;
+        gap: 20px;
+        justify-content: center;
+        align-items: center;
         text-align: center;
-        gap: 30px;
     }
 
     .slide-text {
         text-align: center;
     }
 
+    .slide-title {
+        font-size: 28px;
+    }
+
+    .slide-desc {
+        font-size: 16px;
+        margin: 0 auto 20px;
+    }
+
     .slide-image img {
-        max-width: 280px;
+        
+        max-width: 260px;
         margin: 0 auto;
         display: block;
     }
 
-    .slider-btn {
-        width: 40px;
-        height: 40px;
-    }
-
-    .prev-btn {
-        right: 10px;
-    }
-
-    .next-btn {
-        left: 10px;
+    .slider-dots {
+        bottom: 15px;
     }
 }
