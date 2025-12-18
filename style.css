@@ -3737,3 +3737,46 @@ p {
         bottom: 20px;
     }
 }
+
+@media (max-width: 768px) {
+
+    .hero-slider {
+        height: auto;
+        min-height: auto;
+        overflow: visible; /* 🔴 مهم */
+        margin-top: 70px;
+        padding-bottom: 60px;
+    }
+
+    .slide {
+        position: relative;
+        height: auto;
+        opacity: 1;
+    }
+
+    .slide-content {
+        display: flex;              /* بدل grid */
+        flex-direction: column;     /* عمودي */
+        gap: 25px;
+        height: auto;
+        padding-top: 20px;
+        text-align: center;
+    }
+
+    .slide-text {
+        text-align: center;
+    }
+
+    .slide-image {
+        display: block;
+        width: 100%;
+    }
+
+    .slide-image img {
+        width: 100%;
+        max-width: 260px;
+        height: auto;
+        margin: 0 auto;
+        display: block;
+    }
+}
