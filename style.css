@@ -90,6 +90,11 @@ body {
 
 }
 
+@media (max-width: 768px) {
+  .container {
+    padding: 0 15px;
+  }
+}
 
 
 /* ====== TYPOGRAPHY ====== */
@@ -3655,49 +3660,853 @@ p {
     transition: transform 0.5s ease;
 
 }
+
+
+        /* ====== CATEGORY SECTIONS ON HOME PAGE ====== */
+
+
+
+
+
+
+
+.category-section {
+
+
+
+    margin-bottom: 60px;
+
+
+
+}
+
+
+
+
+
+
+
+.category-section:last-child {
+
+
+
+    margin-bottom: 0;
+
+
+
+}
+
+
+
+
+
+
+
+.category-header {
+
+
+
+    display: flex;
+
+
+
+    justify-content: space-between;
+
+
+
+    align-items: center;
+
+
+
+    margin-bottom: 30px;
+
+
+
+    padding-bottom: 15px;
+
+
+
+    border-bottom: 2px solid var(--light-color);
+
+
+
+}
+
+
+
+
+
+
+
+.category-title {
+
+
+
+    font-size: 1.8rem;
+
+
+
+    color: var(--primary-color);
+
+
+
+    display: flex;
+
+
+
+    align-items: center;
+
+
+
+    gap: 10px;
+
+
+
+}
+
+
+
+
+
+
+
+.category-title i {
+
+
+
+    color: var(--secondary-color);
+
+
+
+    font-size: 1.5rem;
+
+
+
+}
+
+
+
+
+
+
+
+.view-all {
+
+
+
+    display: flex;
+
+
+
+    align-items: center;
+
+
+
+    gap: 8px;
+
+
+
+    color: var(--primary-color);
+
+
+
+    text-decoration: none;
+
+
+
+    font-weight: 600;
+
+
+
+    font-size: 15px;
+
+
+
+    transition: var(--transition);
+
+
+
+}
+
+
+
+
+
+
+
+.view-all:hover {
+
+
+
+    color: var(--secondary-color);
+
+
+
+    gap: 12px;
+
+
+
+}
+
+
+
+
+
+
+
+.view-all i {
+
+
+
+    font-size: 12px;
+
+
+
+}
+
+
+
+
+
+
+
+/* Featured category products */
+
+
+
+.products-grid.category-view {
+
+
+
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+
+
+
+}
+
+
+
+
+
+
+
+/* Show only 4 products per category on home page */
+
+
+
+.products-grid.category-view .product-card:nth-child(n+5) {
+
+
+
+    display: none;
+
+
+
+}
+
+
+
+
+
+
+
+/* Responsive */
+
+
+
 @media (max-width: 768px) {
 
-    .hero-slider {
-        height: auto;
-        margin-top: 60px;
-        padding-bottom: 60px;
-    }
 
-    .slide {
-        position: relative;
-        height: auto;
-        display: none; /* 🔴 نخبيو الجميع */
-    }
 
-    .slide.active {
-        display: block; /* ✅ نبيّنو غير اللي active */
-    }
+    .category-header {
 
-    .slide-content {
-        display: flex;
+
+
         flex-direction: column;
-        height: auto;
-        padding-top: 30px;
+
+
+
+        align-items: flex-start;
+
+
+
+        gap: 10px;
+
+
+
     }
 
-    .slide-text {
-        text-align: center;
+
+
+    
+
+
+
+    .view-all {
+
+
+
+        align-self: flex-end;
+
+
+
     }
 
-    .slide-image {
-        margin-top: 25px;
-    }
 
-    .slide-image img {
-        width: 100%;
-        max-width: 280px;
-        height: auto;
-        display: block;
-        margin: 0 auto;
-    }
 
-    .slider-btn {
-        top: auto;
-        bottom: 15px;
-    }
 }
+
+
+
+
+
+
+
+@media (max-width: 480px) {
+
+
+
+    .category-title {
+
+
+
+        font-size: 1.5rem;
+
+
+
+    }
+
+
+
+    
+
+
+
+    .products-grid.category-view {
+
+
+
+        grid-template-columns: repeat(2, 1fr);
+
+
+
+        gap: 15px;
+
+
+
+    }
+
+
+
+}
+
+
+        /* ====== LOAD MORE BUTTON STYLES ====== */
+
+
+
+
+
+
+
+.load-more-btn {
+
+
+
+    display: block;
+
+
+
+    margin: 30px auto;
+
+
+
+    padding: 12px 30px;
+
+
+
+    background: transparent;
+
+
+
+    border: 2px solid var(--primary-color);
+
+
+
+    border-radius: 25px;
+
+
+
+    color: var(--primary-color);
+
+
+
+    font-family: 'Tajawal', sans-serif;
+
+
+
+    font-weight: 600;
+
+
+
+    font-size: 15px;
+
+
+
+    cursor: pointer;
+
+
+
+    transition: var(--transition);
+
+
+
+    text-align: center;
+
+
+
+    width: auto;
+
+
+
+    min-width: 250px;
+
+
+
+}
+
+
+
+
+
+
+
+.load-more-btn:hover {
+
+
+
+    background: var(--primary-color);
+
+
+
+    color: white;
+
+
+
+    transform: translateY(-3px);
+
+
+
+    box-shadow: var(--shadow);
+
+
+
+}
+
+
+
+
+
+
+
+.load-more-btn i {
+
+
+
+    margin-left: 8px;
+
+
+
+    font-size: 14px;
+
+
+
+}
+
+
+
+
+
+
+
+/* رسالة "تم عرض الكل" */
+
+
+
+.all-shown-message {
+
+
+
+    text-align: center;
+
+
+
+    padding: 15px;
+
+
+
+    color: var(--success-color);
+
+
+
+    font-size: 14px;
+
+
+
+    margin: 20px auto;
+
+
+
+}
+
+
+
+
+
+
+
+.all-shown-message i {
+
+
+
+    margin-left: 8px;
+
+
+
+}
+
+
+
+
+
+
+
+/* Responsive for load more button */
+
+
+
+@media (max-width: 768px) {
+
+
+
+    .load-more-btn {
+
+
+
+        width: 90%;
+
+
+
+        margin: 20px auto;
+
+
+
+        padding: 10px 20px;
+
+
+
+        font-size: 14px;
+
+
+
+    }
+
+
+
+}
+
+
+        .confirm-overlay {
+
+
+
+    position: fixed;
+
+
+
+    top: 0; left: 0;
+
+
+
+    width: 100%; height: 100%;
+
+
+
+    background: rgba(0,0,0,0.55);
+
+
+
+    display: none;
+
+
+
+    justify-content: center;
+
+
+
+    align-items: center;
+
+
+
+    z-index: 99999;
+
+
+
+}
+
+
+
+
+
+
+
+.confirm-overlay.active {
+
+
+
+    display: flex;
+
+
+
+}
+
+
+
+
+
+
+
+.confirm-box {
+
+
+
+    background: #ffffff;
+
+
+
+    padding: 25px 30px;
+
+
+
+    border-radius: 18px;
+
+
+
+    width: 320px;
+
+
+
+    text-align: center;
+
+
+
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+
+
+
+    animation: pop .25s ease;
+
+
+
+}
+
+
+
+
+
+
+
+@keyframes pop {
+
+
+
+    from { transform: scale(0.8); opacity: 0; }
+
+
+
+    to   { transform: scale(1); opacity: 1; }
+
+
+
+}
+
+
+
+
+
+
+
+.confirm-message {
+
+
+
+    font-size: 17px;
+
+
+
+    margin-bottom: 20px;
+
+
+
+    color: #333;
+
+
+
+}
+
+
+
+
+
+
+
+.confirm-actions {
+
+
+
+    display: flex;
+
+
+
+    gap: 10px;
+
+
+
+}
+
+
+
+
+
+
+
+.btn-yes {
+
+
+
+    flex: 1;
+
+
+
+    padding: 10px;
+
+
+
+    background: #27ae60;
+
+
+
+    border: none;
+
+
+
+    color: white;
+
+
+
+    font-size: 15px;
+
+
+
+    border-radius: 10px;
+
+
+
+    cursor: pointer;
+
+
+
+    transition: .2s;
+
+
+
+}
+
+
+
+
+
+
+
+.btn-yes:hover { background: #1e874b; }
+
+
+
+
+
+
+
+.btn-no {
+
+
+
+    flex: 1;
+
+
+
+    padding: 10px;
+
+
+
+    background: #e74c3c;
+
+
+
+    border: none;
+
+
+
+    color: white;
+
+
+
+    font-size: 15px;
+
+
+
+    border-radius: 10px;
+
+
+
+    cursor: pointer;
+
+
+
+    transition: .2s;
+
+
+
+}
+
+
+
+
+
+
+
+.btn-no:hover { background: #c0392b; }
+
+
+/* ===== FIX HERO ON MOBILE ===== */
+@media (max-width: 768px) {
+
+  .hero-slider {
+    min-height: 85vh;
+    height: auto;
+    overflow: hidden;
+  }
+
+  .hero-slider .container {
+    max-width: 100%;
+  }
+
+  .hero-slider .slide-content {
+    display: flex !important;
+    flex-direction: column;
+    text-align: center;
+  }
+
+}
+
+
+
