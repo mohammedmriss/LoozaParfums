@@ -3658,59 +3658,19 @@ p {
 @media (max-width: 768px) {
 
     .hero-slider {
-        height: 100vh;
-        min-height: 100vh;
-        margin-top: 60px; /* باش ما تدخلش فالnavbar */
-        padding: 20px 0;
-        overflow: visible;
-    }
-
-    .slide-content {
-        grid-template-columns: 1fr;
-        gap: 20px;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-    }
-
-    .slide-text {
-        text-align: center;
-    }
-
-    .slide-title {
-        font-size: 28px;
-    }
-
-    .slide-desc {
-        font-size: 16px;
-        margin: 0 auto 20px;
-    }
-
-    .slide-image img {
-
-        max-width: 260px;
-        margin: 0 auto;
-        display: block;
-    }
-
-    .slider-dots {
-        bottom: 15px;
-    }
-}
-
-@media (max-width: 768px) {
-
-    .hero-slider {
         height: auto;
-        min-height: auto;
         margin-top: 60px;
-        padding-bottom: 80px;
+        padding-bottom: 60px;
     }
 
     .slide {
-        position: relative; /* 🔴 هذا هو المفتاح */
+        position: relative;
         height: auto;
-        opacity: 1;
+        display: none; /* 🔴 نخبيو الجميع */
+    }
+
+    .slide.active {
+        display: block; /* ✅ نبيّنو غير اللي active */
     }
 
     .slide-content {
@@ -3718,6 +3678,10 @@ p {
         flex-direction: column;
         height: auto;
         padding-top: 30px;
+    }
+
+    .slide-text {
+        text-align: center;
     }
 
     .slide-image {
@@ -3734,49 +3698,6 @@ p {
 
     .slider-btn {
         top: auto;
-        bottom: 20px;
-    }
-}
-
-@media (max-width: 768px) {
-
-    .hero-slider {
-        height: auto;
-        min-height: auto;
-        overflow: visible; /* 🔴 مهم */
-        margin-top: 70px;
-        padding-bottom: 60px;
-    }
-
-    .slide {
-        position: relative;
-        height: auto;
-        opacity: 1;
-    }
-
-    .slide-content {
-        display: flex;              /* بدل grid */
-        flex-direction: column;     /* عمودي */
-        gap: 25px;
-        height: auto;
-        padding-top: 20px;
-        text-align: center;
-    }
-
-    .slide-text {
-        text-align: center;
-    }
-
-    .slide-image {
-        display: block;
-        width: 100%;
-    }
-
-    .slide-image img {
-        width: 100%;
-        max-width: 260px;
-        height: auto;
-        margin: 0 auto;
-        display: block;
+        bottom: 15px;
     }
 }
