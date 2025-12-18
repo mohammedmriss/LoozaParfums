@@ -3478,7 +3478,302 @@ p {
 
 }
 
+/* ====== FIX HERO SLIDER FOR MOBILE ====== */
 
+@media (max-width: 1024px) {
+  /* تحسين السلايدر للتابلت */
+  .hero-slider {
+    height: auto;
+    min-height: 500px;
+    margin-top: 70px;
+  }
+  
+  .slide-content {
+    grid-template-columns: 1fr;
+    text-align: center;
+    padding: 30px 0;
+    gap: 30px;
+  }
+  
+  .slide-image {
+    order: -1; /* نضع الصورة قبل النص على الموبايل */
+    margin-bottom: 20px;
+  }
+  
+  .slide-image img {
+    max-width: 90%;
+    height: auto;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 768px) {
+  /* تحسين كامل للموبايل */
+  .hero-slider {
+    min-height: 450px;
+    height: auto !important; /* إجبار الارتفاع على التكيف */
+    overflow: visible !important; /* السماح بعرض المحتوى */
+    position: relative;
+    background: linear-gradient(135deg, var(--light-color) 0%, #f0e6d6 100%);
+  }
+  
+  /* تغيير طريقة عرض السلايدر على الموبايل */
+  .slide {
+    position: relative !important; /* تغيير من absolute إلى relative */
+    opacity: 1 !important; /* إظهار جميع العناصر */
+    display: none; /* إخفاء جميع السلايدات إلا النشطة */
+    height: auto;
+    padding: 20px 0;
+  }
+  
+  .slide.active {
+    display: block; /* إظهار السلايد النشط فقط */
+    animation: fadeIn 0.5s ease;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  .slide-content {
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px 15px;
+    height: auto;
+  }
+  
+  .slide-text {
+    text-align: center;
+    width: 100%;
+    padding: 0 10px;
+  }
+  
+  .slide-title {
+    font-size: 28px;
+    margin-bottom: 15px;
+    line-height: 1.3;
+  }
+  
+  .slide-desc {
+    font-size: 16px;
+    margin-bottom: 20px;
+    max-width: 100%;
+  }
+  
+  .slide-image {
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto 20px;
+    order: -1; /* الصورة قبل النص */
+  }
+  
+  .slide-image img {
+    width: 100%;
+    height: 250px;
+    object-fit: contain; /* الحفاظ على نسبة الصورة */
+    border-radius: 15px;
+    box-shadow: var(--shadow);
+  }
+  
+  /* تحسين أزرار التنقل */
+  .slider-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
+  
+  .prev-btn {
+    right: 10px;
+  }
+  
+  .next-btn {
+    left: 10px;
+  }
+  
+  /* تحسين النقاط */
+  .slider-dots {
+    position: relative;
+    bottom: 0;
+    left: 0;
+    transform: none;
+    margin-top: 20px;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  /* تحسين للشاشات الصغيرة جدا */
+  .hero-slider {
+    min-height: 400px;
+    margin-top: 60px;
+  }
+  
+  .slide-title {
+    font-size: 24px;
+  }
+  
+  .slide-desc {
+    font-size: 15px;
+  }
+  
+  .slide-image img {
+    height: 200px;
+  }
+  
+  .slider-btn {
+    width: 35px;
+    height: 35px;
+    font-size: 14px;
+  }
+}
+
+/* ====== FIX SECTIONS FLOW ====== */
+
+/* تحسين تدفق العناصر تحت السلايدر */
+.two-column-section,
+.product-highlight,
+.products-section,
+.categories-section,
+.featured-section,
+.about-section,
+.review-section,
+.special-perfume,
+.email-offer {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+}
+
+/* منع تراكب العناصر */
+.container {
+  position: relative;
+  z-index: 2;
+}
+
+/* تحسين الـ grid للعناصر */
+.products-grid,
+.featured-grid,
+.categories-grid {
+  position: relative;
+  z-index: 3;
+}
+
+/* ====== ENSURE ARTICLES VISIBILITY ====== */
+
+/* التأكد من ظهور جميع الـ articles */
+.product-card,
+.featured-card,
+.category-card {
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: block !important;
+}
+
+/* إصلاح مشكلة الفراغات في الموبايل */
+@media (max-width: 768px) {
+  body {
+    overflow-x: hidden;
+  }
+  
+  /* إصلاح أي عنصر مخفي */
+  .product-card,
+  .featured-card,
+  .category-card {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+  
+  /* تحسين الـ grid للموبايل */
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+  
+  .featured-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  /* تحسين الأقسام */
+  .two-column-section,
+  .product-highlight,
+  .products-section,
+  .categories-section {
+    padding: 40px 0 !important;
+  }
+  
+  .section-title {
+    font-size: 24px;
+    margin-bottom: 15px;
+  }
+  
+  .section-subtitle {
+    font-size: 14px;
+    margin-bottom: 30px;
+  }
+}
+
+/* ====== FIX SPECIFIC ISSUES ====== */
+
+/* إصلاح مشكلة التمرير على الموبايل */
+@media (max-width: 768px) {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* إزالة أي height ثابتة تسبب مشاكل */
+  .hero-slider,
+  .slide,
+  .slide-content {
+    min-height: auto;
+    height: auto;
+  }
+  
+  /* تحسين التباعد بين العناصر */
+  .product-highlight {
+    margin-top: 0;
+  }
+  
+  /* إصلاح ترتيب العناصر */
+  .highlight-box {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+}
+
+/* ====== RESPONSIVE FONT SIZES ====== */
+
+@media (max-width: 768px) {
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.8rem; }
+  h3 { font-size: 1.5rem; }
+  p { font-size: 14px; }
+}
+
+/* ====== FIX BUTTONS FOR MOBILE ====== */
+
+@media (max-width: 768px) {
+  .btn {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+  
+  .btn-primary,
+  .btn-outline {
+    min-width: 140px;
+  }
+}
 
 
 
