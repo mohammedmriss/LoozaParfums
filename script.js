@@ -5106,3 +5106,93 @@ function customConfirm(message) {
 
 
 }
+
+
+
+// brrrrr //
+
+// أضف هذا في أي مكان في script.js للتحقق
+console.log('زر checkoutBtn:', document.getElementById('checkoutBtn'));
+
+// تحقق من CSS
+const btn = document.getElementById('checkoutBtn');
+if (btn) {
+    console.log('display:', window.getComputedStyle(btn).display);
+    console.log('visibility:', window.getComputedStyle(btn).visibility);
+    console.log('opacity:', window.getComputedStyle(btn).opacity);
+    console.log('position:', window.getComputedStyle(btn).position);
+    console.log('bottom:', window.getComputedStyle(btn).bottom);
+}
+
+
+
+// إصلاح زر إتمام الطلب
+function forceShowCheckoutBtn() {
+    const checkoutBtn = document.getElementById('checkoutBtn');
+    if (!checkoutBtn) {
+        console.error('❌ زر checkoutBtn غير موجود!');
+        return;
+    }
+    
+    console.log('🔧 إصلاح زر checkoutBtn...');
+    
+    // إجبار إظهار الزر
+    checkoutBtn.style.cssText = `
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 10px !important;
+        width: 100% !important;
+        padding: 18px 20px !important;
+        background: linear-gradient(135deg, #D4AF37, #8B4513) !important;
+        color: white !important;
+        border: none !important;
+        border-radius: 12px !important;
+        font-size: 18px !important;
+        font-weight: bold !important;
+        margin: 20px 0 0 0 !important;
+        cursor: pointer !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        position: relative !important;
+        z-index: 1000 !important;
+        box-shadow: 0 4px 20px rgba(139, 69, 19, 0.4) !important;
+        transition: all 0.3s ease !important;
+    `;
+    
+    // للجوال، جعل الزر ثابت في الأسفل
+    if (window.innerWidth <= 768) {
+        checkoutBtn.style.cssText += `
+            position: fixed !important;
+            bottom: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            height: 65px !important;
+            border-radius: 0 !important;
+            margin: 0 !important;
+            z-index: 99999 !important;
+            font-size: 20px !important;
+        `;
+        
+        // أضف padding للقائمة لتجنب تغطية الزر
+        const cartItems = document.querySelector('.cart-items');
+        if (cartItems) {
+            cartItems.style.paddingBottom = '75px';
+        }
+    }
+    
+    console.log('✅ تم إصلاح زر checkoutBtn');
+}
+
+// تشغيل عند فتح السلة
+document.getElementById('cartBtn').addEventListener('click', function() {
+    setTimeout(forceShowCheckoutBtn, 500);
+});
+
+// تشغيل عند تحميل الصفحة
+window.addEventListener('load', function() {
+    setTimeout(forceShowCheckoutBtn, 1000);
+});
+
+// تشغيل عند تغيير حجم النافذة
+window.addEventListener('resize', forceShowCheckoutBtn);
