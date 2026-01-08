@@ -1303,6 +1303,7 @@ p {
 
     transition: var(--transition);
 
+    margin-bottom: 20px;
 }
 
 
@@ -2967,108 +2968,51 @@ p {
 
 }
 
-
 /* ====== RESPONSIVE DESIGN ====== */
 
 @media (max-width: 1024px) {
+
     .slide-content {
+
         grid-template-columns: 1fr;
+
         text-align: center;
+
         padding-top: 100px;
+
     }
+
     
+
     .slide-text {
+
         text-align: center;
-    }
-    
-    .slide-image {
-        order: -1;
-        margin-bottom: 20px;
-    }
-    
-    .slide-image img {
-        max-width: 90%;
-        height: auto;
-        margin: 0 auto;
-    }
-    
-    .two-column-inner,
-    .review-inner,
-    .special-perfume-inner {
-        grid-template-columns: 1fr;
-        gap: 40px;
-    }
-    
-    .highlight-box {
-        grid-template-columns: 1fr;
-        text-align: center;
-    }
-    
-    .footer-content {
-        grid-template-columns: 1fr;
-        text-align: center;
-    }
-    
-    .footer-links {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
 
-/* ============================================
-   MOBILE FIX - الحل الكامل
-   ============================================ */
+    }
 
     
-    /* /* ============================================
-   MOBILE COMPLETE FIX - كل شي منظم
-   ============================================ */
 
-@media (max-width: 768px) {
+   @media (max-width: 768px) {
 
-  /* 1. إصلاح Body والعرض العام */
-  body {
-    overflow-x: hidden;
-    padding-top: 70px;
-    width: 100%;
-  }
-
-  /* 2. إصلاح Navbar */
-  .navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-    height: 70px;
-    z-index: 9999;
-  }
-
-  /* 3. إصلاح Hero Slider */
   .hero-slider {
-    margin-top: 0 !important;
-    min-height: auto;
+    min-height: 85vh;
     height: auto;
-    padding: 30px 0;
-    overflow: visible;
   }
 
   .slide {
-    position: relative !important;
-    height: auto !important;
-    opacity: 1 !important;
+    position: relative;
   }
 
   .slide-content {
-    display: flex !important;
+    display: flex;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 0 15px;
+    justify-content: center;
     gap: 20px;
+    padding-top: 40px;
   }
 
   .slide-image {
-    order: 1;
+    display: block;
     width: 100%;
     max-width: 280px;
     margin: 0 auto;
@@ -3077,248 +3021,1802 @@ p {
   .slide-image img {
     width: 100%;
     height: auto;
-    max-height: 250px;
     object-fit: contain;
   }
 
-  .slide-text {
-    order: 2;
+}
+
+
+    
+
+    .two-column-inner,
+
+    .review-inner,
+
+    .special-perfume-inner {
+
+        grid-template-columns: 1fr;
+
+        gap: 40px;
+
+    }
+
+    
+
+    .highlight-box {
+
+        grid-template-columns: 1fr;
+
+        text-align: center;
+
+    }
+
+    
+
+    .footer-content {
+
+        grid-template-columns: 1fr;
+
+        text-align: center;
+
+    }
+
+    
+
+    .footer-links {
+
+        grid-template-columns: repeat(2, 1fr);
+
+    }
+
+}
+
+
+@media (max-width: 768px) {
+
+    .nav-links {
+
+        display: none;
+
+        position: absolute;
+
+        top: 70px;
+
+        right: 0;
+
+        background: white;
+
+        width: 200px;
+
+        flex-direction: column;
+
+        padding: 20px;
+
+        box-shadow: var(--shadow-heavy);
+
+        border-radius: var(--border-radius-sm);
+
+    }
+
+    
+
+    .nav-links.active {
+
+        display: flex;
+
+    }
+
+    
+
+    .menu-toggle {
+
+        display: block;
+
+    }
+
+    
+
+    .hero-slider {
+
+        height: 70vh;
+
+        min-height: 500px;
+
+    }
+
+    
+
+    .slide-title {
+
+        font-size: 36px;
+
+    }
+
+    
+
+    .section-title {
+
+        font-size: 28px;
+
+    }
+
+    
+
+    .center-title {
+
+        font-size: 28px;
+
+    }
+
+    
+
+    .slider-btn {
+
+        width: 40px;
+
+        height: 40px;
+
+        font-size: 16px;
+
+    }
+
+    
+
+    .prev-btn {
+
+        right: 15px;
+
+    }
+
+    
+
+    .next-btn {
+
+        left: 15px;
+
+    }
+
+    
+
+    .email-form .form-group {
+
+        flex-direction: column;
+
+    }
+
+    
+
+    .special-buttons {
+
+        flex-direction: column;
+
+        align-items: stretch;
+
+    }
+
+    
+
+    .footer-links {
+
+        grid-template-columns: 1fr;
+
+    }
+
+}
+@media (max-width: 480px) {
+
+    .container {
+
+        padding: 0 15px;
+
+    }
+
+    
+
+    .hero-slider {
+
+        height: 60vh;
+
+        min-height: 400px;
+
+    }
+
+    
+
+    .slide-title {
+
+        font-size: 28px;
+
+    }
+
+    
+
+    .slide-desc {
+
+        font-size: 16px;
+
+    }
+
+    
+
+    .btn {
+
+        padding: 10px 20px;
+
+        font-size: 14px;
+
+    }
+
+    
+
+    .cart-container {
+
+        max-width: 100%;
+
+    }
+
+    
+
+    .checkout-container {
+
+        width: 95%;
+
+    }
+
+}
+
+
+/* ====== FIX CHECKOUT FORM ====== */
+
+.checkout-form {
+
+    max-height: 70vh;
+
+    overflow-y: auto;
+
+    padding-right: 10px;
+
+}
+
+
+
+.checkout-form::-webkit-scrollbar {
+
+    width: 5px;
+
+}
+
+
+
+.checkout-form::-webkit-scrollbar-track {
+
+    background: #f1f1f1;
+
+    border-radius: 10px;
+
+}
+
+
+
+.checkout-form::-webkit-scrollbar-thumb {
+
+    background: var(--primary-color);
+
+    border-radius: 10px;
+
+}
+
+
+
+.checkout-form::-webkit-scrollbar-thumb:hover {
+
+    background: var(--accent-color);
+
+}
+
+
+
+
+/* Make form responsive */
+
+.checkout-container {
+
+    max-height: 90vh;
+
+    display: flex;
+
+    flex-direction: column;
+
+}
+
+
+
+.checkout-header {
+
+    flex-shrink: 0;
+
+}
+
+
+
+.checkout-form {
+
+    flex: 1;
+
+    overflow-y: auto;
+
+}
+
+
+
+/* Fix input sizes */
+
+.form-group input,
+
+.form-group textarea {
+
+    font-size: 14px !important;
+
+    padding: 10px 12px !important;
+
+}
+
+
+
+/* Smaller labels on mobile */
+
+@media (max-width: 768px) {
+
+    .checkout-container {
+
+        width: 95% !important;
+
+        max-width: 95% !important;
+
+        margin: 10px !important;
+
+        max-height: 85vh !important;
+
+    }
+
+    
+
+    .checkout-header {
+
+        padding: 15px !important;
+
+    }
+
+    
+
+    .checkout-header h3 {
+
+        font-size: 1.2rem !important;
+
+    }
+
+    
+
+    .checkout-form {
+
+        padding: 15px !important;
+
+    }
+
+    
+
+    .form-group label {
+
+        font-size: 14px !important;
+
+        margin-bottom: 5px !important;
+
+    }
+
+    
+
+    .form-group input,
+
+    .form-group textarea {
+
+        font-size: 13px !important;
+
+        padding: 8px 10px !important;
+
+    }
+
+    
+
+    .form-actions {
+
+        flex-direction: column !important;
+
+        gap: 10px !important;
+
+        margin-top: 20px !important;
+
+    }
+
+    
+
+    .form-actions .btn {
+
+        width: 100% !important;
+
+        padding: 10px !important;
+
+        font-size: 14px !important;
+
+    }
+
+}
+
+
+
+/* Fix textarea height */
+
+.form-group textarea {
+
+    min-height: 80px !important;
+
+    max-height: 100% !important;
+
+    resize: vertical !important;
+
+}
+
+
+
+/* Better spacing */
+
+.form-group {
+
+    margin-bottom: 15px !important;
+
+}
+
+
+
+/* ====== FIX HERO SLIDER FOR MOBILE ====== */
+
+@media (max-width: 1024px) {
+  /* تحسين السلايدر للتابلت */
+  .hero-slider {
+    height: auto;
+    min-height: 500px;
+    margin-top: 70px;
+  }
+  
+  .slide-content {
+    grid-template-columns: 1fr;
     text-align: center;
-  }
-
-  .slide-title {
-    font-size: 26px;
-    margin-bottom: 15px;
-  }
-
-  .slide-desc {
-    font-size: 15px;
-    margin-bottom: 20px;
-  }
-
-  /* 4. إصلاح Sections */
-  section {
-    padding: 40px 15px;
-    width: 100%;
-  }
-
-  .container {
-    width: 100%;
-    max-width: 100%;
-    padding: 0 15px;
-  }
-
-  /* 5. إصلاح Products Grid - واحد واحد */
-  .products-grid {
-    display: grid !important;
-    grid-template-columns: 1fr !important;
-    gap: 20px !important;
-    width: 100%;
-    padding: 0;
-  }
-
-  .products-grid.category-view {
-    grid-template-columns: 1fr !important;
-  }
-
-  /* إظهار كل المنتجات */
-  .products-grid .product-card,
-  .products-grid.category-view .product-card {
-    display: block !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-    margin: 0 !important;
-  }
-
-  /* 6. إصلاح Product Card */
-  .product-card {
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    overflow: hidden;
-  }
-
-  .product-image {
-    height: 220px;
-    width: 100%;
-  }
-
-  .product-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .product-content {
-    padding: 15px;
-  }
-
-  .product-title {
-    font-size: 16px;
-    height: auto;
-    margin-bottom: 8px;
-  }
-
-  .product-description {
-    font-size: 13px;
-    height: auto;
-    margin-bottom: 12px;
-  }
-
-  .product-price {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .price {
-    font-size: 18px;
-  }
-
-  /* 7. إصلاح Featured Grid */
-  .featured-grid {
-    grid-template-columns: 1fr !important;
-    gap: 20px;
-  }
-
-  /* 8. إصلاح Categories Grid */
-  .categories-grid {
-    grid-template-columns: 1fr !important;
-    gap: 20px;
-  }
-
-  .category-card {
-    height: 300px;
-  }
-
-  /* 9. إصلاح Two Column Sections */
-  .two-column-inner,
-  .highlight-box,
-  .review-inner,
-  .special-perfume-inner {
-    grid-template-columns: 1fr !important;
+    padding: 30px 0;
     gap: 30px;
   }
+  
+  .slide-image {
+    order: -1; /* نضع الصورة قبل النص على الموبايل */
+    margin-bottom: 20px;
+  }
+  
+  .slide-image img {
+    max-width: 90%;
+    height: auto;
+    margin: 0 auto;
+  }
+}
 
-  /* 10. إصلاح Slider Buttons */
+@media (max-width: 768px) {
+  /* تحسين كامل للموبايل */
+  .hero-slider {
+    min-height: 450px;
+    height: auto !important; /* إجبار الارتفاع على التكيف */
+    overflow: visible !important; /* السماح بعرض المحتوى */
+    position: relative;
+    background: linear-gradient(135deg, var(--light-color) 0%, #f0e6d6 100%);
+  }
+  
+  /* تغيير طريقة عرض السلايدر على الموبايل */
+  .slide {
+    position: relative !important; /* تغيير من absolute إلى relative */
+    opacity: 1 !important; /* إظهار جميع العناصر */
+    display: none; /* إخفاء جميع السلايدات إلا النشطة */
+    height: auto;
+    padding: 20px 0;
+  }
+  
+  .slide.active {
+    display: block; /* إظهار السلايد النشط فقط */
+    animation: fadeIn 0.5s ease;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  .slide-content {
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px 15px;
+    height: auto;
+  }
+  
+  .slide-text {
+    text-align: center;
+    width: 100%;
+    padding: 0 10px;
+  }
+  
+  .slide-title {
+    font-size: 28px;
+    margin-bottom: 15px;
+    line-height: 1.3;
+  }
+  
+  .slide-desc {
+    font-size: 16px;
+    margin-bottom: 20px;
+    max-width: 100%;
+  }
+  
+  .slide-image {
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto 20px;
+    order: -1; /* الصورة قبل النص */
+  }
+  
+  .slide-image img {
+    width: 100%;
+    height: 250px;
+    object-fit: contain; /* الحفاظ على نسبة الصورة */
+    border-radius: 15px;
+    box-shadow: var(--shadow);
+  }
+  
+  /* تحسين أزرار التنقل */
   .slider-btn {
     width: 40px;
     height: 40px;
     font-size: 16px;
   }
-
+  
   .prev-btn {
     right: 10px;
   }
-
+  
   .next-btn {
     left: 10px;
   }
-
+  
+  /* تحسين النقاط */
   .slider-dots {
     position: relative;
+    bottom: 0;
+    left: 0;
+    transform: none;
     margin-top: 20px;
-  }
-
-  /* 11. إصلاح Buttons */
-  .btn {
-    padding: 10px 20px;
-    font-size: 14px;
-  }
-
-  /* 12. إصلاح Section Titles */
-  .section-title,
-  .center-title {
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
-
-  .section-subtitle {
-    font-size: 14px;
-    margin-bottom: 30px;
-  }
-
-  /* 13. إصلاح Category Headers */
-  .category-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-  }
-
-  .category-title {
-    font-size: 22px;
-  }
-
-  .view-all {
-    align-self: flex-end;
-  }
-
-  /* 14. إصلاح Footer */
-  .footer-content {
-    grid-template-columns: 1fr !important;
-    gap: 30px;
-    text-align: center;
-  }
-
-  .footer-links {
-    grid-template-columns: 1fr !important;
-  }
-
-  /* 15. إصلاح Nav Links */
-  .nav-links {
-    display: none;
-    position: absolute;
-    top: 70px;
-    right: 0;
-    background: white;
-    width: 200px;
-    flex-direction: column;
-    padding: 20px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
-    border-radius: 8px;
-  }
-
-  .nav-links.active {
-    display: flex;
-  }
-
-  .menu-toggle {
-    display: block;
-  }
-
-  /* 16. منع أي تداخل */
-  * {
-    max-width: 100%;
+    
+    justify-content: center;
   }
 }
 
-/* ============================================
-   EXTRA SMALL SCREENS - أصغر شاشات
-   ============================================ */
-
 @media (max-width: 480px) {
-
+  /* تحسين للشاشات الصغيرة جدا */
+  .hero-slider {
+    min-height: 400px;
+    margin-top: 120px;
+    
+  }
+  
   .slide-title {
-    font-size: 22px;
+    font-size: 24px;
   }
-
+  
   .slide-desc {
-    font-size: 14px;
+    font-size: 15px;
   }
-
-  .section-title,
-  .center-title {
-    font-size: 20px;
-  }
-
-  .product-image {
+  
+  .slide-image img {
     height: 200px;
   }
-
+  
   .slider-btn {
     width: 35px;
     height: 35px;
     font-size: 14px;
   }
 }
+
+/* ====== FIX SECTIONS FLOW ====== */
+
+/* تحسين تدفق العناصر تحت السلايدر */
+.two-column-section,
+.product-highlight,
+.products-section,
+.categories-section,
+.featured-section,
+.about-section,
+.review-section,
+.special-perfume,
+.email-offer {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+}
+
+/* منع تراكب العناصر */
+.container {
+  position: relative;
+  z-index: 2;
+}
+
+/* تحسين الـ grid للعناصر */
+.products-grid,
+.featured-grid,
+.categories-grid {
+  position: relative;
+  z-index: 3;
+}
+
+/* ====== ENSURE ARTICLES VISIBILITY ====== */
+
+/* التأكد من ظهور جميع الـ articles */
+.product-card,
+.featured-card,
+.category-card {
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: block !important;
+}
+
+/* إصلاح مشكلة الفراغات في الموبايل */
+@media (max-width: 768px) {
+  body {
+    overflow-x: hidden;
+  }
+  
+  /* إصلاح أي عنصر مخفي */
+  .product-card,
+  .featured-card,
+  .category-card {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+  
+  /* تحسين الـ grid للموبايل */
+  /* .products-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  } */
+  
+  .featured-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  /* تحسين الأقسام */
+  .two-column-section,
+  .product-highlight,
+  .products-section,
+  .categories-section {
+    padding: 40px 0 !important;
+  }
+  
+  .section-title {
+    font-size: 24px;
+    margin-bottom: 15px;
+  }
+  
+  .section-subtitle {
+    font-size: 14px;
+    margin-bottom: 30px;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+/* ====== FIX SPECIFIC ISSUES ====== */
+
+/* إصلاح مشكلة التمرير على الموبايل */
+@media (max-width: 768px) {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* إزالة أي height ثابتة تسبب مشاكل */
+  .hero-slider,
+  .slide,
+  .slide-content {
+    min-height: auto;
+    height: auto;
+  }
+  
+  /* تحسين التباعد بين العناصر */
+  .product-highlight {
+    margin-top: 0;
+  }
+  
+  /* إصلاح ترتيب العناصر */
+  .highlight-box {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+}
+
+/* ====== RESPONSIVE FONT SIZES ====== */
+
+@media (max-width: 768px) {
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.8rem; }
+  h3 { font-size: 1.5rem; }
+  p { font-size: 14px; }
+}
+
+/* ====== FIX BUTTONS FOR MOBILE ====== */
+
+@media (max-width: 768px) {
+  .btn {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+  
+  .btn-primary,
+  .btn-outline {
+    min-width: 140px;
+  }
+}
+
+
+
+
+
+
+
+/* ==============================================
+
+   ADMIN ACCESS STYLES
+
+   ============================================== */
+
+
+
+.nav-icon.admin-access-btn {
+
+    position: relative;
+
+    background: linear-gradient(135deg, #8B4513, #D4AF37);
+
+    color: white !important;
+
+}
+
+
+
+.nav-icon.admin-access-btn:hover {
+
+    background: linear-gradient(135deg, #7a3809, #c19b2e);
+
+    transform: scale(1.1);
+
+}
+
+
+
+.nav-icon.admin-access-btn::after {
+
+    content: 'لوحة التحكم';
+
+    position: absolute;
+
+    top: 100%;
+
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    background: #2c3e50;
+
+    color: white;
+
+    padding: 5px 10px;
+
+    border-radius: 4px;
+
+    font-size: 12px;
+
+    white-space: nowrap;
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    transition: all 0.3s ease;
+
+    z-index: 1000;
+
+    margin-top: 5px;
+
+}
+
+
+
+.nav-icon.admin-access-btn:hover::after {
+
+    opacity: 1;
+
+    visibility: visible;
+
+    margin-top: 10px;
+
+}
+
+
+
+/* Admin link in footer */
+
+.link-column ul li a[href*="admin.html"] {
+
+    color: #D4AF37 !important;
+
+    font-weight: 600;
+
+}
+
+
+
+.link-column ul li a[href*="admin.html"]:hover {
+
+    color: #8B4513 !important;
+
+}
+
+
+
+/* ==============================================
+
+   SYNC NOTIFICATION
+
+   ============================================== */
+
+
+
+.sync-notification {
+
+    position: fixed;
+
+    bottom: 20px;
+
+    left: 20px;
+
+    background: #10b981;
+
+    color: white;
+
+    padding: 12px 20px;
+
+    border-radius: 8px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+
+    z-index: 10000;
+
+    animation: slideInUp 0.3s ease;
+
+}
+
+
+
+@keyframes slideInUp {
+
+    from {
+
+        opacity: 0;
+
+        transform: translateY(20px);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: translateY(0);
+
+    }
+
+}
+
+
+
+.sync-notification.error {
+
+    background: #ef4444;
+
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+
+}
+
+
+
+.sync-notification.info {
+
+    background: #3b82f6;
+
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+
+}
+
+
+
+
+
+
+
+.nav-icon.refresh-btn {
+
+    color: var(--primary-color);
+
+}
+
+
+
+.nav-icon.refresh-btn:hover {
+
+    color: var(--secondary-color);
+
+    transform: rotate(180deg);
+
+    transition: transform 0.5s ease;
+
+}
+
+
+        /* ====== CATEGORY SECTIONS ON HOME PAGE ====== */
+
+
+
+
+
+
+
+.category-section {
+
+
+
+    margin-bottom: 60px;
+
+
+
+}
+
+
+
+
+
+
+
+.category-section:last-child {
+
+
+
+    margin-bottom: 0;
+
+
+
+}
+
+
+
+
+
+
+
+.category-header {
+
+
+
+    display: flex;
+
+
+
+    justify-content: space-between;
+
+
+
+    align-items: center;
+
+
+
+    margin-bottom: 30px;
+
+
+
+    padding-bottom: 15px;
+
+
+
+    border-bottom: 2px solid var(--light-color);
+
+
+
+}
+
+
+
+
+
+
+
+.category-title {
+
+
+
+    font-size: 1.8rem;
+
+
+
+    color: var(--primary-color);
+
+
+
+    display: flex;
+
+
+
+    align-items: center;
+
+
+
+    gap: 10px;
+
+
+
+}
+
+
+
+
+
+
+
+.category-title i {
+
+
+
+    color: var(--secondary-color);
+
+
+
+    font-size: 1.5rem;
+
+
+
+}
+
+
+
+
+
+
+
+.view-all {
+
+
+
+    display: flex;
+
+
+
+    align-items: center;
+
+
+
+    gap: 8px;
+
+
+
+    color: var(--primary-color);
+
+
+
+    text-decoration: none;
+
+
+
+    font-weight: 600;
+
+
+
+    font-size: 15px;
+
+
+
+    transition: var(--transition);
+
+
+
+}
+
+
+
+
+
+
+
+.view-all:hover {
+
+
+
+    color: var(--secondary-color);
+
+
+
+    gap: 12px;
+
+
+
+}
+
+
+
+
+
+
+
+.view-all i {
+
+
+
+    font-size: 12px;
+
+
+
+}
+
+
+
+
+
+
+
+/* Featured category products */
+
+
+
+.products-grid.category-view {
+
+
+
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+
+
+
+}
+
+
+
+
+
+
+
+/* Show only 4 products per category on home page */
+
+
+
+.products-grid.category-view .product-card:nth-child(n+5) {
+
+
+
+    display: none;
+
+
+
+}
+
+
+
+
+
+
+
+/* Responsive */
+
+
+
+@media (max-width: 768px) {
+
+
+
+    .category-header {
+
+
+
+        flex-direction: column;
+
+
+
+        align-items: flex-start;
+
+
+
+        gap: 10px;
+
+
+
+    }
+
+
+
+    
+
+
+
+    .view-all {
+
+
+
+        align-self: flex-end;
+
+
+
+    }
+
+
+
+}
+
+
+
+
+
+
+
+@media (max-width: 480px) {
+
+
+
+    .category-title {
+
+
+
+        font-size: 1.5rem;
+
+
+
+    }
+
+
+
+    
+
+
+
+    .products-grid.category-view {
+
+
+
+        grid-template-columns: repeat(2, 1fr);
+
+
+
+        gap: 15px;
+
+
+
+    }
+
+
+
+}
+
+
+        /* ====== LOAD MORE BUTTON STYLES ====== */
+
+
+
+
+
+
+
+.load-more-btn {
+
+
+
+    display: block;
+
+
+
+    margin: 30px auto;
+
+
+
+    padding: 12px 30px;
+
+
+
+    background: transparent;
+
+
+
+    border: 2px solid var(--primary-color);
+
+
+
+    border-radius: 25px;
+
+
+
+    color: var(--primary-color);
+
+
+
+    font-family: 'Tajawal', sans-serif;
+
+
+
+    font-weight: 600;
+
+
+
+    font-size: 15px;
+
+
+
+    cursor: pointer;
+
+
+
+    transition: var(--transition);
+
+
+
+    text-align: center;
+
+
+
+    width: auto;
+
+
+
+    min-width: 250px;
+
+
+
+}
+
+
+
+
+
+
+
+.load-more-btn:hover {
+
+
+
+    background: var(--primary-color);
+
+
+
+    color: white;
+
+
+
+    transform: translateY(-3px);
+
+
+
+    box-shadow: var(--shadow);
+
+
+
+}
+
+
+
+
+
+
+
+.load-more-btn i {
+
+
+
+    margin-left: 8px;
+
+
+
+    font-size: 14px;
+
+
+
+}
+
+
+
+
+
+
+
+/* رسالة "تم عرض الكل" */
+
+
+
+.all-shown-message {
+
+
+
+    text-align: center;
+
+
+
+    padding: 15px;
+
+
+
+    color: var(--success-color);
+
+
+
+    font-size: 14px;
+
+
+
+    margin: 20px auto;
+
+
+
+}
+
+
+
+
+
+
+
+.all-shown-message i {
+
+
+
+    margin-left: 8px;
+
+
+
+}
+
+
+
+
+
+
+
+/* Responsive for load more button */
+
+
+
+@media (max-width: 768px) {
+
+
+
+    .load-more-btn {
+
+
+
+        width: 90%;
+
+
+
+        margin: 20px auto;
+
+
+
+        padding: 10px 20px;
+
+
+
+        font-size: 14px;
+
+
+
+    }
+
+
+
+}
+
+
+        .confirm-overlay {
+
+
+
+    position: fixed;
+
+
+
+    top: 0; left: 0;
+
+
+
+    width: 100%; height: 100%;
+
+
+
+    background: rgba(0,0,0,0.55);
+
+
+
+    display: none;
+
+
+
+    justify-content: center;
+
+
+
+    align-items: center;
+
+
+
+    z-index: 99999;
+
+
+
+}
+
+
+
+
+
+
+
+.confirm-overlay.active {
+
+
+
+    display: flex;
+
+
+
+}
+
+
+
+
+
+
+
+.confirm-box {
+
+
+
+    background: #ffffff;
+
+
+
+    padding: 25px 30px;
+
+
+
+    border-radius: 18px;
+
+
+
+    width: 320px;
+
+
+
+    text-align: center;
+
+
+
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+
+
+
+    animation: pop .25s ease;
+
+
+
+}
+
+
+
+
+
+
+
+@keyframes pop {
+
+
+
+    from { transform: scale(0.8); opacity: 0; }
+
+
+
+    to   { transform: scale(1); opacity: 1; }
+
+
+
+}
+
+
+
+
+
+
+
+.confirm-message {
+
+
+
+    font-size: 17px;
+
+
+
+    margin-bottom: 20px;
+
+
+
+    color: #333;
+
+
+
+}
+
+
+
+
+
+
+
+.confirm-actions {
+
+
+
+    display: flex;
+
+
+
+    gap: 10px;
+
+
+
+}
+
+
+
+
+
+
+
+.btn-yes {
+
+
+
+    flex: 1;
+
+
+
+    padding: 10px;
+
+
+
+    background: #27ae60;
+
+
+
+    border: none;
+
+
+
+    color: white;
+
+
+
+    font-size: 15px;
+
+
+
+    border-radius: 10px;
+
+
+
+    cursor: pointer;
+
+
+
+    transition: .2s;
+
+
+
+}
+
+
+
+
+
+
+
+.btn-yes:hover { background: #1e874b; }
+
+
+
+
+
+
+
+.btn-no {
+
+
+
+    flex: 1;
+
+
+
+    padding: 10px;
+
+
+
+    background: #e74c3c;
+
+
+
+    border: none;
+
+
+
+    color: white;
+
+
+
+    font-size: 15px;
+
+
+
+    border-radius: 10px;
+
+
+
+    cursor: pointer;
+
+
+
+    transition: .2s;
+
+
+
+}
+
+
+
+
+
+
+
+.btn-no:hover { background: #c0392b; }
