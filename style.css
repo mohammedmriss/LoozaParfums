@@ -5002,3 +5002,90 @@ p {
     padding: 0 15px;
   }
 }
+
+
+/* ===== FIX NAVBAR + HERO MOBILE ===== */
+@media (max-width: 768px) {
+
+  body {
+    overflow-x: hidden;
+  }
+
+  .navbar,
+  header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 9999;
+  }
+
+  .hero,
+  .hero-slider {
+    margin-top: 80px; /* مهم بزاف */
+    min-height: auto;
+    height: auto;
+    overflow: visible;
+  }
+
+  .slide {
+    position: relative !important;
+    height: auto !important;
+    opacity: 1 !important;
+  }
+
+  .slide-content {
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 20px 15px;
+    gap: 20px;
+  }
+
+  .slide-image {
+    width: 100%;
+    max-width: 260px;
+    margin: 0 auto;
+  }
+
+  .slide-image img {
+    width: 100%;
+    height: auto;
+    max-height: 240px;
+    object-fit: contain;
+  }
+}
+/* ===== FIX PRODUCT GRID MOBILE ===== */
+@media (max-width: 768px) {
+
+  .products-grid,
+  .products-grid.category-view {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 14px !important;
+    width: 100%;
+  }
+
+  .product-card {
+    width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* حبّس nth-child فالموبايل */
+  .products-grid.category-view .product-card {
+    display: block !important;
+  }
+
+}
+@media (max-width: 768px) {
+
+  section {
+    padding: 30px 15px;
+  }
+
+  .hero,
+  .category-section {
+    margin-bottom: 40px;
+  }
+}
