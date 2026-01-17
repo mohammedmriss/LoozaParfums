@@ -5725,3 +5725,61 @@ p {
     font-size: 14px;
   }
 }
+
+
+/*------------------------------------*/
+
+/* ================================
+   FIX CART TOTAL ON MOBILE
+   ================================ */
+@media (max-width: 768px) {
+
+  /* خلي cart modal منظم */
+  .cart-modal {
+    align-items: flex-end;
+  }
+
+  .cart-container {
+    width: 100%;
+    max-height: 90vh;
+    border-radius: 20px 20px 0 0;
+    overflow-y: auto;
+  }
+
+  /* متخليش overflow يقطع المحتوى */
+  .cart-body {
+    overflow: visible !important;
+  }
+
+  /* إجبار المجموع يبان */
+  .cart-summary {
+    display: block !important;
+    position: sticky;
+    bottom: 0;
+    background: #fff;
+    z-index: 10;
+    padding: 15px;
+    border-top: 1px solid #eee;
+  }
+
+  .cart-total {
+    display: flex !important;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+
+  .total-price {
+    font-weight: bold;
+    color: var(--primary-color);
+  }
+
+  /* زر إتمام الطلب */
+  .checkout-btn {
+    width: 100%;
+    font-size: 15px;
+    padding: 12px;
+  }
+
+}
