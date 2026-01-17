@@ -5783,3 +5783,53 @@ p {
   }
 
 }
+
+
+/*---------------------------*/
+
+/* ================================
+   FINAL FORCE FIX - MOBILE CART
+   ================================ */
+@media (max-width: 768px) {
+
+  /* نحبسو أي overflow كيقطع */
+  .cart-modal,
+  .cart-container,
+  .cart-body {
+    overflow: visible !important;
+  }
+
+  /* خلي cart ياخد مساحة */
+  .cart-container {
+    padding-bottom: 120px !important;
+  }
+
+  /* المجموع FIXED لتحت الشاشة */
+  .cart-summary {
+    position: fixed !important;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    display: block !important;
+    background: #ffffff;
+    z-index: 99999;
+    padding: 15px;
+    border-top: 1px solid #ddd;
+    box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
+  }
+
+  .cart-total {
+    display: flex !important;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+
+  .checkout-btn {
+    width: 100%;
+    padding: 14px;
+    font-size: 16px;
+  }
+
+}
