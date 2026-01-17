@@ -5124,19 +5124,25 @@ if (btn) {
     console.log('bottom:', window.getComputedStyle(btn).bottom);
 }
 
-
-
 // إصلاح زر إتمام الطلب
 function forceShowCheckoutBtn() {
     const checkoutBtn = document.getElementById('checkoutBtn');
+    const cartSummary = document.querySelector('.cart-summary');
+    const cartItems = document.querySelector('.cart-items');
+
     if (!checkoutBtn) {
         console.error('❌ زر checkoutBtn غير موجود!');
         return;
     }
+
+    if (!cartSummary) {
+        console.error('❌ عنصر cartSummary غير موجود!');
+        return;
+    }
     
     console.log('🔧 إصلاح زر checkoutBtn...');
-    
-    // إجبار إظهار الزر
+
+    // ستايل الزر العام
     checkoutBtn.style.cssText = `
         display: flex !important;
         align-items: center !important;
@@ -5159,33 +5165,35 @@ function forceShowCheckoutBtn() {
         box-shadow: 0 4px 20px rgba(139, 69, 19, 0.4) !important;
         transition: all 0.3s ease !important;
     `;
-    
-    // للجوال، جعل الزر ثابت في الأسفل
+
+    // فالموبايل: جعل cartSummary ثابت أسفل الصفحة
     if (window.innerWidth <= 768) {
-        checkoutBtn.style.cssText += `
-            position: fixed !important;
-            bottom: 0 !important;
-            left: 0 !important;
-            right: 0 !important;
-            height: 65px !important;
-            border-radius: 0 !important;
-            margin: 0 !important;
-            z-index: 99999 !important;
-            font-size: 20px !important;
-        `;
-        
-        // أضف padding للقائمة لتجنب تغطية الزر
-        const cartItems = document.querySelector('.cart-items');
+        cartSummary.style.position = 'fixed';
+        cartSummary.style.bottom = '0';
+        cartSummary.style.left = '0';
+        cartSummary.style.right = '0';
+        cartSummary.style.zIndex = '99999';
+        cartSummary.style.background = '#fff';
+        cartSummary.style.padding = '15px';
+        cartSummary.style.borderTop = '1px solid #eee';
+
         if (cartItems) {
-            cartItems.style.paddingBottom = '75px';
+            cartItems.style.paddingBottom = '120px';
+        }
+    } else {
+        // الوضع الطبيعي للديسكتوب
+        cartSummary.style.position = 'relative';
+        cartSummary.style.bottom = 'auto';
+        if (cartItems) {
+            cartItems.style.paddingBottom = '0';
         }
     }
-    
+
     console.log('✅ تم إصلاح زر checkoutBtn');
 }
 
 // تشغيل عند فتح السلة
-document.getElementById('cartBtn').addEventListener('click', function() {
+document.getElementById('cartBtn')?.addEventListener('click', function() {
     setTimeout(forceShowCheckoutBtn, 500);
 });
 
