@@ -6,7 +6,7 @@
 
 
 
-// دالة للتحقق من التحديثات الجديدة
+// Ø¯Ø§Ù„Ø© Ù„Ù„ØªØ­Ù‚Ù‚ Ù…Ù† Ø§Ù„ØªØ­Ø¯ÙŠØ«Ø§Øª Ø§Ù„Ø¬Ø¯ÙŠØ¯Ø©
 
 function checkForUpdates() {
 
@@ -22,7 +22,7 @@ function checkForUpdates() {
 
         
 
-        // إعادة تحميل المنتجات
+        // Ø¥Ø¹Ø§Ø¯Ø© ØªØ­Ù…ÙŠÙ„ Ø§Ù„Ù…Ù†ØªØ¬Ø§Øª
 
         window.app.loadProducts();
 
@@ -30,15 +30,11 @@ function checkForUpdates() {
 
         window.app.renderWomensProducts();
 
-        window.app.renderMensAccessoriesProducts();
-
-        window.app.renderWomensAccessoriesProducts();
-
         window.app.renderFeaturedProducts();
 
         
 
-        showNotification('🔄 تم تحديث المنتجات', 'success');
+        showNotification('ðŸ”„ ØªÙ… ØªØ­Ø¯ÙŠØ« Ø§Ù„Ù…Ù†ØªØ¬Ø§Øª', 'success');
 
     }
 
@@ -46,13 +42,13 @@ function checkForUpdates() {
 
 
 
-// استمع لتحديثات من نافذة أخرى
+// Ø§Ø³ØªÙ…Ø¹ Ù„ØªØ­Ø¯ÙŠØ«Ø§Øª Ù…Ù† Ù†Ø§ÙØ°Ø© Ø£Ø®Ø±Ù‰
 
 window.addEventListener('storage', function(e) {
 
     if (e.key === 'productsUpdated' || e.key === 'adminProducts') {
 
-        console.log('🔄 تم اكتشاف تحديث للمنتجات');
+        console.log('ðŸ”„ ØªÙ… Ø§ÙƒØªØ´Ø§Ù ØªØ­Ø¯ÙŠØ« Ù„Ù„Ù…Ù†ØªØ¬Ø§Øª');
 
         checkForUpdates();
 
@@ -62,11 +58,11 @@ window.addEventListener('storage', function(e) {
 
 
 
-// استمع لـ custom event من admin panel
+// Ø§Ø³ØªÙ…Ø¹ Ù„Ù€ custom event Ù…Ù† admin panel
 
 window.addEventListener('productsUpdated', function(e) {
 
-    console.log('🔄 تم استقبال تحديث مباشر للمنتجات');
+    console.log('ðŸ”„ ØªÙ… Ø§Ø³ØªÙ‚Ø¨Ø§Ù„ ØªØ­Ø¯ÙŠØ« Ù…Ø¨Ø§Ø´Ø± Ù„Ù„Ù…Ù†ØªØ¬Ø§Øª');
 
     if (window.app) {
 
@@ -76,13 +72,10 @@ window.addEventListener('productsUpdated', function(e) {
 
         window.app.renderWomensProducts();
 
-        window.app.renderMensAccessoriesProducts();
-
-        window.app.renderWomensAccessoriesProducts();
 
         window.app.renderFeaturedProducts();
 
-        showNotification('✅ تم تحديث المنتجات بنجاح', 'success');
+        showNotification('âœ… ØªÙ… ØªØ­Ø¯ÙŠØ« Ø§Ù„Ù…Ù†ØªØ¬Ø§Øª Ø¨Ù†Ø¬Ø§Ø­', 'success');
 
     }
 
@@ -90,13 +83,13 @@ window.addEventListener('productsUpdated', function(e) {
 
 
 
-// تحقق من التحديثات كل 5 ثواني
+// ØªØ­Ù‚Ù‚ Ù…Ù† Ø§Ù„ØªØ­Ø¯ÙŠØ«Ø§Øª ÙƒÙ„ 5 Ø«ÙˆØ§Ù†ÙŠ
 
 setInterval(checkForUpdates, 5000);
 
 
 
-// تحقق فور تحميل الصفحة
+// ØªØ­Ù‚Ù‚ ÙÙˆØ± ØªØ­Ù…ÙŠÙ„ Ø§Ù„ØµÙØ­Ø©
 
 document.addEventListener('DOMContentLoaded', function() {
 
@@ -238,7 +231,7 @@ const defaultProducts = [
 
         name: "Stronger With You 50ml",
 
-        description: "🔥 Notes chaudes et envoûtantes",
+        description: "ðŸ”¥ Notes chaudes et envoÃ»tantes",
 
         price: 50,
 
@@ -250,7 +243,7 @@ const defaultProducts = [
 
         featured: true,
 
-        badge: "الأكثر مبيعاً"
+        badge: "Ø§Ù„Ø£ÙƒØ«Ø± Ù…Ø¨ÙŠØ¹Ø§Ù‹"
 
     },
 
@@ -260,7 +253,7 @@ const defaultProducts = [
 
         name: " Joy by Dior 50ml",
 
-        description: "L'essence du bonheur en flacon .Un parfum lumineux, délicat et sensuel, mêlant la fraîcheur du jasmin et de la rose à la chaleur du bois de santal.",
+        description: "L'essence du bonheur en flacon .Un parfum lumineux, dÃ©licat et sensuel, mÃªlant la fraÃ®cheur du jasmin et de la rose Ã  la chaleur du bois de santal.",
 
         price: 50,
 
@@ -270,7 +263,7 @@ const defaultProducts = [
 
         featured: true,
 
-        badge: "جديد"
+        badge: "Ø¬Ø¯ÙŠØ¯"
 
     },
 
@@ -280,7 +273,7 @@ const defaultProducts = [
 
         name: "Good Girl 30ml",
 
-        description: "Tellement bon d'être audacieuse…",
+        description: "Tellement bon d'Ãªtre audacieuseâ€¦",
 
         price: 25,
 
@@ -292,7 +285,7 @@ const defaultProducts = [
 
         featured: false,
 
-        badge: "خصم 15%"
+        badge: "Ø®ØµÙ… 15%"
 
     },
 
@@ -302,7 +295,7 @@ const defaultProducts = [
 
         name: "Givenchy 50ml",
 
-        description: "Une fragrance orientale boisée, chaude et raffinée.",
+        description: "Une fragrance orientale boisÃ©e, chaude et raffinÃ©e.",
 
         price: 50,
 
@@ -320,9 +313,9 @@ const defaultProducts = [
 
         id: 5,
 
-        name: "Le Male – 50ml",
+        name: "Le Male â€“ 50ml",
 
-        description: "Un parfum iconique, à la fois doux et puissant.",
+        description: "Un parfum iconique, Ã  la fois doux et puissant.",
 
         price: 50,
 
@@ -340,9 +333,9 @@ const defaultProducts = [
 
         id: 6,
 
-        name: "بينك سبورت",
+        name: "Ø¨ÙŠÙ†Ùƒ Ø³Ø¨ÙˆØ±Øª",
 
-        description: "عطر رياضي وردي برائحة الفواكه والزهور. للنساء النشيطات.",
+        description: "Ø¹Ø·Ø± Ø±ÙŠØ§Ø¶ÙŠ ÙˆØ±Ø¯ÙŠ Ø¨Ø±Ø§Ø¦Ø­Ø© Ø§Ù„ÙÙˆØ§ÙƒÙ‡ ÙˆØ§Ù„Ø²Ù‡ÙˆØ±. Ù„Ù„Ù†Ø³Ø§Ø¡ Ø§Ù„Ù†Ø´ÙŠØ·Ø§Øª.",
 
         price: 320,
 
@@ -362,7 +355,7 @@ const defaultProducts = [
 
         name: "Erba Pura 50ml ",
 
-        description: "Erba Pura ✨🌿50ml Un parfum frais, fruité et raffiné, avec une touche sensuelle et envoûtante. Une signature olfactive unique qui attire tous les regards.",
+        description: "Erba Pura âœ¨ðŸŒ¿50ml Un parfum frais, fruitÃ© et raffinÃ©, avec une touche sensuelle et envoÃ»tante. Une signature olfactive unique qui attire tous les regards.",
 
         price: 50,
 
@@ -380,9 +373,9 @@ const defaultProducts = [
 
         id: 8,
 
-        name: "فيرال روز",
+        name: "ÙÙŠØ±Ø§Ù„ Ø±ÙˆØ²",
 
-        description: "عطر نسائي رومانسي برائحة الورد والفانيليا. للنساء الراقيات.",
+        description: "Ø¹Ø·Ø± Ù†Ø³Ø§Ø¦ÙŠ Ø±ÙˆÙ…Ø§Ù†Ø³ÙŠ Ø¨Ø±Ø§Ø¦Ø­Ø© Ø§Ù„ÙˆØ±Ø¯ ÙˆØ§Ù„ÙØ§Ù†ÙŠÙ„ÙŠØ§. Ù„Ù„Ù†Ø³Ø§Ø¡ Ø§Ù„Ø±Ø§Ù‚ÙŠØ§Øª.",
 
         price: 520,
 
@@ -394,131 +387,11 @@ const defaultProducts = [
 
         featured: true,
 
-        badge: "خصم 20%"
-
-    },
-
-    {
-
-        id: 9,
-
-        name: "علبة عطور رجالية فاخرة",
-
-        description: "علبة عطور جلدية فاخرة تناسب العطور الرجالية. مصنوعة من الجلد الطبيعي.",
-
-        price: 150,
-
-        image: "https://images.unsplash.com/photo-1584370848015-df4c41d8c6a2?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
-
-        category: "mensAccessories",
-
-        featured: false,
-
-        badge: "جديد"
-
-    },
-
-    {
-
-        id: 10,
-
-        name: "كولونيا بعد الحلاقة",
-
-        description: "كولونيا عطرية للرجال بعد الحلاقة. ترطب البشرة وتترك رائحة منعشة.",
-
-        price: 120,
-
-        image: "https://images.unsplash.com/photo-1590736969954-705a5adc63d7?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
-
-        category: "mensAccessories",
-
-        featured: true,
-
-        badge: "الأكثر مبيعاً"
-
-    },
-
-    {
-
-        id: 11,
-
-        name: "سوار عطري رجالي",
-
-        description: "سوار خشبي معطّر برائحة عود فاخرة. يدوم طويلاً.",
-
-        price: 85,
-
-        image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
-
-        category: "mensAccessories",
-
-        featured: false,
-
-        badge: ""
-
-    },
-
-    {
-
-        id: 12,
-
-        name: "علبة عطور نسائية مزخرفة",
-
-        description: "علبة عطور نسائية مزخرفة بتصميم أنيق. مثالية لحفظ العطور الثمينة.",
-
-        price: 180,
-
-        image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
-
-        category: "womensAccessories",
-
-        featured: true,
-
-        badge: "جديد"
-
-    },
-
-    {
-
-        id: 13,
-
-        name: "زيت عطري للجسم",
-
-        description: "زيت عطري للجسم برائحة الورد والياسمين. يرطب البشرة ويعطرها.",
-
-        price: 95,
-
-        image: "https://images.unsplash.com/photo-1541643600914-78b084683601?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
-
-        category: "womensAccessories",
-
-        featured: false,
-
-        badge: ""
-
-    },
-
-    {
-
-        id: 14,
-
-        name: "قلادة عطرية",
-
-        description: "قلادة تحتوي على عطر صغير يمكن تعبئته. إكسسوار أنيق وعملي.",
-
-        price: 220,
-
-        oldPrice: 280,
-
-        image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
-
-        category: "womensAccessories",
-
-        featured: true,
-
-        badge: "خصم 20%"
+        badge: "Ø®ØµÙ… 20%"
 
     }
+
+    
 
 ];
 
@@ -536,13 +409,13 @@ function loadProducts() {
 
             const parsed = JSON.parse(saved);
 
-            console.log('✅ Loaded from Admin Panel:', parsed.length, 'products');
+            console.log('âœ… Loaded from Admin Panel:', parsed.length, 'products');
 
             return parsed;
 
         } catch (e) {
 
-            console.warn('⚠️ Error loading from storage, using defaults');
+            console.warn('âš ï¸ Error loading from storage, using defaults');
 
             return defaultProducts;
 
@@ -554,7 +427,7 @@ function loadProducts() {
 
     // First time - save defaults to localStorage
 
-    console.log('📦 First load - using default products');
+    console.log('ðŸ“¦ First load - using default products');
 
     localStorage.setItem('adminProducts', JSON.stringify(defaultProducts));
 
@@ -576,7 +449,7 @@ window.addEventListener('storage', (e) => {
 
     if (e.key === 'adminProducts') {
 
-        console.log('🔄 Products updated from Admin Panel');
+        console.log('ðŸ”„ Products updated from Admin Panel');
 
         products = loadProducts();
 
@@ -590,10 +463,6 @@ window.addEventListener('storage', (e) => {
 
             window.app.renderWomensProducts();
 
-            window.app.renderMensAccessoriesProducts();
-
-            window.app.renderWomensAccessoriesProducts();
-
             window.app.renderFeaturedProducts();
 
         }
@@ -604,9 +473,9 @@ window.addEventListener('storage', (e) => {
 
 
 
-console.log('📦 Products loaded:', products.length);
+console.log('ðŸ“¦ Products loaded:', products.length);
 
-console.log('💡 Use admin.html to manage products');
+console.log('ðŸ’¡ Use admin.html to manage products');
 
 
 
@@ -728,7 +597,7 @@ class ShoppingCart {
 
 
 
-        showNotification(`تم إضافة ${product.name} إلى السلة`, 'success');
+        showNotification(`ØªÙ… Ø¥Ø¶Ø§ÙØ© ${product.name} Ø¥Ù„Ù‰ Ø§Ù„Ø³Ù„Ø©`, 'success');
 
 
 
@@ -760,7 +629,7 @@ class ShoppingCart {
 
 
 
-        showNotification('تم إزالة المنتج من السلة', 'success');
+        showNotification('ØªÙ… Ø¥Ø²Ø§Ù„Ø© Ø§Ù„Ù…Ù†ØªØ¬ Ù…Ù† Ø§Ù„Ø³Ù„Ø©', 'success');
 
 
 
@@ -972,7 +841,7 @@ class ShoppingCart {
 
 
 
-                    <p>سلة التسوق فارغة</p>
+                    <p>Ø³Ù„Ø© Ø§Ù„ØªØ³ÙˆÙ‚ ÙØ§Ø±ØºØ©</p>
 
 
 
@@ -980,7 +849,7 @@ class ShoppingCart {
 
 
 
-                        تسوق الآن
+                        ØªØ³ÙˆÙ‚ Ø§Ù„Ø¢Ù†
 
 
 
@@ -996,7 +865,7 @@ class ShoppingCart {
 
 
 
-            cartTotal.textContent = '0.00 درهم';
+            cartTotal.textContent = '0.00 Ø¯Ø±Ù‡Ù…';
 
 
 
@@ -1040,7 +909,7 @@ class ShoppingCart {
 
 
 
-                    <p class="cart-item-price">${item.price} درهم</p>
+                    <p class="cart-item-price">${item.price} Ø¯Ø±Ù‡Ù…</p>
 
 
 
@@ -1060,7 +929,7 @@ class ShoppingCart {
 
 
 
-                        <button class="remove-item" title="إزالة" type="button">
+                        <button class="remove-item" title="Ø¥Ø²Ø§Ù„Ø©" type="button">
 
 
 
@@ -1092,7 +961,7 @@ class ShoppingCart {
 
 
 
-        cartTotal.textContent = `${this.getTotal()} درهم`;
+        cartTotal.textContent = `${this.getTotal()} Ø¯Ø±Ù‡Ù…`;
 
 
 
@@ -1272,7 +1141,7 @@ class CheckoutSystem {
 
 
 
-        // EmailJS Configuration - ضع معلوماتك هنا
+        // EmailJS Configuration - Ø¶Ø¹ Ù…Ø¹Ù„ÙˆÙ…Ø§ØªÙƒ Ù‡Ù†Ø§
 
 
 
@@ -1280,15 +1149,15 @@ class CheckoutSystem {
 
 
 
-            serviceId: 'service_p19h9ew',     // Service ID من EmailJS
+            serviceId: 'service_p19h9ew',     // Service ID Ù…Ù† EmailJS
 
 
 
-            templateId: 'template_nbk8rkg',        // Template ID من EmailJS
+            templateId: 'template_nbk8rkg',        // Template ID Ù…Ù† EmailJS
 
 
 
-            publicKey: 'bz7ixkPUdYnKwcbMm'         // Public Key من EmailJS
+            publicKey: 'bz7ixkPUdYnKwcbMm'         // Public Key Ù…Ù† EmailJS
 
 
 
@@ -1508,7 +1377,7 @@ class CheckoutSystem {
 
 
 
-        // في setupEventListeners()، أضف:
+        // ÙÙŠ setupEventListeners()ØŒ Ø£Ø¶Ù:
 
 const refreshBtn = document.getElementById('refreshProducts');
 
@@ -1524,13 +1393,9 @@ if (refreshBtn) {
 
             window.app.renderWomensProducts();
 
-            window.app.renderMensAccessoriesProducts();
-
-            window.app.renderWomensAccessoriesProducts();
-
             window.app.renderFeaturedProducts();
 
-            showNotification('🔄 تم تحديث المنتجات', 'success');
+            showNotification('ðŸ”„ ØªÙ… ØªØ­Ø¯ÙŠØ« Ø§Ù„Ù…Ù†ØªØ¬Ø§Øª', 'success');
 
         }
 
@@ -1594,7 +1459,7 @@ if (refreshBtn) {
 
 
 
-            console.log('✅ EmailJS initialized successfully');
+            console.log('âœ… EmailJS initialized successfully');
 
 
 
@@ -1602,7 +1467,7 @@ if (refreshBtn) {
 
 
 
-            console.error('❌ Failed to initialize EmailJS:', error);
+            console.error('âŒ Failed to initialize EmailJS:', error);
 
 
 
@@ -1626,7 +1491,7 @@ if (refreshBtn) {
 
 
 
-            showNotification('السلة فارغة، أضف منتجات أولاً', 'error');
+            showNotification('Ø§Ù„Ø³Ù„Ø© ÙØ§Ø±ØºØ©ØŒ Ø£Ø¶Ù Ù…Ù†ØªØ¬Ø§Øª Ø£ÙˆÙ„Ø§Ù‹', 'error');
 
 
 
@@ -1766,7 +1631,7 @@ if (refreshBtn) {
 
 
 
-        const userConfirm = await customConfirm('هل تريد إرسال الطلب الآن؟');
+        const userConfirm = await customConfirm('Ù‡Ù„ ØªØ±ÙŠØ¯ Ø¥Ø±Ø³Ø§Ù„ Ø§Ù„Ø·Ù„Ø¨ Ø§Ù„Ø¢Ù†ØŸ');
 
 
 
@@ -1774,7 +1639,7 @@ if (refreshBtn) {
 
 
 
-         showNotification('تم إلغاء الإرسال', 'info');
+         showNotification('ØªÙ… Ø¥Ù„ØºØ§Ø¡ Ø§Ù„Ø¥Ø±Ø³Ø§Ù„', 'info');
 
 
 
@@ -1826,7 +1691,7 @@ if (refreshBtn) {
 
 
 
-            showNotification('✅ تم إرسال الطلب بنجاح! سنتواصل معك قريباً.', 'success');
+            showNotification('âœ… ØªÙ… Ø¥Ø±Ø³Ø§Ù„ Ø§Ù„Ø·Ù„Ø¨ Ø¨Ù†Ø¬Ø§Ø­! Ø³Ù†ØªÙˆØ§ØµÙ„ Ù…Ø¹Ùƒ Ù‚Ø±ÙŠØ¨Ø§Ù‹.', 'success');
 
 
 
@@ -1950,7 +1815,7 @@ if (refreshBtn) {
 
 
 
-            showNotification('الرجاء ملء جميع الحقول المطلوبة', 'error');
+            showNotification('Ø§Ù„Ø±Ø¬Ø§Ø¡ Ù…Ù„Ø¡ Ø¬Ù…ÙŠØ¹ Ø§Ù„Ø­Ù‚ÙˆÙ„ Ø§Ù„Ù…Ø·Ù„ÙˆØ¨Ø©', 'error');
 
 
 
@@ -1974,7 +1839,7 @@ if (refreshBtn) {
 
 
 
-            showNotification('الرجاء إدخال رقم هاتف مغربي صحيح', 'error');
+            showNotification('Ø§Ù„Ø±Ø¬Ø§Ø¡ Ø¥Ø¯Ø®Ø§Ù„ Ø±Ù‚Ù… Ù‡Ø§ØªÙ Ù…ØºØ±Ø¨ÙŠ ØµØ­ÙŠØ­', 'error');
 
 
 
@@ -2010,7 +1875,7 @@ if (refreshBtn) {
 
 
 
-        // يقبل: 0612345678, 0712345678, +212612345678, 00212612345678
+        // ÙŠÙ‚Ø¨Ù„: 0612345678, 0712345678, +212612345678, 00212612345678
 
 
 
@@ -2054,7 +1919,7 @@ if (refreshBtn) {
 
 
 
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...';
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Ø¬Ø§Ø±ÙŠ Ø§Ù„Ø¥Ø±Ø³Ø§Ù„...';
 
 
 
@@ -2066,7 +1931,7 @@ if (refreshBtn) {
 
 
 
-                submitBtn.innerHTML = '<i class="fas fa-envelope"></i> إرسال الطلب عبر البريد';
+                submitBtn.innerHTML = '<i class="fas fa-envelope"></i> Ø¥Ø±Ø³Ø§Ù„ Ø§Ù„Ø·Ù„Ø¨ Ø¹Ø¨Ø± Ø§Ù„Ø¨Ø±ÙŠØ¯';
 
 
 
@@ -2106,7 +1971,7 @@ prepareEmailParams(formData) {
 
 
 
-    // بناء المنتجات كنص (بدون HTML)
+    // Ø¨Ù†Ø§Ø¡ Ø§Ù„Ù…Ù†ØªØ¬Ø§Øª ÙƒÙ†Øµ (Ø¨Ø¯ÙˆÙ† HTML)
 
 
 
@@ -2122,15 +1987,15 @@ prepareEmailParams(formData) {
 
 
 
-        productsText += `   الكمية: ${item.quantity}\n`;
+        productsText += `   Ø§Ù„ÙƒÙ…ÙŠØ©: ${item.quantity}\n`;
 
 
 
-        productsText += `   السعر: ${item.price} درهم\n`;
+        productsText += `   Ø§Ù„Ø³Ø¹Ø±: ${item.price} Ø¯Ø±Ù‡Ù…\n`;
 
 
 
-        productsText += `   المجموع: ${item.price * item.quantity} درهم\n\n`;
+        productsText += `   Ø§Ù„Ù…Ø¬Ù…ÙˆØ¹: ${item.price * item.quantity} Ø¯Ø±Ù‡Ù…\n\n`;
 
 
 
@@ -2142,7 +2007,7 @@ prepareEmailParams(formData) {
 
 
 
-    // للمنتجات كـ HTML (بسيط)
+    // Ù„Ù„Ù…Ù†ØªØ¬Ø§Øª ÙƒÙ€ HTML (Ø¨Ø³ÙŠØ·)
 
 
 
@@ -2154,7 +2019,7 @@ prepareEmailParams(formData) {
 
 
 
-        productsHtml += `<li>${index + 1}. ${item.name} - ${item.price} × ${item.quantity} = ${item.price * item.quantity} درهم</li>`;
+        productsHtml += `<li>${index + 1}. ${item.name} - ${item.price} Ã— ${item.quantity} = ${item.price * item.quantity} Ø¯Ø±Ù‡Ù…</li>`;
 
 
 
@@ -2170,7 +2035,7 @@ prepareEmailParams(formData) {
 
 
 
-    // إرجاع جميع الأشكال الممكنة من المتغيرات
+    // Ø¥Ø±Ø¬Ø§Ø¹ Ø¬Ù…ÙŠØ¹ Ø§Ù„Ø£Ø´ÙƒØ§Ù„ Ø§Ù„Ù…Ù…ÙƒÙ†Ø© Ù…Ù† Ø§Ù„Ù…ØªØºÙŠØ±Ø§Øª
 
 
 
@@ -2178,27 +2043,27 @@ prepareEmailParams(formData) {
 
 
 
-        // المتغيرات الأساسية
+        // Ø§Ù„Ù…ØªØºÙŠØ±Ø§Øª Ø§Ù„Ø£Ø³Ø§Ø³ÙŠØ©
 
 
 
-        full_name: formData.fullName || 'لم يتم التحديد',
+        full_name: formData.fullName || 'Ù„Ù… ÙŠØªÙ… Ø§Ù„ØªØ­Ø¯ÙŠØ¯',
 
 
 
-        phone: formData.phoneNumber || 'لم يتم التحديد',
+        phone: formData.phoneNumber || 'Ù„Ù… ÙŠØªÙ… Ø§Ù„ØªØ­Ø¯ÙŠØ¯',
 
 
 
-        city: formData.city || 'لم يتم التحديد',
+        city: formData.city || 'Ù„Ù… ÙŠØªÙ… Ø§Ù„ØªØ­Ø¯ÙŠØ¯',
 
 
 
-        address: formData.address || 'لم يتم تحديد العنوان',
+        address: formData.address || 'Ù„Ù… ÙŠØªÙ… ØªØ­Ø¯ÙŠØ¯ Ø§Ù„Ø¹Ù†ÙˆØ§Ù†',
 
 
 
-        notes: formData.notes || 'لا توجد ملاحظات',
+        notes: formData.notes || 'Ù„Ø§ ØªÙˆØ¬Ø¯ Ù…Ù„Ø§Ø­Ø¸Ø§Øª',
 
 
 
@@ -2218,7 +2083,7 @@ prepareEmailParams(formData) {
 
 
 
-        total_price: this.cart.getTotal() + ' درهم',
+        total_price: this.cart.getTotal() + ' Ø¯Ø±Ù‡Ù…',
 
 
 
@@ -2226,7 +2091,7 @@ prepareEmailParams(formData) {
 
 
 
-        // جميع الأسماء الممكنة للمنتجات
+        // Ø¬Ù…ÙŠØ¹ Ø§Ù„Ø£Ø³Ù…Ø§Ø¡ Ø§Ù„Ù…Ù…ÙƒÙ†Ø© Ù„Ù„Ù…Ù†ØªØ¬Ø§Øª
 
 
 
@@ -2258,7 +2123,7 @@ prepareEmailParams(formData) {
 
 
 
-        // متغيرات إضافية
+        // Ù…ØªØºÙŠØ±Ø§Øª Ø¥Ø¶Ø§ÙÙŠØ©
 
 
 
@@ -2274,7 +2139,7 @@ prepareEmailParams(formData) {
 
 
 
-        formatted_total: this.cart.getTotal().toLocaleString() + ' درهم',
+        formatted_total: this.cart.getTotal().toLocaleString() + ' Ø¯Ø±Ù‡Ù…',
 
 
 
@@ -2282,7 +2147,7 @@ prepareEmailParams(formData) {
 
 
 
-        // إرسال لبريدك مباشرة
+        // Ø¥Ø±Ø³Ø§Ù„ Ù„Ø¨Ø±ÙŠØ¯Ùƒ Ù…Ø¨Ø§Ø´Ø±Ø©
 
 
 
@@ -2290,7 +2155,7 @@ prepareEmailParams(formData) {
 
 
 
-        to_name: 'إدارة متجر لوزة بارفوم'
+        to_name: 'Ø¥Ø¯Ø§Ø±Ø© Ù…ØªØ¬Ø± Ù„ÙˆØ²Ø© Ø¨Ø§Ø±ÙÙˆÙ…'
 
 
 
@@ -2322,7 +2187,7 @@ prepareEmailParams(formData) {
 
 
 
-            throw new Error('EmailJS لم يتم تهيئته بعد');
+            throw new Error('EmailJS Ù„Ù… ÙŠØªÙ… ØªÙ‡ÙŠØ¦ØªÙ‡ Ø¨Ø¹Ø¯');
 
 
 
@@ -2342,7 +2207,7 @@ prepareEmailParams(formData) {
 
 
 
-            throw new Error('EmailJS غير متاح');
+            throw new Error('EmailJS ØºÙŠØ± Ù…ØªØ§Ø­');
 
 
 
@@ -2402,7 +2267,7 @@ prepareEmailParams(formData) {
 
 
 
-        console.log('✅ Email sent successfully:', response);
+        console.log('âœ… Email sent successfully:', response);
 
 
 
@@ -2434,7 +2299,7 @@ prepareEmailParams(formData) {
 
 
 
-        let errorMessage = '❌ حدث خطأ في إرسال الطلب. ';
+        let errorMessage = 'âŒ Ø­Ø¯Ø« Ø®Ø·Ø£ ÙÙŠ Ø¥Ø±Ø³Ø§Ù„ Ø§Ù„Ø·Ù„Ø¨. ';
 
 
 
@@ -2450,7 +2315,7 @@ prepareEmailParams(formData) {
 
 
 
-            errorMessage += 'فشل الاتصال بالإنترنت.';
+            errorMessage += 'ÙØ´Ù„ Ø§Ù„Ø§ØªØµØ§Ù„ Ø¨Ø§Ù„Ø¥Ù†ØªØ±Ù†Øª.';
 
 
 
@@ -2458,7 +2323,7 @@ prepareEmailParams(formData) {
 
 
 
-            errorMessage += 'تم تجاوز الحد المسموح من الإيميلات اليومية.';
+            errorMessage += 'ØªÙ… ØªØ¬Ø§ÙˆØ² Ø§Ù„Ø­Ø¯ Ø§Ù„Ù…Ø³Ù…ÙˆØ­ Ù…Ù† Ø§Ù„Ø¥ÙŠÙ…ÙŠÙ„Ø§Øª Ø§Ù„ÙŠÙˆÙ…ÙŠØ©.';
 
 
 
@@ -2470,7 +2335,7 @@ prepareEmailParams(formData) {
 
 
 
-            errorMessage += 'خطأ في إعدادات القالب.';
+            errorMessage += 'Ø®Ø·Ø£ ÙÙŠ Ø¥Ø¹Ø¯Ø§Ø¯Ø§Øª Ø§Ù„Ù‚Ø§Ù„Ø¨.';
 
 
 
@@ -2482,7 +2347,7 @@ prepareEmailParams(formData) {
 
 
 
-            errorMessage += 'خطأ في إعدادات الخدمة.';
+            errorMessage += 'Ø®Ø·Ø£ ÙÙŠ Ø¥Ø¹Ø¯Ø§Ø¯Ø§Øª Ø§Ù„Ø®Ø¯Ù…Ø©.';
 
 
 
@@ -2494,7 +2359,7 @@ prepareEmailParams(formData) {
 
 
 
-            errorMessage += 'حاول مرة أخرى.';
+            errorMessage += 'Ø­Ø§ÙˆÙ„ Ù…Ø±Ø© Ø£Ø®Ø±Ù‰.';
 
 
 
@@ -2526,7 +2391,7 @@ prepareEmailParams(formData) {
 
 
 
-                if (confirm('هل تريد إرسال الطلب يدوياً عبر بريدك الإلكتروني؟')) {
+                if (confirm('Ù‡Ù„ ØªØ±ÙŠØ¯ Ø¥Ø±Ø³Ø§Ù„ Ø§Ù„Ø·Ù„Ø¨ ÙŠØ¯ÙˆÙŠØ§Ù‹ Ø¹Ø¨Ø± Ø¨Ø±ÙŠØ¯Ùƒ Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠØŸ')) {
 
 
 
@@ -2566,7 +2431,7 @@ prepareEmailParams(formData) {
 
 
 
-        const subject = `طلب جديد #${orderId} - ${formData.fullName} - متجر لوزة بارفوم`;
+        const subject = `Ø·Ù„Ø¨ Ø¬Ø¯ÙŠØ¯ #${orderId} - ${formData.fullName} - Ù…ØªØ¬Ø± Ù„ÙˆØ²Ø© Ø¨Ø§Ø±ÙÙˆÙ…`;
 
 
 
@@ -2578,7 +2443,7 @@ prepareEmailParams(formData) {
 
 
 
-        let body = `🛍️ طلب شراء جديد من متجر لوزة بارفوم 🛍️\n\n`;
+        let body = `ðŸ›ï¸ Ø·Ù„Ø¨ Ø´Ø±Ø§Ø¡ Ø¬Ø¯ÙŠØ¯ Ù…Ù† Ù…ØªØ¬Ø± Ù„ÙˆØ²Ø© Ø¨Ø§Ø±ÙÙˆÙ… ðŸ›ï¸\n\n`;
 
 
 
@@ -2586,31 +2451,31 @@ prepareEmailParams(formData) {
 
 
 
-        body += `👤 معلومات العميل:\n`;
+        body += `ðŸ‘¤ Ù…Ø¹Ù„ÙˆÙ…Ø§Øª Ø§Ù„Ø¹Ù…ÙŠÙ„:\n`;
 
 
 
-        body += `─────────────────\n`;
+        body += `â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€\n`;
 
 
 
-        body += `الاسم: ${formData.fullName}\n`;
+        body += `Ø§Ù„Ø§Ø³Ù…: ${formData.fullName}\n`;
 
 
 
-        body += `الهاتف: ${formData.phoneNumber}\n`;
+        body += `Ø§Ù„Ù‡Ø§ØªÙ: ${formData.phoneNumber}\n`;
 
 
 
-        body += `المدينة: ${formData.city}\n`;
+        body += `Ø§Ù„Ù…Ø¯ÙŠÙ†Ø©: ${formData.city}\n`;
 
 
 
-        if (formData.address) body += `العنوان: ${formData.address}\n`;
+        if (formData.address) body += `Ø§Ù„Ø¹Ù†ÙˆØ§Ù†: ${formData.address}\n`;
 
 
 
-        if (formData.notes) body += `ملاحظات: ${formData.notes}\n`;
+        if (formData.notes) body += `Ù…Ù„Ø§Ø­Ø¸Ø§Øª: ${formData.notes}\n`;
 
 
 
@@ -2618,11 +2483,11 @@ prepareEmailParams(formData) {
 
 
 
-        body += `\n🛒 المنتجات المطلوبة:\n`;
+        body += `\nðŸ›’ Ø§Ù„Ù…Ù†ØªØ¬Ø§Øª Ø§Ù„Ù…Ø·Ù„ÙˆØ¨Ø©:\n`;
 
 
 
-        body += `─────────────────\n`;
+        body += `â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€\n`;
 
 
 
@@ -2634,11 +2499,11 @@ prepareEmailParams(formData) {
 
 
 
-            body += `   السعر: ${item.price} درهم × ${item.quantity}\n`;
+            body += `   Ø§Ù„Ø³Ø¹Ø±: ${item.price} Ø¯Ø±Ù‡Ù… Ã— ${item.quantity}\n`;
 
 
 
-            body += `   المجموع: ${item.price * item.quantity} درهم\n\n`;
+            body += `   Ø§Ù„Ù…Ø¬Ù…ÙˆØ¹: ${item.price * item.quantity} Ø¯Ø±Ù‡Ù…\n\n`;
 
 
 
@@ -2654,7 +2519,7 @@ prepareEmailParams(formData) {
 
 
 
-        body += `\n💰 الإجمالي النهائي: ${total} درهم\n\n`;
+        body += `\nðŸ’° Ø§Ù„Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„Ù†Ù‡Ø§Ø¦ÙŠ: ${total} Ø¯Ø±Ù‡Ù…\n\n`;
 
 
 
@@ -2662,19 +2527,19 @@ prepareEmailParams(formData) {
 
 
 
-        body += `📋 معلومات النظام:\n`;
+        body += `ðŸ“‹ Ù…Ø¹Ù„ÙˆÙ…Ø§Øª Ø§Ù„Ù†Ø¸Ø§Ù…:\n`;
 
 
 
-        body += `─────────────────\n`;
+        body += `â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€\n`;
 
 
 
-        body += `رقم الطلب: ${orderId}\n`;
+        body += `Ø±Ù‚Ù… Ø§Ù„Ø·Ù„Ø¨: ${orderId}\n`;
 
 
 
-        body += `التاريخ: ${new Date().toLocaleString('ar-EG')}\n`;
+        body += `Ø§Ù„ØªØ§Ø±ÙŠØ®: ${new Date().toLocaleString('ar-EG')}\n`;
 
 
 
@@ -2682,11 +2547,11 @@ prepareEmailParams(formData) {
 
 
 
-        body += `تم إنشاء هذا الطلب من موقع متجر لوزة بارفوم\n`;
+        body += `ØªÙ… Ø¥Ù†Ø´Ø§Ø¡ Ù‡Ø°Ø§ Ø§Ù„Ø·Ù„Ø¨ Ù…Ù† Ù…ÙˆÙ‚Ø¹ Ù…ØªØ¬Ø± Ù„ÙˆØ²Ø© Ø¨Ø§Ø±ÙÙˆÙ…\n`;
 
 
 
-        body += `للتواصل: 212726827786`;
+        body += `Ù„Ù„ØªÙˆØ§ØµÙ„: 212726827786`;
 
 
 
@@ -2710,7 +2575,7 @@ prepareEmailParams(formData) {
 
 
 
-        showNotification('تم فتح بريدك الإلكتروني. يرجى إرسال الرسالة.', 'info');
+        showNotification('ØªÙ… ÙØªØ­ Ø¨Ø±ÙŠØ¯Ùƒ Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ. ÙŠØ±Ø¬Ù‰ Ø¥Ø±Ø³Ø§Ù„ Ø§Ù„Ø±Ø³Ø§Ù„Ø©.', 'info');
 
 
 
@@ -2786,27 +2651,21 @@ class App {
 
 
 
-        this.mensProducts = [];  // تخزين جميع منتجات الرجال
+        this.mensProducts = [];  // ØªØ®Ø²ÙŠÙ† Ø¬Ù…ÙŠØ¹ Ù…Ù†ØªØ¬Ø§Øª Ø§Ù„Ø±Ø¬Ø§Ù„
 
 
 
-        this.womensProducts = []; // تخزين جميع منتجات النساء
+        this.womensProducts = []; // ØªØ®Ø²ÙŠÙ† Ø¬Ù…ÙŠØ¹ Ù…Ù†ØªØ¬Ø§Øª Ø§Ù„Ù†Ø³Ø§Ø¡
 
 
 
-        this.mensAccessoriesProducts = []; // تخزين جميع منتجات النساء
+
+
+        this.mensDisplayCount = 3; // Ø¹Ø¯Ø¯ Ø§Ù„Ù…Ù†ØªØ¬Ø§Øª Ø§Ù„Ù…Ø¹Ø±ÙˆØ¶Ø© Ù„Ù„Ø±Ø¬Ø§Ù„
 
 
 
-        this.womensAccessoriesProducts = []; // تخزين جميع منتجات النساء
-
-
-
-        this.mensDisplayCount = 3; // عدد المنتجات المعروضة للرجال
-
-
-
-        this.womensDisplayCount = 3; // عدد المنتجات المعروضة للنساء
+        this.womensDisplayCount = 3; // Ø¹Ø¯Ø¯ Ø§Ù„Ù…Ù†ØªØ¬Ø§Øª Ø§Ù„Ù…Ø¹Ø±ÙˆØ¶Ø© Ù„Ù„Ù†Ø³Ø§Ø¡
 
 
 
@@ -2830,23 +2689,15 @@ class App {
 
 
 
-        this.loadProducts(); // تحميل وتصنيف المنتجات
+        this.loadProducts(); // ØªØ­Ù…ÙŠÙ„ ÙˆØªØµÙ†ÙŠÙ Ø§Ù„Ù…Ù†ØªØ¬Ø§Øª
 
 
 
-        this.renderMensProducts();    // جديد: عرض عطور الرجال
+        this.renderMensProducts();    // Ø¬Ø¯ÙŠØ¯: Ø¹Ø±Ø¶ Ø¹Ø·ÙˆØ± Ø§Ù„Ø±Ø¬Ø§Ù„
 
 
 
-        this.renderWomensProducts();  // جديد: عرض عطور النساء
-
-
-
-        this.renderMensAccessoriesProducts();  // جديد: عرض عطور النساء
-
-
-
-        this.renderWomensAccessoriesProducts();  // جديد: عرض عطور النساء
+        this.renderWomensProducts();  // Ø¬Ø¯ÙŠØ¯: Ø¹Ø±Ø¶ Ø¹Ø·ÙˆØ± Ø§Ù„Ù†Ø³Ø§Ø¡
 
 
 
@@ -2890,7 +2741,7 @@ class App {
 
 
 
-    // تحميل وتصنيف المنتجات
+    // ØªØ­Ù…ÙŠÙ„ ÙˆØªØµÙ†ÙŠÙ Ø§Ù„Ù…Ù†ØªØ¬Ø§Øª
 
 
 
@@ -2919,10 +2770,6 @@ class App {
     this.mensProducts = window.products.filter(product => product.category === 'mens');
 
     this.womensProducts = window.products.filter(product => product.category === 'womens');
-
-    this.mensAccessoriesProducts = window.products.filter(product => product.category === 'mensAccessories');
-
-    this.womensAccessoriesProducts = window.products.filter(product => product.category === 'womensAccessories');
 
 }
 
@@ -3152,7 +2999,7 @@ class App {
 
 
 
-                    addButton.innerHTML = '<i class="fas fa-check"></i> تمت!';
+                    addButton.innerHTML = '<i class="fas fa-check"></i> ØªÙ…Øª!';
 
 
 
@@ -3460,7 +3307,7 @@ class App {
 
 
 
-                    showNotification('شكراً للاشتراك! ستتلقى عروضنا الخاصة قريباً.', 'success');
+                    showNotification('Ø´ÙƒØ±Ø§Ù‹ Ù„Ù„Ø§Ø´ØªØ±Ø§Ùƒ! Ø³ØªØªÙ„Ù‚Ù‰ Ø¹Ø±ÙˆØ¶Ù†Ø§ Ø§Ù„Ø®Ø§ØµØ© Ù‚Ø±ÙŠØ¨Ø§Ù‹.', 'success');
 
 
 
@@ -3472,7 +3319,7 @@ class App {
 
 
 
-                    showNotification('الرجاء إدخال بريد إلكتروني صحيح.', 'error');
+                    showNotification('Ø§Ù„Ø±Ø¬Ø§Ø¡ Ø¥Ø¯Ø®Ø§Ù„ Ø¨Ø±ÙŠØ¯ Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ ØµØ­ÙŠØ­.', 'error');
 
 
 
@@ -3960,7 +3807,7 @@ class App {
 
 
 
-    // عرض عطور الرجال في الصفحة الرئيسية
+    // Ø¹Ø±Ø¶ Ø¹Ø·ÙˆØ± Ø§Ù„Ø±Ø¬Ø§Ù„ ÙÙŠ Ø§Ù„ØµÙØ­Ø© Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠØ©
 
 
 
@@ -3996,11 +3843,11 @@ class App {
 
 
 
-                    <h3>لا توجد عطور للرجال حالياً</h3>
+                    <h3>Ù„Ø§ ØªÙˆØ¬Ø¯ Ø¹Ø·ÙˆØ± Ù„Ù„Ø±Ø¬Ø§Ù„ Ø­Ø§Ù„ÙŠØ§Ù‹</h3>
 
 
 
-                    <p>سيكون لدينا عطور رجالية قريباً</p>
+                    <p>Ø³ÙŠÙƒÙˆÙ† Ù„Ø¯ÙŠÙ†Ø§ Ø¹Ø·ÙˆØ± Ø±Ø¬Ø§Ù„ÙŠØ© Ù‚Ø±ÙŠØ¨Ø§Ù‹</p>
 
 
 
@@ -4024,7 +3871,7 @@ class App {
 
 
 
-        // عرض أول 3 منتجات فقط
+        // Ø¹Ø±Ø¶ Ø£ÙˆÙ„ 3 Ù…Ù†ØªØ¬Ø§Øª ÙÙ‚Ø·
 
 
 
@@ -4080,11 +3927,11 @@ class App {
 
 
 
-                            <span class="price">${product.price} درهم</span>
+                            <span class="price">${product.price} Ø¯Ø±Ù‡Ù…</span>
 
 
 
-                            ${product.oldPrice ? `<span class="old-price">${product.oldPrice} درهم</span>` : ''}
+                            ${product.oldPrice ? `<span class="old-price">${product.oldPrice} Ø¯Ø±Ù‡Ù…</span>` : ''}
 
 
 
@@ -4100,7 +3947,7 @@ class App {
 
 
 
-                            أضف للسلة
+                            Ø£Ø¶Ù Ù„Ù„Ø³Ù„Ø©
 
 
 
@@ -4128,7 +3975,7 @@ class App {
 
 
 
-        // إضافة زر "المزيد" إذا كان هناك منتجات أكثر
+        // Ø¥Ø¶Ø§ÙØ© Ø²Ø± "Ø§Ù„Ù…Ø²ÙŠØ¯" Ø¥Ø°Ø§ ÙƒØ§Ù† Ù‡Ù†Ø§Ùƒ Ù…Ù†ØªØ¬Ø§Øª Ø£ÙƒØ«Ø±
 
 
 
@@ -4176,7 +4023,7 @@ class App {
 
 
 
-        // إذا كان هناك منتجات أكثر مما هو معروض
+        // Ø¥Ø°Ø§ ÙƒØ§Ù† Ù‡Ù†Ø§Ùƒ Ù…Ù†ØªØ¬Ø§Øª Ø£ÙƒØ«Ø± Ù…Ù…Ø§ Ù‡Ùˆ Ù…Ø¹Ø±ÙˆØ¶
 
 
 
@@ -4208,7 +4055,7 @@ class App {
 
 
 
-                عرض المزيد من عطور الرجال (${remaining} منتج${remaining > 1 ? 'ات' : ''})
+                Ø¹Ø±Ø¶ Ø§Ù„Ù…Ø²ÙŠØ¯ Ù…Ù† Ø¹Ø·ÙˆØ± Ø§Ù„Ø±Ø¬Ø§Ù„ (${remaining} Ù…Ù†ØªØ¬${remaining > 1 ? 'Ø§Øª' : ''})
 
 
 
@@ -4244,7 +4091,7 @@ class App {
 
 
 
-            // إذا ظهرت كل المنتجات، أضف رسالة
+            // Ø¥Ø°Ø§ Ø¸Ù‡Ø±Øª ÙƒÙ„ Ø§Ù„Ù…Ù†ØªØ¬Ø§ØªØŒ Ø£Ø¶Ù Ø±Ø³Ø§Ù„Ø©
 
 
 
@@ -4264,7 +4111,7 @@ class App {
 
 
 
-                <span>تم عرض جميع منتجات الرجال</span>
+                <span>ØªÙ… Ø¹Ø±Ø¶ Ø¬Ù…ÙŠØ¹ Ù…Ù†ØªØ¬Ø§Øª Ø§Ù„Ø±Ø¬Ø§Ù„</span>
 
 
 
@@ -4292,7 +4139,7 @@ class App {
 
 
 
-        // زيادة عدد المنتجات المعروضة ب 3 أو أقل
+        // Ø²ÙŠØ§Ø¯Ø© Ø¹Ø¯Ø¯ Ø§Ù„Ù…Ù†ØªØ¬Ø§Øª Ø§Ù„Ù…Ø¹Ø±ÙˆØ¶Ø© Ø¨ 3 Ø£Ùˆ Ø£Ù‚Ù„
 
 
 
@@ -4316,7 +4163,7 @@ class App {
 
 
 
-        // التمرير السلس للقسم
+        // Ø§Ù„ØªÙ…Ø±ÙŠØ± Ø§Ù„Ø³Ù„Ø³ Ù„Ù„Ù‚Ø³Ù…
 
 
 
@@ -4336,7 +4183,7 @@ class App {
 
 
 
-    // عرض عطور النساء في الصفحة الرئيسية
+    // Ø¹Ø±Ø¶ Ø¹Ø·ÙˆØ± Ø§Ù„Ù†Ø³Ø§Ø¡ ÙÙŠ Ø§Ù„ØµÙØ­Ø© Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠØ©
 
 
 
@@ -4372,11 +4219,11 @@ class App {
 
 
 
-                    <h3>لا توجد عطور للنساء حالياً</h3>
+                    <h3>Ù„Ø§ ØªÙˆØ¬Ø¯ Ø¹Ø·ÙˆØ± Ù„Ù„Ù†Ø³Ø§Ø¡ Ø­Ø§Ù„ÙŠØ§Ù‹</h3>
 
 
 
-                    <p>سيكون لدينا عطور نسائية قريباً</p>
+                    <p>Ø³ÙŠÙƒÙˆÙ† Ù„Ø¯ÙŠÙ†Ø§ Ø¹Ø·ÙˆØ± Ù†Ø³Ø§Ø¦ÙŠØ© Ù‚Ø±ÙŠØ¨Ø§Ù‹</p>
 
 
 
@@ -4400,7 +4247,7 @@ class App {
 
 
 
-        // عرض أول 3 منتجات فقط
+        // Ø¹Ø±Ø¶ Ø£ÙˆÙ„ 3 Ù…Ù†ØªØ¬Ø§Øª ÙÙ‚Ø·
 
 
 
@@ -4456,11 +4303,11 @@ class App {
 
 
 
-                            <span class="price">${product.price} درهم</span>
+                            <span class="price">${product.price} Ø¯Ø±Ù‡Ù…</span>
 
 
 
-                            ${product.oldPrice ? `<span class="old-price">${product.oldPrice} درهم</span>` : ''}
+                            ${product.oldPrice ? `<span class="old-price">${product.oldPrice} Ø¯Ø±Ù‡Ù…</span>` : ''}
 
 
 
@@ -4476,7 +4323,7 @@ class App {
 
 
 
-                            أضف للسلة
+                            Ø£Ø¶Ù Ù„Ù„Ø³Ù„Ø©
 
 
 
@@ -4504,7 +4351,7 @@ class App {
 
 
 
-        // إضافة زر "المزيد" إذا كان هناك منتجات أكثر
+        // Ø¥Ø¶Ø§ÙØ© Ø²Ø± "Ø§Ù„Ù…Ø²ÙŠØ¯" Ø¥Ø°Ø§ ÙƒØ§Ù† Ù‡Ù†Ø§Ùƒ Ù…Ù†ØªØ¬Ø§Øª Ø£ÙƒØ«Ø±
 
 
 
@@ -4552,7 +4399,7 @@ class App {
 
 
 
-        // إذا كان هناك منتجات أكثر مما هو معروض
+        // Ø¥Ø°Ø§ ÙƒØ§Ù† Ù‡Ù†Ø§Ùƒ Ù…Ù†ØªØ¬Ø§Øª Ø£ÙƒØ«Ø± Ù…Ù…Ø§ Ù‡Ùˆ Ù…Ø¹Ø±ÙˆØ¶
 
 
 
@@ -4584,7 +4431,7 @@ class App {
 
 
 
-                عرض المزيد من عطور النساء (${remaining} منتج${remaining > 1 ? 'ات' : ''})
+                Ø¹Ø±Ø¶ Ø§Ù„Ù…Ø²ÙŠØ¯ Ù…Ù† Ø¹Ø·ÙˆØ± Ø§Ù„Ù†Ø³Ø§Ø¡ (${remaining} Ù…Ù†ØªØ¬${remaining > 1 ? 'Ø§Øª' : ''})
 
 
 
@@ -4620,7 +4467,7 @@ class App {
 
 
 
-            // إذا ظهرت كل المنتجات، أضف رسالة
+            // Ø¥Ø°Ø§ Ø¸Ù‡Ø±Øª ÙƒÙ„ Ø§Ù„Ù…Ù†ØªØ¬Ø§ØªØŒ Ø£Ø¶Ù Ø±Ø³Ø§Ù„Ø©
 
 
 
@@ -4640,7 +4487,7 @@ class App {
 
 
 
-                <span>تم عرض جميع منتجات النساء</span>
+                <span>ØªÙ… Ø¹Ø±Ø¶ Ø¬Ù…ÙŠØ¹ Ù…Ù†ØªØ¬Ø§Øª Ø§Ù„Ù†Ø³Ø§Ø¡</span>
 
 
 
@@ -4668,7 +4515,7 @@ class App {
 
 
 
-        // زيادة عدد المنتجات المعروضة ب 3 أو أقل
+        // Ø²ÙŠØ§Ø¯Ø© Ø¹Ø¯Ø¯ Ø§Ù„Ù…Ù†ØªØ¬Ø§Øª Ø§Ù„Ù…Ø¹Ø±ÙˆØ¶Ø© Ø¨ 3 Ø£Ùˆ Ø£Ù‚Ù„
 
 
 
@@ -4692,7 +4539,7 @@ class App {
 
 
 
-        // التمرير السلس للقسم
+        // Ø§Ù„ØªÙ…Ø±ÙŠØ± Ø§Ù„Ø³Ù„Ø³ Ù„Ù„Ù‚Ø³Ù…
 
 
 
@@ -4708,376 +4555,6 @@ class App {
 
 
 
-      ///////////////////////// عرض إكسسوارات الرجال في الصفحة الرئيسية
-
-
-
-    renderMensAccessoriesProducts() {
-
-
-
-        const mensAccessoriesGrid = document.getElementById('mensAccessoriesGrid');
-
-
-
-        if (!mensAccessoriesGrid) return;
-
-
-
-
-
-
-
-        if (this.mensAccessoriesProducts.length === 0) {
-
-
-
-            mensAccessoriesGrid.innerHTML = `
-
-
-
-                <div class="empty-category">
-
-
-
-                    <i class="fas fa-box-open"></i>
-
-
-
-                    <h3>لا توجد إكسسوارات الرجال حالياً</h3>
-
-
-
-                    <p>سيكون لدينا إكسسوارات الرجال قريباً</p>
-
-
-
-                </div>
-
-
-
-            `;
-
-
-
-            return;
-
-
-
-        }
-
-
-
-
-
-
-
-        // عرض أول 3 منتجات فقط
-
-
-
-        const displayProducts = this.mensAccessoriesProducts.slice(0, this.mensAccessoriesDisplayCount);
-
-
-
-        
-
-
-
-        mensAccessoriesGrid.innerHTML = displayProducts.map(product => `
-
-
-
-            <div class="product-card" data-product-id="${product.id}">
-
-
-
-                <div class="product-image">
-
-
-
-                    <img src="${product.image}" alt="${product.name}">
-
-
-
-                    ${product.badge ? `<span class="product-badge">${product.badge}</span>` : ''}
-
-
-
-                </div>
-
-
-
-                <div class="product-content">
-
-
-
-                    <h3 class="product-title">${product.name}</h3>
-
-
-
-                    <p class="product-description">${product.description}</p>
-
-
-
-                    <div class="product-price">
-
-
-
-                        <div>
-
-
-
-                            <span class="price">${product.price} درهم</span>
-
-
-
-                            ${product.oldPrice ? `<span class="old-price">${product.oldPrice} درهم</span>` : ''}
-
-
-
-                        </div>
-
-
-
-                        <button class="btn btn-primary add-to-cart" data-product-id="${product.id}" type="button">
-
-
-
-                            <i class="fas fa-plus"></i>
-
-
-
-                            أضف للسلة
-
-
-
-                        </button>
-
-
-
-                    </div>
-
-
-
-                </div>
-
-
-
-            </div>
-
-
-
-        `).join('');
-
-
-
-
-
-
-
-        // إضافة زر "المزيد" إذا كان هناك منتجات أكثر
-
-
-
-        this.addMensAccessoriesLoadMoreButton();
-
-
-
-    }
-
-
-
-
-
-
-
-    addMensAccessoriesLoadMoreButton() {
-
-
-
-        const mensAccessoriesSection = document.querySelector('#mensAccessoriesGrid').closest('.category-section');
-
-
-
-        const existingButton = mensAccessoriesSection.querySelector('.load-more-btn');
-
-
-
-        
-
-
-
-        if (existingButton) {
-
-
-
-            existingButton.remove();
-
-
-
-        }
-
-
-
-
-
-
-
-        // إذا كان هناك منتجات أكثر مما هو معروض
-
-
-
-        if (this.mensAccessoriesProducts.length > this.mensAccessoriesDisplayCount) {
-
-
-
-            const loadMoreBtn = document.createElement('button');
-
-
-
-            loadMoreBtn.className = 'load-more-btn';
-
-
-
-            const remaining = this.mensAccessoriesProducts.length - this.mensAccessoriesDisplayCount;
-
-
-
-            
-
-
-
-            loadMoreBtn.innerHTML = `
-
-
-
-                <i class="fas fa-plus"></i>
-
-
-
-                عرض المزيد من عطور الرجال (${remaining} منتج${remaining > 1 ? 'ات' : ''})
-
-
-
-            `;
-
-
-
-            
-
-
-
-            loadMoreBtn.addEventListener('click', () => {
-
-
-
-                this.loadMoreMensAccessoriesProducts();
-
-
-
-            });
-
-
-
-            
-
-
-
-            mensAccessoriesSection.appendChild(loadMoreBtn);
-
-
-
-        } else {
-
-
-
-            // إذا ظهرت كل المنتجات، أضف رسالة
-
-
-
-            const allShown = document.createElement('div');
-
-
-
-            allShown.className = 'all-shown-message';
-
-
-
-            allShown.innerHTML = `
-
-
-
-                <i class="fas fa-check-circle"></i>
-
-
-
-                <span>تم عرض جميع منتجات الرجال</span>
-
-
-
-            `;
-
-
-
-            mensAccessoriesSection.appendChild(allShown);
-
-
-
-        }
-
-
-
-    }
-
-
-
-
-
-
-
-    loadMoreMensAccessoriesProducts() {
-
-
-
-        // زيادة عدد المنتجات المعروضة ب 3 أو أقل
-
-
-
-        const remaining = this.mensAccessoriesProducts.length - this.mensAccessoriesDisplayCount;
-
-
-
-        this.mensAccessoriesDisplayCount += Math.min(3, remaining);
-
-
-
-        
-
-
-
-        this.renderMensAccessoriesProducts();
-
-
-
-        
-
-
-
-        // التمرير السلس للقسم
-
-
-
-        const mensAccessoriesSection = document.querySelector('#mensAccessoriesGrid').closest('.category-section');
-
-
-
-        mensAccessoriesSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-
-
-
-    }
-
 
 
 
@@ -5088,19 +4565,16 @@ class App {
 
 
 
-    // عرض عطور النساء في الصفحة الرئيسية
+ 
 
 
 
-    renderWomensAccessoriesProducts() {
 
 
 
-        const womensAccessoriesGrid = document.getElementById('womensAccessoriesGrid');
 
 
 
-        if (!womensAccessoriesGrid) return;
 
 
 
@@ -5108,367 +4582,14 @@ class App {
 
 
 
-        if (this.womensAccessoriesProducts.length === 0) {
 
 
 
-            womensAccessoriesGrid.innerHTML = `
 
 
 
-                <div class="empty-category">
 
-
-
-                    <i class="fas fa-box-open"></i>
-
-
-
-                    <h3>لا توجد عطور للنساء حالياً</h3>
-
-
-
-                    <p>سيكون لدينا عطور نسائية قريباً</p>
-
-
-
-                </div>
-
-
-
-            `;
-
-
-
-            return;
-
-
-
-        }
-
-
-
-
-
-
-
-        // عرض أول 3 منتجات فقط
-
-
-
-        const displayProducts = this.womensAccessoriesProducts.slice(0, this.womensAccessoriesDisplayCount);
-
-
-
-        
-
-
-
-        womensAccessoriesGrid.innerHTML = displayProducts.map(product => `
-
-
-
-            <div class="product-card" data-product-id="${product.id}">
-
-
-
-                <div class="product-image">
-
-
-
-                    <img src="${product.image}" alt="${product.name}">
-
-
-
-                    ${product.badge ? `<span class="product-badge">${product.badge}</span>` : ''}
-
-
-
-                </div>
-
-
-
-                <div class="product-content">
-
-
-
-                    <h3 class="product-title">${product.name}</h3>
-
-
-
-                    <p class="product-description">${product.description}</p>
-
-
-
-                    <div class="product-price">
-
-
-
-                        <div>
-
-
-
-                            <span class="price">${product.price} درهم</span>
-
-
-
-                            ${product.oldPrice ? `<span class="old-price">${product.oldPrice} درهم</span>` : ''}
-
-
-
-                        </div>
-
-
-
-                        <button class="btn btn-primary add-to-cart" data-product-id="${product.id}" type="button">
-
-
-
-                            <i class="fas fa-plus"></i>
-
-
-
-                            أضف للسلة
-
-
-
-                        </button>
-
-
-
-                    </div>
-
-
-
-                </div>
-
-
-
-            </div>
-
-
-
-        `).join('');
-
-
-
-
-
-
-
-        // إضافة زر "المزيد" إذا كان هناك منتجات أكثر
-
-
-
-        this.addWomensAccessoriesLoadMoreButton();
-
-
-
-    }
-
-
-
-
-
-
-
-    addWomensAccessoriesLoadMoreButton() {
-
-
-
-        const womensAccessoriesSection = document.querySelector('#womensAccessoriesGrid').closest('.category-section');
-
-
-
-        const existingButton = womensAccessoriesSection.querySelector('.load-more-btn');
-
-
-
-        
-
-
-
-        if (existingButton) {
-
-
-
-            existingButton.remove();
-
-
-
-        }
-
-
-
-
-
-
-
-        // إذا كان هناك منتجات أكثر مما هو معروض
-
-
-
-        if (this.womensAccessoriesProducts.length > this.womensAccessoriesDisplayCount) {
-
-
-
-            const loadMoreBtn = document.createElement('button');
-
-
-
-            loadMoreBtn.className = 'load-more-btn';
-
-
-
-            const remaining = this.womensAccessoriesProducts.length - this.womensAccessoriesDisplayCount;
-
-
-
-            
-
-
-
-            loadMoreBtn.innerHTML = `
-
-
-
-                <i class="fas fa-plus"></i>
-
-
-
-                عرض المزيد من عطور النساء (${remaining} منتج${remaining > 1 ? 'ات' : ''})
-
-
-
-            `;
-
-
-
-            
-
-
-
-            loadMoreBtn.addEventListener('click', () => {
-
-
-
-                this.loadMoreWomensAccessoriesProducts();
-
-
-
-            });
-
-
-
-            
-
-
-
-            womensAccessoriesSection.appendChild(loadMoreBtn);
-
-
-
-        } else {
-
-
-
-            // إذا ظهرت كل المنتجات، أضف رسالة
-
-
-
-            const allShown = document.createElement('div');
-
-
-
-            allShown.className = 'all-shown-message';
-
-
-
-            allShown.innerHTML = `
-
-
-
-                <i class="fas fa-check-circle"></i>
-
-
-
-                <span>تم عرض جميع منتجات النساء</span>
-
-
-
-            `;
-
-
-
-            womensAccessoriesSection.appendChild(allShown);
-
-
-
-        }
-
-
-
-    }
-
-
-
-
-
-
-
-    loadMoreWomensAccessoriesProducts() {
-
-
-
-        // زيادة عدد المنتجات المعروضة ب 3 أو أقل
-
-
-
-        const remaining = this.womensAccessoriesProducts.length - this.womensAccessoriesDisplayCount;
-
-
-
-        this.womensAccessoriesDisplayCount += Math.min(3, remaining);
-
-
-
-        
-
-
-
-        this.renderWomensAccessoriesProducts();
-
-
-
-        
-
-
-
-        // التمرير السلس للقسم
-
-
-
-        const womensAccessoriesSection = document.querySelector('#womensAccessoriesGrid').closest('.category-section');
-
-
-
-        womensAccessoriesSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-
-
-
-    }
-
-
-
-
-
-
-
-
-
-
-
-    // دالة renderProducts القديمة - يمكن حذفها
+    // Ø¯Ø§Ù„Ø© renderProducts Ø§Ù„Ù‚Ø¯ÙŠÙ…Ø© - ÙŠÙ…ÙƒÙ† Ø­Ø°ÙÙ‡Ø§
 
 
 
@@ -5488,7 +4609,7 @@ class App {
 
 
 
-        // يمكن حذف هذه الدالة إذا لم تعد تحتاجها
+        // ÙŠÙ…ÙƒÙ† Ø­Ø°Ù Ù‡Ø°Ù‡ Ø§Ù„Ø¯Ø§Ù„Ø© Ø¥Ø°Ø§ Ù„Ù… ØªØ¹Ø¯ ØªØ­ØªØ§Ø¬Ù‡Ø§
 
 
 
@@ -5568,7 +4689,7 @@ class App {
 
 
 
-                        <span class="price">${product.price} درهم</span>
+                        <span class="price">${product.price} Ø¯Ø±Ù‡Ù…</span>
 
 
 
@@ -5580,7 +4701,7 @@ class App {
 
 
 
-                            أضف للسلة
+                            Ø£Ø¶Ù Ù„Ù„Ø³Ù„Ø©
 
 
 
@@ -5616,7 +4737,7 @@ class App {
 
 
 
-        // هذه الدالة قد تحتاج للتحديث إذا كنت تستخدمها
+        // Ù‡Ø°Ù‡ Ø§Ù„Ø¯Ø§Ù„Ø© Ù‚Ø¯ ØªØ­ØªØ§Ø¬ Ù„Ù„ØªØ­Ø¯ÙŠØ« Ø¥Ø°Ø§ ÙƒÙ†Øª ØªØ³ØªØ®Ø¯Ù…Ù‡Ø§
 
 
 
@@ -5692,11 +4813,11 @@ class App {
 
 
 
-                            <span class="price">${product.price} درهم</span>
+                            <span class="price">${product.price} Ø¯Ø±Ù‡Ù…</span>
 
 
 
-                            ${product.oldPrice ? `<span class="old-price">${product.oldPrice} درهم</span>` : ''}
+                            ${product.oldPrice ? `<span class="old-price">${product.oldPrice} Ø¯Ø±Ù‡Ù…</span>` : ''}
 
 
 
@@ -5712,7 +4833,7 @@ class App {
 
 
 
-                            أضف للسلة
+                            Ø£Ø¶Ù Ù„Ù„Ø³Ù„Ø©
 
 
 
@@ -5985,3 +5106,392 @@ function customConfirm(message) {
 
 
 }
+
+
+
+// brrrrr //
+
+// Ø£Ø¶Ù Ù‡Ø°Ø§ ÙÙŠ Ø£ÙŠ Ù…ÙƒØ§Ù† ÙÙŠ script.js Ù„Ù„ØªØ­Ù‚Ù‚
+console.log('Ø²Ø± checkoutBtn:', document.getElementById('checkoutBtn'));
+
+// ØªØ­Ù‚Ù‚ Ù…Ù† CSS
+const btn = document.getElementById('checkoutBtn');
+if (btn) {
+    console.log('display:', window.getComputedStyle(btn).display);
+    console.log('visibility:', window.getComputedStyle(btn).visibility);
+    console.log('opacity:', window.getComputedStyle(btn).opacity);
+    console.log('position:', window.getComputedStyle(btn).position);
+    console.log('bottom:', window.getComputedStyle(btn).bottom);
+}
+
+// Ø¥ØµÙ„Ø§Ø­ Ø²Ø± Ø¥ØªÙ…Ø§Ù… Ø§Ù„Ø·Ù„Ø¨
+function forceShowCheckoutBtn() {
+    const checkoutBtn = document.getElementById('checkoutBtn');
+    const cartSummary = document.querySelector('.cart-summary');
+    const cartItems = document.querySelector('.cart-items');
+
+    if (!checkoutBtn) {
+        console.error('âŒ Ø²Ø± checkoutBtn ØºÙŠØ± Ù…ÙˆØ¬ÙˆØ¯!');
+        return;
+    }
+
+    if (!cartSummary) {
+        console.error('âŒ Ø¹Ù†ØµØ± cartSummary ØºÙŠØ± Ù…ÙˆØ¬ÙˆØ¯!');
+        return;
+    }
+    
+    console.log('ðŸ”§ Ø¥ØµÙ„Ø§Ø­ Ø²Ø± checkoutBtn...');
+
+    // Ø³ØªØ§ÙŠÙ„ Ø§Ù„Ø²Ø± Ø§Ù„Ø¹Ø§Ù…
+    checkoutBtn.style.cssText = `
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 10px !important;
+        width: 100% !important;
+        padding: 18px 20px !important;
+        background: linear-gradient(135deg, #D4AF37, #8B4513) !important;
+        color: white !important;
+        border: none !important;
+        border-radius: 12px !important;
+        font-size: 18px !important;
+        font-weight: bold !important;
+        margin: 20px 0 0 0 !important;
+        cursor: pointer !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        position: relative !important;
+        z-index: 1000 !important;
+        box-shadow: 0 4px 20px rgba(139, 69, 19, 0.4) !important;
+        transition: all 0.3s ease !important;
+    `;
+
+    // ÙØ§Ù„Ù…ÙˆØ¨Ø§ÙŠÙ„: Ø¬Ø¹Ù„ cartSummary Ø«Ø§Ø¨Øª Ø£Ø³ÙÙ„ Ø§Ù„ØµÙØ­Ø©
+    if (window.innerWidth <= 768) {
+        cartSummary.style.position = 'fixed';
+        cartSummary.style.bottom = '0';
+        cartSummary.style.left = '0';
+        cartSummary.style.right = '0';
+        cartSummary.style.zIndex = '99999';
+        cartSummary.style.background = '#fff';
+        cartSummary.style.padding = '15px';
+        cartSummary.style.borderTop = '1px solid #eee';
+
+        if (cartItems) {
+            cartItems.style.paddingBottom = '120px';
+        }
+    } else {
+        // Ø§Ù„ÙˆØ¶Ø¹ Ø§Ù„Ø·Ø¨ÙŠØ¹ÙŠ Ù„Ù„Ø¯ÙŠØ³ÙƒØªÙˆØ¨
+        cartSummary.style.position = 'relative';
+        cartSummary.style.bottom = 'auto';
+        if (cartItems) {
+            cartItems.style.paddingBottom = '0';
+        }
+    }
+
+    console.log('âœ… ØªÙ… Ø¥ØµÙ„Ø§Ø­ Ø²Ø± checkoutBtn');
+}
+
+// ØªØ´ØºÙŠÙ„ Ø¹Ù†Ø¯ ÙØªØ­ Ø§Ù„Ø³Ù„Ø©
+document.getElementById('cartBtn')?.addEventListener('click', function() {
+    setTimeout(forceShowCheckoutBtn, 500);
+});
+
+// ØªØ´ØºÙŠÙ„ Ø¹Ù†Ø¯ ØªØ­Ù…ÙŠÙ„ Ø§Ù„ØµÙØ­Ø©
+window.addEventListener('load', function() {
+    setTimeout(forceShowCheckoutBtn, 1000);
+});
+
+// ØªØ´ØºÙŠÙ„ Ø¹Ù†Ø¯ ØªØºÙŠÙŠØ± Ø­Ø¬Ù… Ø§Ù„Ù†Ø§ÙØ°Ø©
+window.addEventListener('resize', forceShowCheckoutBtn);
+
+// ============================================
+// ðŸŽ¯ MOBILE ENHANCEMENTS - ØªØ­Ø³ÙŠÙ†Ø§Øª Ø§Ù„Ù…ÙˆØ¨Ø§ÙŠÙ„
+// ============================================
+
+// 1. Better Cart Badge Animation
+function animateCartBadge() {
+    const badge = document.getElementById('cartCount');
+    if (badge && badge.style.display !== 'none') {
+        badge.classList.add('bounce');
+        setTimeout(() => badge.classList.remove('bounce'), 600);
+    }
+}
+
+// 2. Vibration Feedback (Ù„Ù„Ù…ÙˆØ¨Ø§ÙŠÙ„)
+function vibrate(duration = 50) {
+    if ('vibrate' in navigator) {
+        navigator.vibrate(duration);
+    }
+}
+
+// 3. Haptic Feedback Ø¹Ù†Ø¯ Ø¥Ø¶Ø§ÙØ© Ù…Ù†ØªØ¬
+document.addEventListener('click', (e) => {
+    const addBtn = e.target.closest('.add-to-cart');
+    if (addBtn) {
+        vibrate(50);
+        animateCartBadge();
+    }
+});
+
+// 4. Swipe to Close Ù„Ù„Ù€ Cart Modal (Ø§Ù„Ù…ÙˆØ¨Ø§ÙŠÙ„)
+if (window.innerWidth <= 768) {
+    let touchStartY = 0;
+    let touchEndY = 0;
+    
+    const cartContainer = document.querySelector('.cart-container');
+    
+    if (cartContainer) {
+        cartContainer.addEventListener('touchstart', (e) => {
+            touchStartY = e.changedTouches[0].screenY;
+        });
+        
+        cartContainer.addEventListener('touchend', (e) => {
+            touchEndY = e.changedTouches[0].screenY;
+            handleSwipe();
+        });
+        
+        function handleSwipe() {
+            const swipeDistance = touchEndY - touchStartY;
+            // Ø¥Ø°Ø§ Ø³Ø­Ø¨ Ù„ØªØ­Øª Ø£ÙƒØ«Ø± Ù…Ù† 100pxØŒ Ø³Ø¯ Ø§Ù„Ù€ Cart
+            if (swipeDistance > 100) {
+                document.getElementById('cartModal').classList.remove('active');
+                document.body.style.overflow = '';
+                vibrate(30);
+            }
+        }
+    }
+}
+
+// 5. Auto-hide Navbar Ø¹Ù†Ø¯ Scroll (Ø§Ù„Ù…ÙˆØ¨Ø§ÙŠÙ„)
+if (window.innerWidth <= 768) {
+    let lastScroll = 0;
+    const navbar = document.querySelector('.navbar');
+    
+    window.addEventListener('scroll', () => {
+        const currentScroll = window.pageYOffset;
+        
+        if (currentScroll > lastScroll && currentScroll > 100) {
+            // Scrolling down - hide navbar
+            navbar.style.transform = 'translateY(-100%)';
+        } else {
+            // Scrolling up - show navbar
+            navbar.style.transform = 'translateY(0)';
+        }
+        
+        lastScroll = currentScroll;
+    });
+}
+
+// 6. Double Tap to Add (Ù„Ù„Ù…ÙˆØ¨Ø§ÙŠÙ„)
+let lastTap = 0;
+document.addEventListener('click', (e) => {
+    const productCard = e.target.closest('.product-card');
+    if (productCard && window.innerWidth <= 768) {
+        const currentTime = new Date().getTime();
+        const tapLength = currentTime - lastTap;
+        
+        if (tapLength < 300 && tapLength > 0) {
+            // Double tap detected
+            const productId = parseInt(productCard.dataset.productId);
+            const product = products.find(p => p.id === productId);
+            if (product && window.app) {
+                window.app.cart.addItem(product);
+                vibrate([50, 30, 50]); // pattern vibration
+            }
+        }
+        
+        lastTap = currentTime;
+    }
+});
+
+// 7. Pull to Refresh Ù„Ù„Ù…Ù†ØªØ¬Ø§Øª
+if (window.innerWidth <= 768) {
+    let pStart = { x: 0, y: 0 };
+    let pCurrent = { x: 0, y: 0 };
+    
+    document.addEventListener('touchstart', (e) => {
+        pStart.x = e.touches[0].clientX;
+        pStart.y = e.touches[0].clientY;
+    });
+    
+    document.addEventListener('touchmove', (e) => {
+        if (window.scrollY === 0) {
+            pCurrent.x = e.touches[0].clientX;
+            pCurrent.y = e.touches[0].clientY;
+        }
+    });
+    
+    document.addEventListener('touchend', () => {
+        if (window.scrollY === 0 && pCurrent.y - pStart.y > 100) {
+            // Refresh products
+            if (window.app) {
+                showNotification('ðŸ”„ Ø¬Ø§Ø±ÙŠ ØªØ­Ø¯ÙŠØ« Ø§Ù„Ù…Ù†ØªØ¬Ø§Øª...', 'info');
+                setTimeout(() => {
+                    window.app.loadProducts();
+                    window.app.renderMensProducts();
+                    window.app.renderWomensProducts();
+                    window.app.renderFeaturedProducts();
+                    showNotification('âœ… ØªÙ… Ø§Ù„ØªØ­Ø¯ÙŠØ« Ø¨Ù†Ø¬Ø§Ø­', 'success');
+                    vibrate(50);
+                }, 500);
+            }
+        }
+    });
+}
+
+// 8. Smart Loading Ù„Ù„ØµÙˆØ±
+document.addEventListener('DOMContentLoaded', () => {
+    const images = document.querySelectorAll('img[data-src]');
+    
+    const imageObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                img.src = img.dataset.src;
+                img.removeAttribute('data-src');
+                imageObserver.unobserve(img);
+            }
+        });
+    });
+    
+    images.forEach(img => imageObserver.observe(img));
+});
+
+// 9. Connection Status Indicator
+window.addEventListener('online', () => {
+    showNotification('âœ… Ø¹Ø§Ø¯ Ø§Ù„Ø§ØªØµØ§Ù„ Ø¨Ø§Ù„Ø¥Ù†ØªØ±Ù†Øª', 'success');
+});
+
+window.addEventListener('offline', () => {
+    showNotification('âš ï¸ Ø§Ù†Ù‚Ø·Ø¹ Ø§Ù„Ø§ØªØµØ§Ù„ Ø¨Ø§Ù„Ø¥Ù†ØªØ±Ù†Øª', 'error');
+});
+
+// 10. Auto-save Cart Ù„Ù„Ù€ localStorage Ø¨Ø´ÙƒÙ„ Ø°ÙƒÙŠ
+let cartSaveTimeout;
+function autoSaveCart() {
+    clearTimeout(cartSaveTimeout);
+    cartSaveTimeout = setTimeout(() => {
+        if (window.app && window.app.cart) {
+            window.app.cart.saveCart();
+            console.log('ðŸ’¾ Cart saved automatically');
+        }
+    }, 1000);
+}
+
+// Ø§Ø³ØªØ¯Ø¹Ø§Ø¡ auto-save Ø¹Ù†Ø¯ Ø£ÙŠ ØªØºÙŠÙŠØ±
+document.addEventListener('click', (e) => {
+    if (e.target.closest('.quantity-btn') || e.target.closest('.remove-item')) {
+        autoSaveCart();
+    }
+});
+
+// 11. Prevent accidental form submission
+document.querySelectorAll('form').forEach(form => {
+    form.addEventListener('submit', (e) => {
+        const submitBtn = form.querySelector('button[type="submit"]');
+        if (submitBtn && submitBtn.disabled) {
+            e.preventDefault();
+            showNotification('â³ ÙŠØ±Ø¬Ù‰ Ø§Ù„Ø§Ù†ØªØ¸Ø§Ø±...', 'info');
+        }
+    });
+});
+
+// 12. Smart Scroll to Top
+function scrollToTop() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+}
+
+// Ø²Ø± Scroll to Top (ÙŠØ¸Ù‡Ø± ÙØ§Ø´ ØªØ³ÙƒØ±ÙˆÙ„ÙŠ)
+if (window.innerWidth <= 768) {
+    const scrollBtn = document.createElement('button');
+    scrollBtn.innerHTML = '<i class="fas fa-arrow-up"></i>';
+    scrollBtn.className = 'scroll-to-top';
+    scrollBtn.style.cssText = `
+        position: fixed;
+        bottom: 80px;
+        left: 20px;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: var(--primary-color);
+        color: white;
+        border: none;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        z-index: 9997;
+        cursor: pointer;
+    `;
+    
+    document.body.appendChild(scrollBtn);
+    
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 300) {
+            scrollBtn.style.opacity = '1';
+            scrollBtn.style.visibility = 'visible';
+        } else {
+            scrollBtn.style.opacity = '0';
+            scrollBtn.style.visibility = 'hidden';
+        }
+    });
+    
+    scrollBtn.addEventListener('click', () => {
+        scrollToTop();
+        vibrate(30);
+    });
+}
+
+// 13. Enhanced Add to Cart Feedback
+document.addEventListener('click', (e) => {
+    const addBtn = e.target.closest('.add-to-cart');
+    if (addBtn && !addBtn.classList.contains('adding')) {
+        addBtn.classList.add('adding');
+        
+        // Create flying icon animation
+        const icon = document.createElement('i');
+        icon.className = 'fas fa-shopping-cart';
+        icon.style.cssText = `
+            position: fixed;
+            left: ${e.clientX}px;
+            top: ${e.clientY}px;
+            font-size: 20px;
+            color: var(--primary-color);
+            pointer-events: none;
+            z-index: 100000;
+            animation: flyToCart 0.8s ease-out forwards;
+        `;
+        
+        document.body.appendChild(icon);
+        
+        setTimeout(() => {
+            icon.remove();
+            addBtn.classList.remove('adding');
+        }, 800);
+    }
+});
+
+// CSS Ù„Ù„Ù€ flying animation
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes flyToCart {
+        0% {
+            transform: translate(0, 0) scale(1);
+            opacity: 1;
+        }
+        100% {
+            transform: translate(
+                calc(100vw - ${window.innerWidth - 50}px),
+                calc(-100vh + 100px)
+            ) scale(0.3);
+            opacity: 0;
+        }
+    }
+`;
+document.head.appendChild(style);
+
+console.log('âœ¨ Mobile enhancements loaded!');
