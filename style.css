@@ -6311,3 +6311,253 @@ body.checkout-open {
   position: fixed;
   width: 100%;
 }
+/* ============================================
+   🎨 FINAL MOBILE POLISH - آخر تحسينات
+   ============================================ */
+
+@media (max-width: 768px) {
+
+  /* 1. تحسين Cart Icon Badge */
+  .cart-count {
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+  }
+
+  /* 2. تحسين Cart Items Animation */
+  .cart-item {
+    animation: slideInItem 0.3s ease;
+  }
+
+  @keyframes slideInItem {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  /* 3. تحسين Empty Cart */
+  .empty-cart {
+    animation: fadeIn 0.5s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  /* 4. تحسين Buttons Ripple Effect */
+  .btn-primary {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-primary::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+  }
+
+  .btn-primary:active::after {
+    width: 300px;
+    height: 300px;
+  }
+
+  /* 5. تحسين Product Cards */
+  .product-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .product-card:active {
+    transform: scale(0.98);
+  }
+
+  /* 6. Loading Skeleton للصور */
+  .product-image {
+    position: relative;
+    background: linear-gradient(
+      90deg,
+      #f0f0f0 25%,
+      #e0e0e0 50%,
+      #f0f0f0 75%
+    );
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+  }
+
+  @keyframes loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+
+  .product-image img {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* 7. Smooth Cart Summary appearance */
+  .cart-summary {
+    animation: slideUpSummary 0.3s ease;
+  }
+
+  @keyframes slideUpSummary {
+    from {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  /* 8. Better scrollbar للـ Cart Items */
+  .cart-items::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .cart-items::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .cart-items::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 10px;
+  }
+
+  /* 9. تحسين الـ Notification */
+  .notification {
+    animation: notificationSlide 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+
+  @keyframes notificationSlide {
+    0% {
+      transform: translateX(400px) scale(0.5);
+      opacity: 0;
+    }
+    100% {
+      transform: translateX(0) scale(1);
+      opacity: 1;
+    }
+  }
+
+  /* 10. Success Checkmark Animation */
+  @keyframes checkmark {
+    0% {
+      transform: scale(0) rotate(45deg);
+    }
+    50% {
+      transform: scale(1.2) rotate(45deg);
+    }
+    100% {
+      transform: scale(1) rotate(45deg);
+    }
+  }
+
+  /* 11. تحسين الـ Modal Overlay */
+  .cart-modal.active::before,
+  .checkout-modal.active::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0);
+    animation: fadeInOverlay 0.3s forwards;
+  }
+
+  @keyframes fadeInOverlay {
+    to { background: rgba(0, 0, 0, 0.5); }
+  }
+
+  /* 12. Better focus states */
+  input:focus,
+  textarea:focus,
+  button:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+  }
+
+  /* 13. Skeleton للـ Products Loading */
+  .product-skeleton {
+    background: linear-gradient(
+      90deg,
+      #f0f0f0 0%,
+      #e0e0e0 50%,
+      #f0f0f0 100%
+    );
+    background-size: 200% 100%;
+    animation: skeleton 1.5s infinite;
+  }
+
+  @keyframes skeleton {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+
+  /* 14. Quantity Button Animations */
+  .quantity-btn:active {
+    transform: scale(0.9);
+  }
+
+  /* 15. Cart Badge Bounce عند الإضافة */
+  .cart-count.bounce {
+    animation: bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+
+  @keyframes bounceIn {
+    0% { transform: scale(0); }
+    50% { transform: scale(1.3); }
+    100% { transform: scale(1); }
+  }
+}
+
+/* ============================================
+   🌟 Extra Polish - تلميعات إضافية
+   ============================================ */
+
+/* Glass effect للـ Navbar */
+@supports (backdrop-filter: blur(10px)) {
+  .navbar {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+  }
+}
+
+/* Smooth transitions everywhere */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Better image rendering */
+img {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+/* Selection color */
+::selection {
+  background: var(--secondary-color);
+  color: white;
+}
+
+::-moz-selection {
+  background: var(--secondary-color);
+  color: white;
+}
