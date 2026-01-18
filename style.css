@@ -3480,7 +3480,7 @@ p {
 /* ====== FIX HERO SLIDER FOR MOBILE ====== */
 
 @media (max-width: 1024px) {
-  /* ØªØ­Ø³ÙŠÙ† Ø§Ù„Ø³Ù„Ø§ÙŠØ¯Ø± Ù„Ù„ØªØ§Ø¨Ù„Øª */
+  /* تحسين السلايدر للتابلت */
   .hero-slider {
     height: auto;
     min-height: 500px;
@@ -3495,7 +3495,7 @@ p {
   }
   
   .slide-image {
-    order: -1; /* Ù†Ø¶Ø¹ Ø§Ù„ØµÙˆØ±Ø© Ù‚Ø¨Ù„ Ø§Ù„Ù†Øµ Ø¹Ù„Ù‰ Ø§Ù„Ù…ÙˆØ¨Ø§ÙŠÙ„ */
+    order: -1; /* نضع الصورة قبل النص على الموبايل */
     margin-bottom: 20px;
   }
   
@@ -3507,26 +3507,26 @@ p {
 }
 
 @media (max-width: 768px) {
-  /* ØªØ­Ø³ÙŠÙ† ÙƒØ§Ù…Ù„ Ù„Ù„Ù…ÙˆØ¨Ø§ÙŠÙ„ */
+  /* تحسين كامل للموبايل */
   .hero-slider {
     min-height: 450px;
-    height: auto !important; /* Ø¥Ø¬Ø¨Ø§Ø± Ø§Ù„Ø§Ø±ØªÙØ§Ø¹ Ø¹Ù„Ù‰ Ø§Ù„ØªÙƒÙŠÙ */
-    overflow: visible !important; /* Ø§Ù„Ø³Ù…Ø§Ø­ Ø¨Ø¹Ø±Ø¶ Ø§Ù„Ù…Ø­ØªÙˆÙ‰ */
+    height: auto !important; /* إجبار الارتفاع على التكيف */
+    overflow: visible !important; /* السماح بعرض المحتوى */
     position: relative;
     background: linear-gradient(135deg, var(--light-color) 0%, #f0e6d6 100%);
   }
   
-  /* ØªØºÙŠÙŠØ± Ø·Ø±ÙŠÙ‚Ø© Ø¹Ø±Ø¶ Ø§Ù„Ø³Ù„Ø§ÙŠØ¯Ø± Ø¹Ù„Ù‰ Ø§Ù„Ù…ÙˆØ¨Ø§ÙŠÙ„ */
+  /* تغيير طريقة عرض السلايدر على الموبايل */
   .slide {
-    position: relative !important; /* ØªØºÙŠÙŠØ± Ù…Ù† absolute Ø¥Ù„Ù‰ relative */
-    opacity: 1 !important; /* Ø¥Ø¸Ù‡Ø§Ø± Ø¬Ù…ÙŠØ¹ Ø§Ù„Ø¹Ù†Ø§ØµØ± */
-    display: none; /* Ø¥Ø®ÙØ§Ø¡ Ø¬Ù…ÙŠØ¹ Ø§Ù„Ø³Ù„Ø§ÙŠØ¯Ø§Øª Ø¥Ù„Ø§ Ø§Ù„Ù†Ø´Ø·Ø© */
+    position: relative !important; /* تغيير من absolute إلى relative */
+    opacity: 1 !important; /* إظهار جميع العناصر */
+    display: none; /* إخفاء جميع السلايدات إلا النشطة */
     height: auto;
     padding: 20px 0;
   }
   
   .slide.active {
-    display: block; /* Ø¥Ø¸Ù‡Ø§Ø± Ø§Ù„Ø³Ù„Ø§ÙŠØ¯ Ø§Ù„Ù†Ø´Ø· ÙÙ‚Ø· */
+    display: block; /* إظهار السلايد النشط فقط */
     animation: fadeIn 0.5s ease;
   }
   
@@ -3567,18 +3567,18 @@ p {
     width: 100%;
     max-width: 300px;
     margin: 0 auto 20px;
-    order: -1; /* Ø§Ù„ØµÙˆØ±Ø© Ù‚Ø¨Ù„ Ø§Ù„Ù†Øµ */
+    order: -1; /* الصورة قبل النص */
   }
   
   .slide-image img {
     width: 100%;
     height: 250px;
-    object-fit: contain; /* Ø§Ù„Ø­ÙØ§Ø¸ Ø¹Ù„Ù‰ Ù†Ø³Ø¨Ø© Ø§Ù„ØµÙˆØ±Ø© */
+    object-fit: contain; /* الحفاظ على نسبة الصورة */
     border-radius: 15px;
     box-shadow: var(--shadow);
   }
   
-  /* ØªØ­Ø³ÙŠÙ† Ø£Ø²Ø±Ø§Ø± Ø§Ù„ØªÙ†Ù‚Ù„ */
+  /* تحسين أزرار التنقل */
   .slider-btn {
     width: 40px;
     height: 40px;
@@ -3593,7 +3593,7 @@ p {
     left: 10px;
   }
   
-  /* ØªØ­Ø³ÙŠÙ† Ø§Ù„Ù†Ù‚Ø§Ø· */
+  /* تحسين النقاط */
   .slider-dots {
     position: relative;
     bottom: 0;
@@ -3606,7 +3606,7 @@ p {
 }
 
 @media (max-width: 480px) {
-  /* ØªØ­Ø³ÙŠÙ† Ù„Ù„Ø´Ø§Ø´Ø§Øª Ø§Ù„ØµØºÙŠØ±Ø© Ø¬Ø¯Ø§ */
+  /* تحسين للشاشات الصغيرة جدا */
   .hero-slider {
     min-height: 400px;
     margin-top: 120px;
@@ -3634,7 +3634,7 @@ p {
 
 /* ====== FIX SECTIONS FLOW ====== */
 
-/* ØªØ­Ø³ÙŠÙ† ØªØ¯ÙÙ‚ Ø§Ù„Ø¹Ù†Ø§ØµØ± ØªØ­Øª Ø§Ù„Ø³Ù„Ø§ÙŠØ¯Ø± */
+/* تحسين تدفق العناصر تحت السلايدر */
 .two-column-section,
 .product-highlight,
 .products-section,
@@ -3649,13 +3649,13 @@ p {
   overflow: hidden;
 }
 
-/* Ù…Ù†Ø¹ ØªØ±Ø§ÙƒØ¨ Ø§Ù„Ø¹Ù†Ø§ØµØ± */
+/* منع تراكب العناصر */
 .container {
   position: relative;
   z-index: 2;
 }
 
-/* ØªØ­Ø³ÙŠÙ† Ø§Ù„Ù€ grid Ù„Ù„Ø¹Ù†Ø§ØµØ± */
+/* تحسين الـ grid للعناصر */
 .products-grid,
 .featured-grid,
 .categories-grid {
@@ -3665,7 +3665,7 @@ p {
 
 /* ====== ENSURE ARTICLES VISIBILITY ====== */
 
-/* Ø§Ù„ØªØ£ÙƒØ¯ Ù…Ù† Ø¸Ù‡ÙˆØ± Ø¬Ù…ÙŠØ¹ Ø§Ù„Ù€ articles */
+/* التأكد من ظهور جميع الـ articles */
 .product-card,
 .featured-card,
 .category-card {
@@ -3674,13 +3674,13 @@ p {
   display: block !important;
 }
 
-/* Ø¥ØµÙ„Ø§Ø­ Ù…Ø´ÙƒÙ„Ø© Ø§Ù„ÙØ±Ø§ØºØ§Øª ÙÙŠ Ø§Ù„Ù…ÙˆØ¨Ø§ÙŠÙ„ */
+/* إصلاح مشكلة الفراغات في الموبايل */
 @media (max-width: 768px) {
   body {
     overflow-x: hidden;
   }
   
-  /* Ø¥ØµÙ„Ø§Ø­ Ø£ÙŠ Ø¹Ù†ØµØ± Ù…Ø®ÙÙŠ */
+  /* إصلاح أي عنصر مخفي */
   .product-card,
   .featured-card,
   .category-card {
@@ -3689,7 +3689,7 @@ p {
     opacity: 1 !important;
   }
   
-  /* ØªØ­Ø³ÙŠÙ† Ø§Ù„Ù€ grid Ù„Ù„Ù…ÙˆØ¨Ø§ÙŠÙ„ */
+  /* تحسين الـ grid للموبايل */
   /* .products-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 15px;
@@ -3699,7 +3699,7 @@ p {
     grid-template-columns: 1fr;
   }
   
-  /* ØªØ­Ø³ÙŠÙ† Ø§Ù„Ø£Ù‚Ø³Ø§Ù… */
+  /* تحسين الأقسام */
   .two-column-section,
   .product-highlight,
   .products-section,
@@ -3726,7 +3726,7 @@ p {
 
 /* ====== FIX SPECIFIC ISSUES ====== */
 
-/* Ø¥ØµÙ„Ø§Ø­ Ù…Ø´ÙƒÙ„Ø© Ø§Ù„ØªÙ…Ø±ÙŠØ± Ø¹Ù„Ù‰ Ø§Ù„Ù…ÙˆØ¨Ø§ÙŠÙ„ */
+/* إصلاح مشكلة التمرير على الموبايل */
 @media (max-width: 768px) {
   html {
     scroll-behavior: smooth;
@@ -3738,7 +3738,7 @@ p {
     flex-direction: column;
   }
   
-  /* Ø¥Ø²Ø§Ù„Ø© Ø£ÙŠ height Ø«Ø§Ø¨ØªØ© ØªØ³Ø¨Ø¨ Ù…Ø´Ø§ÙƒÙ„ */
+  /* إزالة أي height ثابتة تسبب مشاكل */
   .hero-slider,
   .slide,
   .slide-content {
@@ -3746,12 +3746,12 @@ p {
     height: auto;
   }
   
-  /* ØªØ­Ø³ÙŠÙ† Ø§Ù„ØªØ¨Ø§Ø¹Ø¯ Ø¨ÙŠÙ† Ø§Ù„Ø¹Ù†Ø§ØµØ± */
+  /* تحسين التباعد بين العناصر */
   .product-highlight {
     margin-top: 0;
   }
   
-  /* Ø¥ØµÙ„Ø§Ø­ ØªØ±ØªÙŠØ¨ Ø§Ù„Ø¹Ù†Ø§ØµØ± */
+  /* إصلاح ترتيب العناصر */
   .highlight-box {
     display: flex;
     flex-direction: column;
@@ -3820,7 +3820,7 @@ p {
 
 .nav-icon.admin-access-btn::after {
 
-    content: 'Ù„ÙˆØ­Ø© Ø§Ù„ØªØ­ÙƒÙ…';
+    content: 'لوحة التحكم';
 
     position: absolute;
 
@@ -4460,7 +4460,7 @@ p {
 
 
 
-/* Ø±Ø³Ø§Ù„Ø© "ØªÙ… Ø¹Ø±Ø¶ Ø§Ù„ÙƒÙ„" */
+/* رسالة "تم عرض الكل" */
 
 
 
@@ -4868,7 +4868,7 @@ p {
     min-height: 70vh;
     height: auto;
     overflow: visible;
-    margin-top: 70px; /* Ø¨Ø§Ø´ Ù…Ø§ ÙŠØ¯Ø®Ù„Ø´ ÙØ§Ù„Ù‡ÙŠØ¯Ø± */
+    margin-top: 70px; /* باش ما يدخلش فالهيدر */
   }
 
   .slide {
@@ -4905,7 +4905,7 @@ p {
 @media (max-width: 768px) {
 
   body {
-    padding-top: 70px; /* Ù†ÙØ³ Ø§Ø±ØªÙØ§Ø¹ navbar */
+    padding-top: 70px; /* نفس ارتفاع navbar */
     overflow-x: hidden;
   }
 
@@ -5097,7 +5097,7 @@ p {
     margin: 0 !important;
   }
 
-  /* Ø­Ø¨Ù‘Ø³ nth-child ÙØ§Ù„Ù…ÙˆØ¨Ø§ÙŠÙ„ */
+  /* حبّس nth-child فالموبايل */
   .products-grid.category-view .product-card {
     display: block !important;
   }
@@ -5118,19 +5118,19 @@ p {
 
 
 /* ============================================
-   MOBILE COMPLETE FIX - ÙƒÙ„ Ø´ÙŠ Ù…Ù†Ø¸Ù…
+   MOBILE COMPLETE FIX - كل شي منظم
    ============================================ */
 
 @media (max-width: 768px) {
 
-  /* 1. Ø¥ØµÙ„Ø§Ø­ Body ÙˆØ§Ù„Ø¹Ø±Ø¶ Ø§Ù„Ø¹Ø§Ù… */
+  /* 1. إصلاح Body والعرض العام */
   body {
     overflow-x: hidden;
     padding-top: 70px;
     width: 100%;
   }
 
-  /* 2. Ø¥ØµÙ„Ø§Ø­ Navbar */
+  /* 2. إصلاح Navbar */
   .navbar {
     position: fixed;
     top: 0;
@@ -5142,7 +5142,7 @@ p {
     padding-bottom: 100px;
   }
 
-  /* 3. Ø¥ØµÙ„Ø§Ø­ Hero Slider */
+  /* 3. إصلاح Hero Slider */
   .hero-slider {
     margin-top: 0 !important;
     min-height: auto;
@@ -5195,7 +5195,7 @@ p {
     margin-bottom: 20px;
   }
 
-  /* 4. Ø¥ØµÙ„Ø§Ø­ Sections */
+  /* 4. إصلاح Sections */
   section {
     padding: 40px 15px;
     width: 100%;
@@ -5207,7 +5207,7 @@ p {
     padding: 0 15px;
   }
 
-  /* 5. Ø¥ØµÙ„Ø§Ø­ Products Grid - ÙˆØ§Ø­Ø¯ ÙˆØ§Ø­Ø¯ */
+  /* 5. إصلاح Products Grid - واحد واحد */
   .products-grid {
     display: grid !important;
     grid-template-columns: 1fr !important;
@@ -5220,7 +5220,7 @@ p {
     grid-template-columns: 1fr !important;
   }
 
-  /* Ø¥Ø¸Ù‡Ø§Ø± ÙƒÙ„ Ø§Ù„Ù…Ù†ØªØ¬Ø§Øª */
+  /* إظهار كل المنتجات */
   .products-grid .product-card,
   .products-grid.category-view .product-card {
     display: block !important;
@@ -5230,7 +5230,7 @@ p {
     margin: 0 !important;
   }
 
-  /* 6. Ø¥ØµÙ„Ø§Ø­ Product Card */
+  /* 6. إصلاح Product Card */
   .product-card {
     background: white;
     border-radius: 12px;
@@ -5275,13 +5275,13 @@ p {
     font-size: 18px;
   }
 
-  /* 7. Ø¥ØµÙ„Ø§Ø­ Featured Grid */
+  /* 7. إصلاح Featured Grid */
   .featured-grid {
     grid-template-columns: 1fr !important;
     gap: 20px;
   }
 
-  /* 8. Ø¥ØµÙ„Ø§Ø­ Categories Grid */
+  /* 8. إصلاح Categories Grid */
   .categories-grid {
     grid-template-columns: 1fr !important;
     gap: 20px;
@@ -5291,7 +5291,7 @@ p {
     height: 300px;
   }
 
-  /* 9. Ø¥ØµÙ„Ø§Ø­ Two Column Sections */
+  /* 9. إصلاح Two Column Sections */
   .two-column-inner,
   .highlight-box,
   .review-inner,
@@ -5300,7 +5300,7 @@ p {
     gap: 30px;
   }
 
-  /* 10. Ø¥ØµÙ„Ø§Ø­ Slider Buttons */
+  /* 10. إصلاح Slider Buttons */
   .slider-btn {
     width: 40px;
     height: 40px;
@@ -5320,13 +5320,13 @@ p {
     margin-top: 20px;
   }
 
-  /* 11. Ø¥ØµÙ„Ø§Ø­ Buttons */
+  /* 11. إصلاح Buttons */
   .btn {
     padding: 10px 20px;
     font-size: 14px;
   }
 
-  /* 12. Ø¥ØµÙ„Ø§Ø­ Section Titles */
+  /* 12. إصلاح Section Titles */
   .section-title,
   .center-title {
     font-size: 24px;
@@ -5338,7 +5338,7 @@ p {
     margin-bottom: 30px;
   }
 
-  /* 13. Ø¥ØµÙ„Ø§Ø­ Category Headers */
+  /* 13. إصلاح Category Headers */
   .category-header {
     flex-direction: column;
     align-items: flex-start;
@@ -5353,7 +5353,7 @@ p {
     align-self: flex-end;
   }
 
-  /* 14. Ø¥ØµÙ„Ø§Ø­ Footer */
+  /* 14. إصلاح Footer */
   .footer-content {
     grid-template-columns: 1fr !important;
     gap: 30px;
@@ -5364,7 +5364,7 @@ p {
     grid-template-columns: 1fr !important;
   }
 
-  /* 15. Ø¥ØµÙ„Ø§Ø­ Nav Links */
+  /* 15. إصلاح Nav Links */
   .nav-links {
     display: none;
     position: absolute;
@@ -5386,14 +5386,14 @@ p {
     display: block;
   }
 
-  /* 16. Ù…Ù†Ø¹ Ø£ÙŠ ØªØ¯Ø§Ø®Ù„ */
+  /* 16. منع أي تداخل */
   * {
     max-width: 100%;
   }
 }
 
 /* ============================================
-   EXTRA SMALL SCREENS - Ø£ØµØºØ± Ø´Ø§Ø´Ø§Øª
+   EXTRA SMALL SCREENS - أصغر شاشات
    ============================================ */
 
 @media (max-width: 480px) {
@@ -5422,19 +5422,19 @@ p {
   }
 }
 /* ============================================
-   MOBILE COMPLETE FIX - ÙƒÙ„ Ø´ÙŠ Ù…Ù†Ø¸Ù…
+   MOBILE COMPLETE FIX - كل شي منظم
    ============================================ */
 
 @media (max-width: 768px) {
 
-  /* 1. Ø¥ØµÙ„Ø§Ø­ Body ÙˆØ§Ù„Ø¹Ø±Ø¶ Ø§Ù„Ø¹Ø§Ù… */
+  /* 1. إصلاح Body والعرض العام */
   body {
     overflow-x: hidden;
     padding-top: 70px;
     width: 100%;
   }
 
-  /* 2. Ø¥ØµÙ„Ø§Ø­ Navbar */
+  /* 2. إصلاح Navbar */
   .navbar {
     position: fixed;
     top: 0;
@@ -5446,7 +5446,7 @@ p {
     padding-bottom: 100px;
   }
 
-  /* 3. Ø¥ØµÙ„Ø§Ø­ Hero Slider */
+  /* 3. إصلاح Hero Slider */
   .hero-slider {
     margin-top: 0 !important;
     min-height: auto;
@@ -5499,7 +5499,7 @@ p {
     margin-bottom: 20px;
   }
 
-  /* 4. Ø¥ØµÙ„Ø§Ø­ Sections */
+  /* 4. إصلاح Sections */
   section {
     padding: 40px 15px;
     width: 100%;
@@ -5511,7 +5511,7 @@ p {
     padding: 0 15px;
   }
 
-  /* 5. Ø¥ØµÙ„Ø§Ø­ Products Grid - ÙˆØ§Ø­Ø¯ ÙˆØ§Ø­Ø¯ */
+  /* 5. إصلاح Products Grid - واحد واحد */
   .products-grid {
     display: grid !important;
     grid-template-columns: 1fr !important;
@@ -5524,7 +5524,7 @@ p {
     grid-template-columns: 1fr !important;
   }
 
-  /* Ø¥Ø¸Ù‡Ø§Ø± ÙƒÙ„ Ø§Ù„Ù…Ù†ØªØ¬Ø§Øª */
+  /* إظهار كل المنتجات */
   .products-grid .product-card,
   .products-grid.category-view .product-card {
     display: block !important;
@@ -5534,7 +5534,7 @@ p {
     margin: 0 !important;
   }
 
-  /* 6. Ø¥ØµÙ„Ø§Ø­ Product Card */
+  /* 6. إصلاح Product Card */
   .product-card {
     background: white;
     border-radius: 12px;
@@ -5579,13 +5579,13 @@ p {
     font-size: 18px;
   }
 
-  /* 7. Ø¥ØµÙ„Ø§Ø­ Featured Grid */
+  /* 7. إصلاح Featured Grid */
   .featured-grid {
     grid-template-columns: 1fr !important;
     gap: 20px;
   }
 
-  /* 8. Ø¥ØµÙ„Ø§Ø­ Categories Grid */
+  /* 8. إصلاح Categories Grid */
   .categories-grid {
     grid-template-columns: 1fr !important;
     gap: 20px;
@@ -5595,7 +5595,7 @@ p {
     height: 300px;
   }
 
-  /* 9. Ø¥ØµÙ„Ø§Ø­ Two Column Sections */
+  /* 9. إصلاح Two Column Sections */
   .two-column-inner,
   .highlight-box,
   .review-inner,
@@ -5604,7 +5604,7 @@ p {
     gap: 30px;
   }
 
-  /* 10. Ø¥ØµÙ„Ø§Ø­ Slider Buttons */
+  /* 10. إصلاح Slider Buttons */
   .slider-btn {
     width: 40px;
     height: 40px;
@@ -5624,13 +5624,13 @@ p {
     margin-top: 20px;
   }
 
-  /* 11. Ø¥ØµÙ„Ø§Ø­ Buttons */
+  /* 11. إصلاح Buttons */
   .btn {
     padding: 10px 20px;
     font-size: 14px;
   }
 
-  /* 12. Ø¥ØµÙ„Ø§Ø­ Section Titles */
+  /* 12. إصلاح Section Titles */
   .section-title,
   .center-title {
     font-size: 24px;
@@ -5642,7 +5642,7 @@ p {
     margin-bottom: 30px;
   }
 
-  /* 13. Ø¥ØµÙ„Ø§Ø­ Category Headers */
+  /* 13. إصلاح Category Headers */
   .category-header {
     flex-direction: column;
     align-items: flex-start;
@@ -5657,7 +5657,7 @@ p {
     align-self: flex-end;
   }
 
-  /* 14. Ø¥ØµÙ„Ø§Ø­ Footer */
+  /* 14. إصلاح Footer */
   .footer-content {
     grid-template-columns: 1fr !important;
     gap: 30px;
@@ -5668,7 +5668,7 @@ p {
     grid-template-columns: 1fr !important;
   }
 
-  /* 15. Ø¥ØµÙ„Ø§Ø­ Nav Links */
+  /* 15. إصلاح Nav Links */
   .nav-links {
     display: none;
     position: absolute;
@@ -5690,14 +5690,14 @@ p {
     display: block;
   }
 
-  /* 16. Ù…Ù†Ø¹ Ø£ÙŠ ØªØ¯Ø§Ø®Ù„ */
+  /* 16. منع أي تداخل */
   * {
     max-width: 100%;
   }
 }
 
 /* ============================================
-   EXTRA SMALL SCREENS - Ø£ØµØºØ± Ø´Ø§Ø´Ø§Øª
+   EXTRA SMALL SCREENS - أصغر شاشات
    ============================================ */
 
 @media (max-width: 480px) {
@@ -5734,7 +5734,7 @@ p {
    ================================ */
 @media (max-width: 768px) {
 
-  /* Ø®Ù„ÙŠ cart modal Ù…Ù†Ø¸Ù… */
+  /* خلي cart modal منظم */
   .cart-modal {
     align-items: flex-end;
   }
@@ -5746,12 +5746,12 @@ p {
     overflow-y: auto;
   }
 
-  /* Ù…ØªØ®Ù„ÙŠØ´ overflow ÙŠÙ‚Ø·Ø¹ Ø§Ù„Ù…Ø­ØªÙˆÙ‰ */
+  /* متخليش overflow يقطع المحتوى */
   .cart-body {
     overflow: visible !important;
   }
 
-  /* Ø¥Ø¬Ø¨Ø§Ø± Ø§Ù„Ù…Ø¬Ù…ÙˆØ¹ ÙŠØ¨Ø§Ù† */
+  /* إجبار المجموع يبان */
   .cart-summary {
     display: block !important;
     position: sticky;
@@ -5775,7 +5775,7 @@ p {
     color: var(--primary-color);
   }
 
-  /* Ø²Ø± Ø¥ØªÙ…Ø§Ù… Ø§Ù„Ø·Ù„Ø¨ */
+  /* زر إتمام الطلب */
   .checkout-btn {
     width: 100%;
     font-size: 15px;
@@ -5792,19 +5792,19 @@ p {
    ================================ */
 @media (max-width: 768px) {
 
-  /* Ù†Ø­Ø¨Ø³Ùˆ Ø£ÙŠ overflow ÙƒÙŠÙ‚Ø·Ø¹ */
+  /* نحبسو أي overflow كيقطع */
   .cart-modal,
   .cart-container,
   .cart-body {
     overflow: visible !important;
   }
 
-  /* Ø®Ù„ÙŠ cart ÙŠØ§Ø®Ø¯ Ù…Ø³Ø§Ø­Ø© */
+  /* خلي cart ياخد مساحة */
   .cart-container {
     padding-bottom: 120px !important;
   }
 
-  /* Ø§Ù„Ù…Ø¬Ù…ÙˆØ¹ FIXED Ù„ØªØ­Øª Ø§Ù„Ø´Ø§Ø´Ø© */
+  /* المجموع FIXED لتحت الشاشة */
   .cart-summary {
     position: fixed !important;
     bottom: 0;
@@ -5873,22 +5873,22 @@ p {
 
 
 .cart-modal {
-    position: fixed; /* Ø¨Ø§Ø´ ÙŠØ¨Ù‚Ù‰ Ø«Ø§Ø¨Øª ÙÙˆÙ‚ Ø§Ù„Ø´Ø§Ø´Ø© */
-    top: 0;          /* ÙŠØ¨Ø¯Ø§ Ù…Ù† Ø£Ø¹Ù„Ù‰ Ø§Ù„Ø´Ø§Ø´Ø© */
+    position: fixed; /* باش يبقى ثابت فوق الشاشة */
+    top: 0;          /* يبدا من أعلى الشاشة */
     left: 0;
     right: 0;
-    bottom: 0;       /* ÙŠØºØ·ÙŠ ÙƒØ§Ù…Ù„ Ø§Ù„Ø´Ø§Ø´Ø© */
-    z-index: 10000;  /* Ø£ÙƒØ¨Ø± Ù…Ù† Ø£ÙŠ navbar */
-    background: #fff; /* Ø®Ù„ÙÙŠØ© Ø¨ÙŠØ¶Ø§Ø¡ */
-    overflow-y: auto; /* Ø¨Ø§Ø´ ØªÙ‚Ø¯Ø± ØªØ¯ÙˆØ± ÙØ§Ù„Ù€ modal */
+    bottom: 0;       /* يغطي كامل الشاشة */
+    z-index: 10000;  /* أكبر من أي navbar */
+    background: #fff; /* خلفية بيضاء */
+    overflow-y: auto; /* باش تقدر تدور فالـ modal */
 }
 
 
 /* ================================
-   ðŸ›’ CART MODAL - MOBILE COMPLETE FIX
+   🛒 CART MODAL - MOBILE COMPLETE FIX
    ================================ */
 
-/* Ù„Ù„Ù…ÙˆØ¨Ø§ÙŠÙ„: Cart ÙŠØ·Ù„Ø¹ Ù…Ù† ØªØ­Øª */
+/* للموبايل: Cart يطلع من تحت */
 @media (max-width: 768px) {
   .cart-modal {
     position: fixed !important;
@@ -5899,10 +5899,10 @@ p {
     width: 100% !important;
     height: 100vh !important;
     background: rgba(0, 0, 0, 0.5) !important;
-    z-index: 99999 !important; /* ÙÙˆÙ‚ ÙƒÙ„ Ø´ÙŠ */
+    z-index: 99999 !important; /* فوق كل شي */
     display: none;
     justify-content: center;
-    align-items: flex-end; /* Cart ÙŠØ·Ù„Ø¹ Ù…Ù† ØªØ­Øª */
+    align-items: flex-end; /* Cart يطلع من تحت */
   }
 
   .cart-modal.active {
@@ -5955,7 +5955,7 @@ p {
     flex: 1;
     overflow-y: auto;
     padding: 15px;
-    padding-bottom: 120px; /* Ù…ÙƒØ§Ù† Ù„Ù„Ù€ summary */
+    padding-bottom: 120px; /* مكان للـ summary */
   }
 
   .cart-summary {
@@ -5992,7 +5992,7 @@ p {
     font-weight: bold;
   }
 
-  /* ØªØ­Ø³ÙŠÙ† Cart Items */
+  /* تحسين Cart Items */
   .cart-item {
     margin-bottom: 12px;
     padding: 12px;
@@ -6013,12 +6013,12 @@ p {
 }
 
 /* ============================================
-   ðŸŽ¨ FINAL MOBILE POLISH - Ø¢Ø®Ø± ØªØ­Ø³ÙŠÙ†Ø§Øª
+   🎨 FINAL MOBILE POLISH - آخر تحسينات
    ============================================ */
 
 @media (max-width: 768px) {
 
-  /* 1. ØªØ­Ø³ÙŠÙ† Cart Icon Badge */
+  /* 1. تحسين Cart Icon Badge */
   .cart-count {
     animation: pulse 2s infinite;
   }
@@ -6028,7 +6028,7 @@ p {
     50% { transform: scale(1.1); }
   }
 
-  /* 2. ØªØ­Ø³ÙŠÙ† Cart Items Animation */
+  /* 2. تحسين Cart Items Animation */
   .cart-item {
     animation: slideInItem 0.3s ease;
   }
@@ -6044,7 +6044,7 @@ p {
     }
   }
 
-  /* 3. ØªØ­Ø³ÙŠÙ† Empty Cart */
+  /* 3. تحسين Empty Cart */
   .empty-cart {
     animation: fadeIn 0.5s ease;
   }
@@ -6054,7 +6054,7 @@ p {
     to { opacity: 1; }
   }
 
-  /* 4. ØªØ­Ø³ÙŠÙ† Buttons Ripple Effect */
+  /* 4. تحسين Buttons Ripple Effect */
   .btn-primary {
     position: relative;
     overflow: hidden;
@@ -6078,7 +6078,7 @@ p {
     height: 300px;
   }
 
-  /* 5. ØªØ­Ø³ÙŠÙ† Product Cards */
+  /* 5. تحسين Product Cards */
   .product-card {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
@@ -6087,7 +6087,7 @@ p {
     transform: scale(0.98);
   }
 
-  /* 6. Loading Skeleton Ù„Ù„ØµÙˆØ± */
+  /* 6. Loading Skeleton للصور */
   .product-image {
     position: relative;
     background: linear-gradient(
@@ -6126,7 +6126,7 @@ p {
     }
   }
 
-  /* 8. Better scrollbar Ù„Ù„Ù€ Cart Items */
+  /* 8. Better scrollbar للـ Cart Items */
   .cart-items::-webkit-scrollbar {
     width: 4px;
   }
@@ -6140,7 +6140,7 @@ p {
     border-radius: 10px;
   }
 
-  /* 9. ØªØ­Ø³ÙŠÙ† Ø§Ù„Ù€ Notification */
+  /* 9. تحسين الـ Notification */
   .notification {
     animation: notificationSlide 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   }
@@ -6169,7 +6169,7 @@ p {
     }
   }
 
-  /* 11. ØªØ­Ø³ÙŠÙ† Ø§Ù„Ù€ Modal Overlay */
+  /* 11. تحسين الـ Modal Overlay */
   .cart-modal.active::before,
   .checkout-modal.active::before {
     content: '';
@@ -6194,7 +6194,7 @@ p {
     outline-offset: 2px;
   }
 
-  /* 13. Skeleton Ù„Ù„Ù€ Products Loading */
+  /* 13. Skeleton للـ Products Loading */
   .product-skeleton {
     background: linear-gradient(
       90deg,
@@ -6216,7 +6216,7 @@ p {
     transform: scale(0.9);
   }
 
-  /* 15. Cart Badge Bounce Ø¹Ù†Ø¯ Ø§Ù„Ø¥Ø¶Ø§ÙØ© */
+  /* 15. Cart Badge Bounce عند الإضافة */
   .cart-count.bounce {
     animation: bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   }
@@ -6229,10 +6229,10 @@ p {
 }
 
 /* ============================================
-   ðŸŒŸ Extra Polish - ØªÙ„Ù…ÙŠØ¹Ø§Øª Ø¥Ø¶Ø§ÙÙŠØ©
+   🌟 Extra Polish - تلميعات إضافية
    ============================================ */
 
-/* Glass effect Ù„Ù„Ù€ Navbar */
+/* Glass effect للـ Navbar */
 @supports (backdrop-filter: blur(10px)) {
   .navbar {
     background: rgba(255, 255, 255, 0.9);
@@ -6299,7 +6299,7 @@ img {
   
   .form-group input,
   .form-group textarea {
-    font-size: 16px !important; /* Ù…Ù†Ø¹ zoom */
+    font-size: 16px !important; /* منع zoom */
     pointer-events: auto !important;
     touch-action: manipulation !important;
   }
