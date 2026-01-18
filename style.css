@@ -5870,3 +5870,15 @@ p {
     margin-top: 10px;
   }
 }
+
+
+.cart-modal {
+    position: fixed; /* باش يبقى ثابت فوق الشاشة */
+    top: 0;          /* يبدا من أعلى الشاشة */
+    left: 0;
+    right: 0;
+    bottom: 0;       /* يغطي كامل الشاشة */
+    z-index: 10000;  /* أكبر من أي navbar */
+    background: #fff; /* خلفية بيضاء */
+    overflow-y: auto; /* باش تقدر تدور فالـ modal */
+}
