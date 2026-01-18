@@ -6262,3 +6262,52 @@ img {
   background: var(--secondary-color);
   color: white;
 }
+
+@media (max-width: 768px) {
+  .cart-modal {
+    z-index: 99999 !important;
+    align-items: flex-end;
+  }
+  
+  .cart-container {
+    height: 90vh !important;
+    border-radius: 20px 20px 0 0;
+    animation: slideUpCart 0.3s ease;
+  }
+  
+  .cart-items {
+    overflow-y: scroll !important;
+    -webkit-overflow-scrolling: touch !important;
+    max-height: calc(90vh - 200px);
+  }
+  
+  .cart-summary {
+    position: absolute !important;
+    bottom: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .checkout-modal {
+    z-index: 100000;
+  }
+  
+  .checkout-form {
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+  
+  .form-group input,
+  .form-group textarea {
+    font-size: 16px !important; /* منع zoom */
+    pointer-events: auto !important;
+    touch-action: manipulation !important;
+  }
+}
+
+body.cart-open,
+body.checkout-open {
+  overflow: hidden !important;
+  position: fixed;
+  width: 100%;
+}
