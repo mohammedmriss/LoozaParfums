@@ -5196,3 +5196,294 @@ window.addEventListener('load', function() {
 
 // تشغيل عند تغيير حجم النافذة
 window.addEventListener('resize', forceShowCheckoutBtn);
+
+// ============================================
+// 🎯 MOBILE ENHANCEMENTS - تحسينات الموبايل
+// ============================================
+
+// 1. Better Cart Badge Animation
+function animateCartBadge() {
+    const badge = document.getElementById('cartCount');
+    if (badge && badge.style.display !== 'none') {
+        badge.classList.add('bounce');
+        setTimeout(() => badge.classList.remove('bounce'), 600);
+    }
+}
+
+// 2. Vibration Feedback (للموبايل)
+function vibrate(duration = 50) {
+    if ('vibrate' in navigator) {
+        navigator.vibrate(duration);
+    }
+}
+
+// 3. Haptic Feedback عند إضافة منتج
+document.addEventListener('click', (e) => {
+    const addBtn = e.target.closest('.add-to-cart');
+    if (addBtn) {
+        vibrate(50);
+        animateCartBadge();
+    }
+});
+
+// 4. Swipe to Close للـ Cart Modal (الموبايل)
+if (window.innerWidth <= 768) {
+    let touchStartY = 0;
+    let touchEndY = 0;
+    
+    const cartContainer = document.querySelector('.cart-container');
+    
+    if (cartContainer) {
+        cartContainer.addEventListener('touchstart', (e) => {
+            touchStartY = e.changedTouches[0].screenY;
+        });
+        
+        cartContainer.addEventListener('touchend', (e) => {
+            touchEndY = e.changedTouches[0].screenY;
+            handleSwipe();
+        });
+        
+        function handleSwipe() {
+            const swipeDistance = touchEndY - touchStartY;
+            // إذا سحب لتحت أكثر من 100px، سد الـ Cart
+            if (swipeDistance > 100) {
+                document.getElementById('cartModal').classList.remove('active');
+                document.body.style.overflow = '';
+                vibrate(30);
+            }
+        }
+    }
+}
+
+// 5. Auto-hide Navbar عند Scroll (الموبايل)
+if (window.innerWidth <= 768) {
+    let lastScroll = 0;
+    const navbar = document.querySelector('.navbar');
+    
+    window.addEventListener('scroll', () => {
+        const currentScroll = window.pageYOffset;
+        
+        if (currentScroll > lastScroll && currentScroll > 100) {
+            // Scrolling down - hide navbar
+            navbar.style.transform = 'translateY(-100%)';
+        } else {
+            // Scrolling up - show navbar
+            navbar.style.transform = 'translateY(0)';
+        }
+        
+        lastScroll = currentScroll;
+    });
+}
+
+// 6. Double Tap to Add (للموبايل)
+let lastTap = 0;
+document.addEventListener('click', (e) => {
+    const productCard = e.target.closest('.product-card');
+    if (productCard && window.innerWidth <= 768) {
+        const currentTime = new Date().getTime();
+        const tapLength = currentTime - lastTap;
+        
+        if (tapLength < 300 && tapLength > 0) {
+            // Double tap detected
+            const productId = parseInt(productCard.dataset.productId);
+            const product = products.find(p => p.id === productId);
+            if (product && window.app) {
+                window.app.cart.addItem(product);
+                vibrate([50, 30, 50]); // pattern vibration
+            }
+        }
+        
+        lastTap = currentTime;
+    }
+});
+
+// 7. Pull to Refresh للمنتجات
+if (window.innerWidth <= 768) {
+    let pStart = { x: 0, y: 0 };
+    let pCurrent = { x: 0, y: 0 };
+    
+    document.addEventListener('touchstart', (e) => {
+        pStart.x = e.touches[0].clientX;
+        pStart.y = e.touches[0].clientY;
+    });
+    
+    document.addEventListener('touchmove', (e) => {
+        if (window.scrollY === 0) {
+            pCurrent.x = e.touches[0].clientX;
+            pCurrent.y = e.touches[0].clientY;
+        }
+    });
+    
+    document.addEventListener('touchend', () => {
+        if (window.scrollY === 0 && pCurrent.y - pStart.y > 100) {
+            // Refresh products
+            if (window.app) {
+                showNotification('🔄 جاري تحديث المنتجات...', 'info');
+                setTimeout(() => {
+                    window.app.loadProducts();
+                    window.app.renderMensProducts();
+                    window.app.renderWomensProducts();
+                    window.app.renderFeaturedProducts();
+                    showNotification('✅ تم التحديث بنجاح', 'success');
+                    vibrate(50);
+                }, 500);
+            }
+        }
+    });
+}
+
+// 8. Smart Loading للصور
+document.addEventListener('DOMContentLoaded', () => {
+    const images = document.querySelectorAll('img[data-src]');
+    
+    const imageObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                img.src = img.dataset.src;
+                img.removeAttribute('data-src');
+                imageObserver.unobserve(img);
+            }
+        });
+    });
+    
+    images.forEach(img => imageObserver.observe(img));
+});
+
+// 9. Connection Status Indicator
+window.addEventListener('online', () => {
+    showNotification('✅ عاد الاتصال بالإنترنت', 'success');
+});
+
+window.addEventListener('offline', () => {
+    showNotification('⚠️ انقطع الاتصال بالإنترنت', 'error');
+});
+
+// 10. Auto-save Cart للـ localStorage بشكل ذكي
+let cartSaveTimeout;
+function autoSaveCart() {
+    clearTimeout(cartSaveTimeout);
+    cartSaveTimeout = setTimeout(() => {
+        if (window.app && window.app.cart) {
+            window.app.cart.saveCart();
+            console.log('💾 Cart saved automatically');
+        }
+    }, 1000);
+}
+
+// استدعاء auto-save عند أي تغيير
+document.addEventListener('click', (e) => {
+    if (e.target.closest('.quantity-btn') || e.target.closest('.remove-item')) {
+        autoSaveCart();
+    }
+});
+
+// 11. Prevent accidental form submission
+document.querySelectorAll('form').forEach(form => {
+    form.addEventListener('submit', (e) => {
+        const submitBtn = form.querySelector('button[type="submit"]');
+        if (submitBtn && submitBtn.disabled) {
+            e.preventDefault();
+            showNotification('⏳ يرجى الانتظار...', 'info');
+        }
+    });
+});
+
+// 12. Smart Scroll to Top
+function scrollToTop() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+}
+
+// زر Scroll to Top (يظهر فاش تسكرولي)
+if (window.innerWidth <= 768) {
+    const scrollBtn = document.createElement('button');
+    scrollBtn.innerHTML = '<i class="fas fa-arrow-up"></i>';
+    scrollBtn.className = 'scroll-to-top';
+    scrollBtn.style.cssText = `
+        position: fixed;
+        bottom: 80px;
+        left: 20px;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: var(--primary-color);
+        color: white;
+        border: none;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        z-index: 9997;
+        cursor: pointer;
+    `;
+    
+    document.body.appendChild(scrollBtn);
+    
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 300) {
+            scrollBtn.style.opacity = '1';
+            scrollBtn.style.visibility = 'visible';
+        } else {
+            scrollBtn.style.opacity = '0';
+            scrollBtn.style.visibility = 'hidden';
+        }
+    });
+    
+    scrollBtn.addEventListener('click', () => {
+        scrollToTop();
+        vibrate(30);
+    });
+}
+
+// 13. Enhanced Add to Cart Feedback
+document.addEventListener('click', (e) => {
+    const addBtn = e.target.closest('.add-to-cart');
+    if (addBtn && !addBtn.classList.contains('adding')) {
+        addBtn.classList.add('adding');
+        
+        // Create flying icon animation
+        const icon = document.createElement('i');
+        icon.className = 'fas fa-shopping-cart';
+        icon.style.cssText = `
+            position: fixed;
+            left: ${e.clientX}px;
+            top: ${e.clientY}px;
+            font-size: 20px;
+            color: var(--primary-color);
+            pointer-events: none;
+            z-index: 100000;
+            animation: flyToCart 0.8s ease-out forwards;
+        `;
+        
+        document.body.appendChild(icon);
+        
+        setTimeout(() => {
+            icon.remove();
+            addBtn.classList.remove('adding');
+        }, 800);
+    }
+});
+
+// CSS للـ flying animation
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes flyToCart {
+        0% {
+            transform: translate(0, 0) scale(1);
+            opacity: 1;
+        }
+        100% {
+            transform: translate(
+                calc(100vw - ${window.innerWidth - 50}px),
+                calc(-100vh + 100px)
+            ) scale(0.3);
+            opacity: 0;
+        }
+    }
+`;
+document.head.appendChild(style);
+
+console.log('✨ Mobile enhancements loaded!');
