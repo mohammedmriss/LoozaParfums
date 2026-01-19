@@ -341,14 +341,13 @@ p { margin-bottom: 1rem; color: var(--gray); }
     opacity: 1;
 }
 
-
 .slide-content {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 50px;
     align-items: center;
     height: 100%;
-    
+    margin-top: 80px;
 }
 
 .slide-text {
