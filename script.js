@@ -34,19 +34,18 @@ if (!window.CustomEvent) {
 
 // Default products
 const DEFAULT_PRODUCTS = [
-    { id: 1, name: "Stronger With You 50ml", description: "🔥 Notes chaudes et envoûtantes", price: 50, oldPrice: 590, image: "img/par (5).jpg", category: "mens", featured: true, badge: "الأكثر مبيعاً" },
-    { id: 2, name: "Joy by Dior 50ml", description: "L'essence du bonheur en flacon", price: 50, image: "img/par (1).jpg", category: "womens", featured: true, badge: "جديد" },
-    { id: 3, name: "Good Girl 30ml", description: "Tellement bon d'être audacieuse…", price: 25, oldPrice: 495, image: "img/par (2).jpg", category: "womens", featured: false, badge: "خصم 15%" },
-    { id: 4, name: "Givenchy 50ml", description: "Une fragrance orientale boisée", price: 50, image: "img/par (3).jpg", category: "mens", featured: false, badge: "" },
-    { id: 5, name: "Le Male – 50ml", description: "Un parfum iconique", price: 50, image: "img/par (4).jpg", category: "mens", featured: false, badge: "" },
-    { id: 6, name: "بينك سبورت", description: "عطر رياضي وردي برائحة الفواكه والزهور", price: 320, image: "img/ar5.png", category: "womens", featured: false, badge: "" },
-    { id: 7, name: "Erba Pura 50ml", description: "Erba Pura ✨🌿50ml", price: 50, image: "img/par (1).heic", category: "mens", featured: false, badge: "" },
-    { id: 8, name: "فيرال روز", description: "عطر نسائي رومانسي برائحة الورد والفانيليا", price: 520, oldPrice: 650, image: "img/par (1).png", category: "womens", featured: true, badge: "خصم 20%" },
-    { id: 9, name: "عطر إضافي 1", description: "عطر رجالي مميز", price: 45, image: "img/default.jpg", category: "mens", featured: false, badge: "" },
-    { id: 10, name: "عطر إضافي 2", description: "عطر نسائي مميز", price: 55, image: "img/default.jpg", category: "womens", featured: false, badge: "" },
-    { id: 11, name: "عطر إضافي 3", description: "عطر رجالي فاخر", price: 65, image: "img/default.jpg", category: "mens", featured: false, badge: "" },
-    { id: 12, name: "عطر إضافي 4", description: "عطر نسائي فاخر", price: 75, image: "img/default.jpg", category: "womens", featured: false, badge: "" }
+  { id: 1, name: "Stronger With You 50ml", description: "🔥 Notes chaudes et envoûtantes", price: 50, oldPrice: 50, image: "img/par (5).jpg", category: "mens", featured: true, badge: "الجديد" },
+  { id: 2, name: "Joy by Dior 50ml", description: "L'essence du bonheur en flacon", price: 50, oldPrice: 50, image: "img/par (1).jpg", category: "womens", featured: true, badge: "الجديد" },
+  { id: 3, name: "Good Girl 30ml", description: "Tellement bon d'être audacieuse…", price: 25, oldPrice: 50, image: "img/par (2).jpg", category: "womens", featured: false, badge: "الجديد" },
+  { id: 4, name: "Givenchy 50ml", description: "Une fragrance orientale boisée", price: 50, oldPrice: 50, image: "img/par (3).jpg", category: "mens", featured: false, badge: "الجديد" },
+  { id: 5, name: "Le Male – 50ml", description: "Un parfum iconique", price: 50, oldPrice: 50, image: "img/par (4).jpg", category: "mens", featured: false, badge: "الجديد" },
+
+  // ✅ البرودويات الجديدة الرجال 30ml
+  { id: 6, name: "DOLCE & GABBANA 30ml", description: "💎 عطرة فاخرة ورجولية، توليفة كلاسيكية دافئة وغنية", price: 30, oldPrice: 50, image: "img/par (6).png", category: "mens", featured: true, badge: "الجديد" },
+  { id: 7, name: "Stronger With You 30ml", description: "🔥 مزيج جذاب من التوابل والروائح الخشبية، مثالي للرجال", price: 30, oldPrice: 50, image: "img/par (7).png", category: "mens", featured: true, badge: "الجديد" },
+  { id: 8, name: "3oud Moud 30ml", description: "🌿 عبير العود العربي الأصيل، قوي وفاخر لكل مناسبة", price: 30, oldPrice: 50, image: "img/par (8).png", category: "mens", featured: false, badge: "الجديد" }
 ];
+
 
 // Product Manager
 const ProductManager = {
