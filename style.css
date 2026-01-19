@@ -2190,3 +2190,6 @@ p { margin-bottom: 1rem; color: var(--gray); }
         gap: 20px;
     }
 }
+.slide-content {
+    margin-top: 80px;
+}
