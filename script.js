@@ -1,5489 +1,1013 @@
 // ==============================================
-
-// REAL-TIME SYNC SYSTEM
-
+// ERROR HANDLING & POLYFILLS
 // ==============================================
 
-
-
-// دالة للتحقق من التحديثات الجديدة
-
-function checkForUpdates() {
-
-    const lastUpdate = localStorage.getItem('lastCheckedUpdate') || 0;
-
-    const currentUpdate = localStorage.getItem('productsUpdated') || 0;
-
-    
-
-    if (currentUpdate > lastUpdate) {
-
-        localStorage.setItem('lastCheckedUpdate', Date.now().toString());
-
-        
-
-        // إعادة تحميل المنتجات
-
-        window.app.loadProducts();
-
-        window.app.renderMensProducts();
-
-        window.app.renderWomensProducts();
-
-        window.app.renderFeaturedProducts();
-
-        
-
-        showNotification('🔄 تم تحديث المنتجات', 'success');
-
+// Handle console errors gracefully
+window.addEventListener('error', function(e) {
+    // Ignore font loading errors
+    if (e.message.includes('font') || e.message.includes('woff2')) {
+        return;
     }
+    
+    // Ignore CDN script errors
+    if (e.message.includes('cdn-cgi') || e.message.includes('challenge-platform')) {
+        return;
+    }
+    
+    // Log other errors
+    console.warn('Non-critical error:', e.message);
+});
 
+// Polyfill for older browsers
+if (!window.CustomEvent) {
+    window.CustomEvent = function(event, params) {
+        params = params || { bubbles: false, cancelable: false, detail: null };
+        var evt = document.createEvent('CustomEvent');
+        evt.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
+        return evt;
+    };
 }
 
-
-
-// استمع لتحديثات من نافذة أخرى
-
-window.addEventListener('storage', function(e) {
-
-    if (e.key === 'productsUpdated' || e.key === 'adminProducts') {
-
-        console.log('🔄 تم اكتشاف تحديث للمنتجات');
-
-        checkForUpdates();
-
-    }
-
-});
-
-
-
-// استمع لـ custom event من admin panel
-
-window.addEventListener('productsUpdated', function(e) {
-
-    console.log('🔄 تم استقبال تحديث مباشر للمنتجات');
-
-    if (window.app) {
-
-        window.app.loadProducts();
-
-        window.app.renderMensProducts();
-
-        window.app.renderWomensProducts();
-
-
-        window.app.renderFeaturedProducts();
-
-        showNotification('✅ تم تحديث المنتجات بنجاح', 'success');
-
-    }
-
-});
-
-
-
-// تحقق من التحديثات كل 5 ثواني
-
-setInterval(checkForUpdates, 5000);
-
-
-
-// تحقق فور تحميل الصفحة
-
-document.addEventListener('DOMContentLoaded', function() {
-
-    setTimeout(checkForUpdates, 1000);
-
-});
-
+// ==============================================
+// STATE & UTILITIES
 // ==============================================
 
-
-
-// GLOBAL NOTIFICATION SYSTEM
-
-
-
-// ==============================================
-
-
-
-
-
-
-
-function showNotification(message, type = 'success') {
-
-
-
-    // Remove existing notification
-
-
-
-    const existing = document.querySelector('.notification');
-
-
-
-    if (existing) existing.remove();
-
-
-
-    
-
-
-
-    // Create new notification
-
-
-
-    const notification = document.createElement('div');
-
-
-
-    notification.className = `notification ${type}`;
-
-
-
-    notification.innerHTML = `
-
-
-
-        <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
-
-
-
-        <span>${message}</span>
-
-
-
-    `;
-
-
-
-    
-
-
-
-    document.body.appendChild(notification);
-
-
-
-    
-
-
-
-    // Remove after 3 seconds
-
-
-
-    setTimeout(() => {
-
-
-
-        notification.style.animation = 'slideOutRight 0.3s ease';
-
-
-
-        setTimeout(() => notification.remove(), 300);
-
-
-
-    }, 3000);
-
-
-
-}
-
-
-
-
-
-
-
-// ==============================================
-
-
-
-// PRODUCTS DATABASE
-
-
-
-// ==============================================
-
-
-
-// ==============================================
-
-// PRODUCTS DATABASE WITH ADMIN SYNC
-
-// ==============================================
-
-
-
-// Default products (backup)
-
-const defaultProducts = [
-
-    {
-
-        id: 1,
-
-        name: "Stronger With You 50ml",
-
-        description: "🔥 Notes chaudes et envoûtantes",
-
-        price: 50,
-
-        oldPrice: 590,
-
-        image: "img/par (5).jpg",
-
-        category: "mens",
-
-        featured: true,
-
-        badge: "الأكثر مبيعاً"
-
-    },
-
-    {
-
-        id: 2,
-
-        name: " Joy by Dior 50ml",
-
-        description: "L'essence du bonheur en flacon .Un parfum lumineux, délicat et sensuel, mêlant la fraîcheur du jasmin et de la rose à la chaleur du bois de santal.",
-
-        price: 50,
-
-        image: "img/par (1).jpg",
-
-        category: "womens",
-
-        featured: true,
-
-        badge: "جديد"
-
-    },
-
-    {
-
-        id: 3,
-
-        name: "Good Girl 30ml",
-
-        description: "Tellement bon d'être audacieuse…",
-
-        price: 25,
-
-        oldPrice: 495,
-
-        image: "img/par (2).jpg",
-
-        category: "womens",
-
-        featured: false,
-
-        badge: "خصم 15%"
-
-    },
-
-    {
-
-        id: 4,
-
-        name: "Givenchy 50ml",
-
-        description: "Une fragrance orientale boisée, chaude et raffinée.",
-
-        price: 50,
-
-        image: "img/par (3).jpg",
-
-        category: "mens",
-
-        featured: false,
-
-        badge: ""
-
-    },
-
-    {
-
-        id: 5,
-
-        name: "Le Male – 50ml",
-
-        description: "Un parfum iconique, à la fois doux et puissant.",
-
-        price: 50,
-
-        image: "img/par (4).jpg",
-
-        category: "mens",
-
-        featured: false,
-
-        badge: ""
-
-    },
-
-    {
-
-        id: 6,
-
-        name: "بينك سبورت",
-
-        description: "عطر رياضي وردي برائحة الفواكه والزهور. للنساء النشيطات.",
-
-        price: 320,
-
-        image: "img/ar5.png",
-
-        category: "womens",
-
-        featured: false,
-
-        badge: ""
-
-    },
-
-    {
-
-        id: 7,
-
-        name: "Erba Pura 50ml ",
-
-        description: "Erba Pura ✨🌿50ml Un parfum frais, fruité et raffiné, avec une touche sensuelle et envoûtante. Une signature olfactive unique qui attire tous les regards.",
-
-        price: 50,
-
-        image: "img/par (1).heic",
-
-        category: "mens",
-
-        featured: false,
-
-        badge: ""
-
-    },
-
-    {
-
-        id: 8,
-
-        name: "فيرال روز",
-
-        description: "عطر نسائي رومانسي برائحة الورد والفانيليا. للنساء الراقيات.",
-
-        price: 520,
-
-        oldPrice: 650,
-
-        image: "img/par (1).png",
-
-        category: "womens",
-
-        featured: true,
-
-        badge: "خصم 20%"
-
-    }
-
-    
-
+// Default products
+const DEFAULT_PRODUCTS = [
+    { id: 1, name: "Stronger With You 50ml", description: "🔥 Notes chaudes et envoûtantes", price: 50, oldPrice: 590, image: "img/par (5).jpg", category: "mens", featured: true, badge: "الأكثر مبيعاً" },
+    { id: 2, name: "Joy by Dior 50ml", description: "L'essence du bonheur en flacon", price: 50, image: "img/par (1).jpg", category: "womens", featured: true, badge: "جديد" },
+    { id: 3, name: "Good Girl 30ml", description: "Tellement bon d'être audacieuse…", price: 25, oldPrice: 495, image: "img/par (2).jpg", category: "womens", featured: false, badge: "خصم 15%" },
+    { id: 4, name: "Givenchy 50ml", description: "Une fragrance orientale boisée", price: 50, image: "img/par (3).jpg", category: "mens", featured: false, badge: "" },
+    { id: 5, name: "Le Male – 50ml", description: "Un parfum iconique", price: 50, image: "img/par (4).jpg", category: "mens", featured: false, badge: "" },
+    { id: 6, name: "بينك سبورت", description: "عطر رياضي وردي برائحة الفواكه والزهور", price: 320, image: "img/ar5.png", category: "womens", featured: false, badge: "" },
+    { id: 7, name: "Erba Pura 50ml", description: "Erba Pura ✨🌿50ml", price: 50, image: "img/par (1).heic", category: "mens", featured: false, badge: "" },
+    { id: 8, name: "فيرال روز", description: "عطر نسائي رومانسي برائحة الورد والفانيليا", price: 520, oldPrice: 650, image: "img/par (1).png", category: "womens", featured: true, badge: "خصم 20%" },
+    { id: 9, name: "عطر إضافي 1", description: "عطر رجالي مميز", price: 45, image: "img/default.jpg", category: "mens", featured: false, badge: "" },
+    { id: 10, name: "عطر إضافي 2", description: "عطر نسائي مميز", price: 55, image: "img/default.jpg", category: "womens", featured: false, badge: "" },
+    { id: 11, name: "عطر إضافي 3", description: "عطر رجالي فاخر", price: 65, image: "img/default.jpg", category: "mens", featured: false, badge: "" },
+    { id: 12, name: "عطر إضافي 4", description: "عطر نسائي فاخر", price: 75, image: "img/default.jpg", category: "womens", featured: false, badge: "" }
 ];
 
-
-
-// Load products from localStorage or use defaults
-
-function loadProducts() {
-
-    const saved = localStorage.getItem('adminProducts');
-
-    if (saved) {
-
-        try {
-
-            const parsed = JSON.parse(saved);
-
-            console.log('✅ Loaded from Admin Panel:', parsed.length, 'products');
-
-            return parsed;
-
-        } catch (e) {
-
-            console.warn('⚠️ Error loading from storage, using defaults');
-
-            return defaultProducts;
-
-        }
-
-    }
-
-    
-
-    // First time - save defaults to localStorage
-
-    console.log('📦 First load - using default products');
-
-    localStorage.setItem('adminProducts', JSON.stringify(defaultProducts));
-
-    return defaultProducts;
-
-}
-
-
-
-// The main products array that will be used throughout the app
-
-let products = loadProducts();
-
-
-
-// Listen for changes from Admin Panel
-
-window.addEventListener('storage', (e) => {
-
-    if (e.key === 'adminProducts') {
-
-        console.log('🔄 Products updated from Admin Panel');
-
-        products = loadProducts();
-
-        // Reload the page to update UI
-
-        if (window.app) {
-
-            window.app.loadProducts();
-
-            window.app.renderMensProducts();
-
-            window.app.renderWomensProducts();
-
-            window.app.renderFeaturedProducts();
-
-        }
-
-    }
-
-});
-
-
-
-console.log('📦 Products loaded:', products.length);
-
-console.log('💡 Use admin.html to manage products');
-
-
-
-
-
-// ==============================================
-
-
-
-// SHOPPING CART SYSTEM
-
-
-
-// ==============================================
-
-
-
-class ShoppingCart {
-
-
-
-    constructor() {
-
-
-
-        this.items = JSON.parse(localStorage.getItem('cart')) || [];
-
-
-
-        this.init();
-
-
-
-    }
-
-
-
-
-
-
+// Product Manager
+const ProductManager = {
+    items: [],
+    featured: [],
+    mens: [],
+    womens: [],
 
     init() {
-
-
-
-        this.updateCartCount();
-
-
-
-        this.renderCartItems();
-
-
-
-    }
-
-
-
-
-
-
-
-    addItem(product, quantity = 1) {
-
-
-
-        const existingItem = this.items.find(item => item.id === product.id);
-
-
-
-        
-
-
-
-        if (existingItem) {
-
-
-
-            existingItem.quantity += quantity;
-
-
-
-        } else {
-
-
-
-            this.items.push({
-
-
-
-                ...product,
-
-
-
-                quantity: quantity
-
-
-
-            });
-
-
-
-        }
-
-
-
-        
-
-
-
-        this.saveCart();
-
-
-
-        this.updateCartCount();
-
-
-
-        this.renderCartItems();
-
-
-
-        showNotification(`تم إضافة ${product.name} إلى السلة`, 'success');
-
-
-
-    }
-
-
-
-
-
-
-
-    removeItem(productId) {
-
-
-
-        this.items = this.items.filter(item => item.id !== productId);
-
-
-
-        this.saveCart();
-
-
-
-        this.updateCartCount();
-
-
-
-        this.renderCartItems();
-
-
-
-        showNotification('تم إزالة المنتج من السلة', 'success');
-
-
-
-    }
-
-
-
-
-
-
-
-    updateQuantity(productId, quantity) {
-
-
-
-        const item = this.items.find(item => item.id === productId);
-
-
-
-        if (item) {
-
-
-
-            item.quantity = quantity;
-
-
-
-            if (quantity <= 0) {
-
-
-
-                this.removeItem(productId);
-
-
-
-            } else {
-
-
-
-                this.saveCart();
-
-
-
-                this.updateCartCount();
-
-
-
-                this.renderCartItems();
-
-
-
-            }
-
-
-
-        }
-
-
-
-    }
-
-
-
-
-
-
-
-    getTotal() {
-
-
-
-        return this.items.reduce((total, item) => total + (item.price * item.quantity), 0);
-
-
-
-    }
-
-
-
-
-
-
-
-    getTotalItems() {
-
-
-
-        return this.items.reduce((total, item) => total + item.quantity, 0);
-
-
-
-    }
-
-
-
-
-
-
-
-    saveCart() {
-
-
-
-        localStorage.setItem('cart', JSON.stringify(this.items));
-
-
-
-    }
-
-
-
-
-
-
-
-    updateCartCount() {
-
-
-
-        const cartCount = document.getElementById('cartCount');
-
-
-
-        if (cartCount) {
-
-
-
-            const totalItems = this.getTotalItems();
-
-
-
-            cartCount.textContent = totalItems;
-
-
-
-            cartCount.style.display = totalItems > 0 ? 'flex' : 'none';
-
-
-
-            
-
-
-
-            if (totalItems > 0) {
-
-
-
-                cartCount.classList.add('added');
-
-
-
-                setTimeout(() => cartCount.classList.remove('added'), 500);
-
-
-
-            }
-
-
-
-        }
-
-
-
-    }
-
-
-
-
-
-
-
-    renderCartItems() {
-
-
-
-        const cartItems = document.getElementById('cartItems');
-
-
-
-        const cartTotal = document.getElementById('cartTotal');
-
-
-
-        
-
-
-
-        if (!cartItems || !cartTotal) return;
-
-
-
-
-
-
-
-        if (this.items.length === 0) {
-
-
-
-            cartItems.innerHTML = `
-
-
-
-                <div class="empty-cart">
-
-
-
-                    <i class="fas fa-shopping-bag"></i>
-
-
-
-                    <p>سلة التسوق فارغة</p>
-
-
-
-                    <button class="btn btn-primary" onclick="document.getElementById('cartModal').classList.remove('active'); window.location.hash = '#products'">
-
-
-
-                        تسوق الآن
-
-
-
-                    </button>
-
-
-
-                </div>
-
-
-
-            `;
-
-
-
-            cartTotal.textContent = '0.00 درهم';
-
-
-
-            return;
-
-
-
-        }
-
-
-
-
-
-
-
-        cartItems.innerHTML = this.items.map(item => `
-
-
-
-            <div class="cart-item" data-id="${item.id}">
-
-
-
-                <div class="cart-item-image">
-
-
-
-                    <img src="${item.image}" alt="${item.name}">
-
-
-
-                </div>
-
-
-
-                <div class="cart-item-details">
-
-
-
-                    <h4 class="cart-item-title">${item.name}</h4>
-
-
-
-                    <p class="cart-item-price">${item.price} درهم</p>
-
-
-
-                    <div class="cart-item-controls">
-
-
-
-                        <button class="quantity-btn decrease" type="button">-</button>
-
-
-
-                        <span class="quantity">${item.quantity}</span>
-
-
-
-                        <button class="quantity-btn increase" type="button">+</button>
-
-
-
-                        <button class="remove-item" title="إزالة" type="button">
-
-
-
-                            <i class="fas fa-trash"></i>
-
-
-
-                        </button>
-
-
-
-                    </div>
-
-
-
-                </div>
-
-
-
-            </div>
-
-
-
-        `).join('');
-
-
-
-
-
-
-
-        cartTotal.textContent = `${this.getTotal()} درهم`;
-
-
-
-        this.addCartEventListeners();
-
-
-
-    }
-
-
-
-
-
-
-
-    addCartEventListeners() {
-
-
-
-        // Decrease quantity
-
-
-
-        document.querySelectorAll('.decrease').forEach(btn => {
-
-
-
-            btn.addEventListener('click', (e) => {
-
-
-
-                const itemId = parseInt(e.target.closest('.cart-item').dataset.id);
-
-
-
-                const item = this.items.find(item => item.id === itemId);
-
-
-
-                if (item && item.quantity > 1) {
-
-
-
-                    this.updateQuantity(itemId, item.quantity - 1);
-
-
-
-                }
-
-
-
-            });
-
-
-
-        });
-
-
-
-
-
-
-
-        // Increase quantity
-
-
-
-        document.querySelectorAll('.increase').forEach(btn => {
-
-
-
-            btn.addEventListener('click', (e) => {
-
-
-
-                const itemId = parseInt(e.target.closest('.cart-item').dataset.id);
-
-
-
-                const item = this.items.find(item => item.id === itemId);
-
-
-
-                if (item) {
-
-
-
-                    this.updateQuantity(itemId, item.quantity + 1);
-
-
-
-                }
-
-
-
-            });
-
-
-
-        });
-
-
-
-
-
-
-
-        // Remove item
-
-
-
-        document.querySelectorAll('.remove-item').forEach(btn => {
-
-
-
-            btn.addEventListener('click', (e) => {
-
-
-
-                const itemId = parseInt(e.target.closest('.cart-item').dataset.id);
-
-
-
-                this.removeItem(itemId);
-
-
-
-            });
-
-
-
-        });
-
-
-
-    }
-
-
-
-}
-
-
-
-// ==============================================
-
-
-
-// CHECKOUT SYSTEM WITH EMAILJS
-
-
-
-// ==============================================
-
-
-
-class CheckoutSystem {
-
-
-
-    constructor(cart) {
-
-
-
-        this.cart = cart;
-
-
-
-        this.isLoading = false;
-
-
-
-        this.emailjsInitialized = false;
-
-
-
-        
-
-
-
-        // EmailJS Configuration - ضع معلوماتك هنا
-
-
-
-        this.emailConfig = {
-
-
-
-            serviceId: 'service_p19h9ew',     // Service ID من EmailJS
-
-
-
-            templateId: 'template_nbk8rkg',        // Template ID من EmailJS
-
-
-
-            publicKey: 'bz7ixkPUdYnKwcbMm'         // Public Key من EmailJS
-
-
-
-        };
-
-
-
-        
-
-
-
-        this.init();
-
-
-
-    }
-
-
-
-
-
-
-
-    init() {
-
-
-
-        this.setupEventListeners();
-
-
-
-        this.initEmailJS();
-
-
-
-    }
-
-
-
-
-
-
-
-    setupEventListeners() {
-
-
-
-        // Checkout button
-
-
-
-        const checkoutBtn = document.getElementById('checkoutBtn');
-
-
-
-        if (checkoutBtn) {
-
-
-
-            checkoutBtn.addEventListener('click', (e) => {
-
-
-
-                e.preventDefault();
-
-
-
-                this.openCheckout();
-
-
-
-            });
-
-
-
-        }
-
-
-
-
-
-
-
-        // Close checkout
-
-
-
-        const closeCheckout = document.getElementById('closeCheckout');
-
-
-
-        if (closeCheckout) {
-
-
-
-            closeCheckout.addEventListener('click', () => {
-
-
-
-                this.closeCheckoutModal();
-
-
-
-            });
-
-
-
-        }
-
-
-
-
-
-
-
-        // Back to cart
-
-
-
-        const backToCart = document.getElementById('backToCart');
-
-
-
-        if (backToCart) {
-
-
-
-            backToCart.addEventListener('click', () => {
-
-
-
-                this.backToCartModal();
-
-
-
-            });
-
-
-
-        }
-
-
-
-
-
-
-
-        // Checkout form submission
-
-
-
-        const checkoutForm = document.getElementById('checkoutForm');
-
-
-
-        if (checkoutForm) {
-
-
-
-            checkoutForm.addEventListener('submit', (e) => {
-
-
-
-                e.preventDefault();
-
-
-
-                this.handleSubmit();
-
-
-
-            });
-
-
-
-        }
-
-
-
-
-
-
-
-        // Close on outside click
-
-
-
-        const checkoutModal = document.getElementById('checkoutModal');
-
-
-
-        if (checkoutModal) {
-
-
-
-            checkoutModal.addEventListener('click', (e) => {
-
-
-
-                if (e.target === checkoutModal && !this.isLoading) {
-
-
-
-                    this.closeCheckoutModal();
-
-
-
-                }
-
-
-
-            });
-
-
-
-        }
-
-
-
-        // في setupEventListeners()، أضف:
-
-const refreshBtn = document.getElementById('refreshProducts');
-
-if (refreshBtn) {
-
-    refreshBtn.addEventListener('click', () => {
-
-        if (window.app) {
-
-            window.app.loadProducts();
-
-            window.app.renderMensProducts();
-
-            window.app.renderWomensProducts();
-
-            window.app.renderFeaturedProducts();
-
-            showNotification('🔄 تم تحديث المنتجات', 'success');
-
-        }
-
-    });
-
-}
-
-
-
-
-
-    }
-
-
-
-
-
-
-
-    initEmailJS() {
-
-
-
-        // Wait for EmailJS to load
-
-
-
-        if (typeof emailjs === 'undefined') {
-
-
-
-            console.warn('EmailJS not loaded yet. Will retry...');
-
-
-
-            setTimeout(() => this.initEmailJS(), 500);
-
-
-
-            return;
-
-
-
-        }
-
-
-
-        
-
-
-
-        try {
-
-
-
-            emailjs.init(this.emailConfig.publicKey);
-
-
-
-            this.emailjsInitialized = true;
-
-
-
-            console.log('✅ EmailJS initialized successfully');
-
-
-
-        } catch (error) {
-
-
-
-            console.error('❌ Failed to initialize EmailJS:', error);
-
-
-
-        }
-
-
-
-    }
-
-
-
-
-
-
-
-    openCheckout() {
-
-
-
-        if (this.cart.items.length === 0) {
-
-
-
-            showNotification('السلة فارغة، أضف منتجات أولاً', 'error');
-
-
-
-            return;
-
-
-
-        }
-
-
-
-        
-
-
-
-        document.getElementById('checkoutModal').classList.add('active');
-
-
-
-        document.getElementById('cartModal').classList.remove('active');
-
-
-
-    }
-
-
-
-
-
-
-
-    closeCheckoutModal() {
-
-
-
-        const modal = document.getElementById('checkoutModal');
-
-
-
-        if (modal) modal.classList.remove('active');
-
-
-
-        
-
-
-
-        const form = document.getElementById('checkoutForm');
-
-
-
-        if (form) form.reset();
-
-
-
-        
-
-
-
-        // Reset loading state
-
-
-
-        this.setLoadingState(false);
-
-
-
-    }
-
-
-
-
-
-
-
-    backToCartModal() {
-
-
-
-        this.closeCheckoutModal();
-
-
-
-        document.getElementById('cartModal').classList.add('active');
-
-
-
-    }
-
-
-
-
-
-
-
-    async handleSubmit() {
-
-
-
-        // Prevent multiple submissions
-
-
-
-        if (this.isLoading) return;
-
-
-
-        
-
-
-
-        // Get form data
-
-
-
-        const formData = this.getFormData();
-
-
-
-        
-
-
-
-        // Validate form
-
-
-
-        if (!this.validateForm(formData)) return;
-
-
-
-        
-
-
-
-        // Confirm submission
-
-
-
-        const userConfirm = await customConfirm('هل تريد إرسال الطلب الآن؟');
-
-
-
-        if (!userConfirm) {
-
-
-
-         showNotification('تم إلغاء الإرسال', 'info');
-
-
-
-        return;
-
-
-
-    }
-
-
-
-
-
-
-
-        
-
-
-
-        // Set loading state
-
-
-
-        this.setLoadingState(true);
-
-
-
-        
-
-
-
-        try {
-
-
-
-            // Send email via EmailJS
-
-
-
-            await this.sendEmail(formData);
-
-
-
-            
-
-
-
-            // Success
-
-
-
-            showNotification('✅ تم إرسال الطلب بنجاح! سنتواصل معك قريباً.', 'success');
-
-
-
-            
-
-
-
-            // Close modal and clear cart
-
-
-
-            this.closeCheckoutModal();
-
-
-
-            this.clearCart();
-
-
-
-            
-
-
-
-        } catch (error) {
-
-
-
-            console.error('Error sending email:', error);
-
-
-
-            this.handleEmailError(formData, error);
-
-
-
-            
-
-
-
-        } finally {
-
-
-
-            // Reset loading state
-
-
-
-            this.setLoadingState(false);
-
-
-
-        }
-
-
-
-    }
-
-
-
-
-
-
-
-    getFormData() {
-
-
-
-        return {
-
-
-
-            fullName: document.getElementById('fullName')?.value.trim() || '',
-
-
-
-            phoneNumber: document.getElementById('phoneNumber')?.value.trim() || '',
-
-
-
-            city: document.getElementById('city')?.value.trim() || '',
-
-
-
-            address: document.getElementById('address')?.value.trim() || '',
-
-
-
-            notes: document.getElementById('notes')?.value.trim() || ''
-
-
-
-        };
-
-
-
-    }
-
-
-
-
-
-
-
-    validateForm(data) {
-
-
-
-        const { fullName, phoneNumber, city } = data;
-
-
-
-        
-
-
-
-        // Check required fields
-
-
-
-        if (!fullName || !phoneNumber || !city) {
-
-
-
-            showNotification('الرجاء ملء جميع الحقول المطلوبة', 'error');
-
-
-
-            return false;
-
-
-
-        }
-
-
-
-        
-
-
-
-        // Validate Moroccan phone number
-
-
-
-        if (!this.validateMoroccanPhone(phoneNumber)) {
-
-
-
-            showNotification('الرجاء إدخال رقم هاتف مغربي صحيح', 'error');
-
-
-
-            return false;
-
-
-
-        }
-
-
-
-        
-
-
-
-        return true;
-
-
-
-    }
-
-
-
-
-
-
-
-    validateMoroccanPhone(phone) {
-
-
-
-        const cleaned = phone.replace(/\s+/g, '');
-
-
-
-        // يقبل: 0612345678, 0712345678, +212612345678, 00212612345678
-
-
-
-        const moroccanRegex = /^(?:(?:\+|00)212|0)[5-7]\d{8}$/;
-
-
-
-        return moroccanRegex.test(cleaned);
-
-
-
-    }
-
-
-
-
-
-
-
-    setLoadingState(isLoading) {
-
-
-
-        this.isLoading = isLoading;
-
-
-
-        const submitBtn = document.querySelector('#checkoutForm button[type="submit"]');
-
-
-
-        
-
-
-
-        if (submitBtn) {
-
-
-
-            if (isLoading) {
-
-
-
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...';
-
-
-
-                submitBtn.disabled = true;
-
-
-
-            } else {
-
-
-
-                submitBtn.innerHTML = '<i class="fas fa-envelope"></i> إرسال الطلب عبر البريد';
-
-
-
-                submitBtn.disabled = false;
-
-
-
-            }
-
-
-
-        }
-
-
-
-    }
-
-
-
-
-
-
-
-prepareEmailParams(formData) {
-
-
-
-    const orderId = 'LOOZA-' + Date.now().toString().slice(-6);
-
-
-
-    const currentDate = new Date().toLocaleString('ar-EG');
-
-
-
-    
-
-
-
-    // بناء المنتجات كنص (بدون HTML)
-
-
-
-    let productsText = '';
-
-
-
-    this.cart.items.forEach((item, index) => {
-
-
-
-        productsText += `${index + 1}. ${item.name}\n`;
-
-
-
-        productsText += `   الكمية: ${item.quantity}\n`;
-
-
-
-        productsText += `   السعر: ${item.price} درهم\n`;
-
-
-
-        productsText += `   المجموع: ${item.price * item.quantity} درهم\n\n`;
-
-
-
-    });
-
-
-
-    
-
-
-
-    // للمنتجات كـ HTML (بسيط)
-
-
-
-    let productsHtml = '<ul style="list-style: none; padding-right: 20px;">';
-
-
-
-    this.cart.items.forEach((item, index) => {
-
-
-
-        productsHtml += `<li>${index + 1}. ${item.name} - ${item.price} × ${item.quantity} = ${item.price * item.quantity} درهم</li>`;
-
-
-
-    });
-
-
-
-    productsHtml += '</ul>';
-
-
-
-    
-
-
-
-    // إرجاع جميع الأشكال الممكنة من المتغيرات
-
-
-
-    return {
-
-
-
-        // المتغيرات الأساسية
-
-
-
-        full_name: formData.fullName || 'لم يتم التحديد',
-
-
-
-        phone: formData.phoneNumber || 'لم يتم التحديد',
-
-
-
-        city: formData.city || 'لم يتم التحديد',
-
-
-
-        address: formData.address || 'لم يتم تحديد العنوان',
-
-
-
-        notes: formData.notes || 'لا توجد ملاحظات',
-
-
-
-        
-
-
-
-        order_id: orderId,
-
-
-
-        order_date: currentDate,
-
-
-
-        total_items: this.cart.getTotalItems(),
-
-
-
-        total_price: this.cart.getTotal() + ' درهم',
-
-
-
-        
-
-
-
-        // جميع الأسماء الممكنة للمنتجات
-
-
-
-        products_html: productsHtml,
-
-
-
-        products: productsText,
-
-
-
-        order_items: productsText,
-
-
-
-        items: productsText,
-
-
-
-        product_list: productsHtml,
-
-
-
-        items_html: productsHtml,
-
-
-
-        
-
-
-
-        // متغيرات إضافية
-
-
-
-        customer_name: formData.fullName,
-
-
-
-        customer_phone: formData.phoneNumber,
-
-
-
-        total: this.cart.getTotal(),
-
-
-
-        formatted_total: this.cart.getTotal().toLocaleString() + ' درهم',
-
-
-
-        
-
-
-
-        // إرسال لبريدك مباشرة
-
-
-
-        to_email: 'loozaparfums@gmail.com',
-
-
-
-        to_name: 'إدارة متجر لوزة بارفوم'
-
-
-
-    };
-
-
-
-}
-
-
-
-
-
-
-
-
-
-
-
-    async sendEmail(formData) {
-
-
-
-        // Check if EmailJS is initialized
-
-
-
-        if (!this.emailjsInitialized) {
-
-
-
-            throw new Error('EmailJS لم يتم تهيئته بعد');
-
-
-
-        }
-
-
-
-        
-
-
-
-        // Check if EmailJS is available
-
-
-
-        if (typeof emailjs === 'undefined') {
-
-
-
-            throw new Error('EmailJS غير متاح');
-
-
-
-        }
-
-
-
-        
-
-
-
-        // Prepare email parameters
-
-
-
-        const templateParams = this.prepareEmailParams(formData);
-
-
-
-        
-
-
-
-        console.log('Sending email with params:', templateParams);
-
-
-
-        
-
-
-
-        // Send email using EmailJS
-
-
-
-        const response = await emailjs.send(
-
-
-
-            this.emailConfig.serviceId,
-
-
-
-            this.emailConfig.templateId,
-
-
-
-            templateParams
-
-
-
-        );
-
-
-
-        
-
-
-
-        console.log('✅ Email sent successfully:', response);
-
-
-
-        return response;
-
-
-
-    }
-
-
-
-
-
-
-
-    handleEmailError(formData, error) {
-
-
-
-        console.error('Email error details:', error);
-
-
-
-        
-
-
-
-        // Show error message
-
-
-
-        let errorMessage = '❌ حدث خطأ في إرسال الطلب. ';
-
-
-
-        let showManualOption = true;
-
-
-
-        
-
-
-
-        if (error.status === 0 || error.message?.includes('network')) {
-
-
-
-            errorMessage += 'فشل الاتصال بالإنترنت.';
-
-
-
-        } else if (error.text?.includes('quota')) {
-
-
-
-            errorMessage += 'تم تجاوز الحد المسموح من الإيميلات اليومية.';
-
-
-
-            showManualOption = true;
-
-
-
-        } else if (error.text?.includes('Invalid template')) {
-
-
-
-            errorMessage += 'خطأ في إعدادات القالب.';
-
-
-
-            showManualOption = false;
-
-
-
-        } else if (error.text?.includes('Invalid service')) {
-
-
-
-            errorMessage += 'خطأ في إعدادات الخدمة.';
-
-
-
-            showManualOption = false;
-
-
-
-        } else {
-
-
-
-            errorMessage += 'حاول مرة أخرى.';
-
-
-
-        }
-
-
-
-        
-
-
-
-        showNotification(errorMessage, 'error');
-
-
-
-        
-
-
-
-        // Offer manual email option if applicable
-
-
-
-        if (showManualOption) {
-
-
-
-            setTimeout(() => {
-
-
-
-                if (confirm('هل تريد إرسال الطلب يدوياً عبر بريدك الإلكتروني؟')) {
-
-
-
-                    this.sendManualEmail(formData);
-
-
-
-                }
-
-
-
-            }, 2000);
-
-
-
-        }
-
-
-
-    }
-
-
-
-
-
-
-
-    sendManualEmail(formData) {
-
-
-
-        const orderId = 'LOOZA-' + Date.now().toString().slice(-6);
-
-
-
-        const email = 'mohammedmriss.officielle@gmail.com';
-
-
-
-        const subject = `طلب جديد #${orderId} - ${formData.fullName} - متجر لوزة بارفوم`;
-
-
-
-        
-
-
-
-        // Build email body
-
-
-
-        let body = `🛍️ طلب شراء جديد من متجر لوزة بارفوم 🛍️\n\n`;
-
-
-
-        
-
-
-
-        body += `👤 معلومات العميل:\n`;
-
-
-
-        body += `─────────────────\n`;
-
-
-
-        body += `الاسم: ${formData.fullName}\n`;
-
-
-
-        body += `الهاتف: ${formData.phoneNumber}\n`;
-
-
-
-        body += `المدينة: ${formData.city}\n`;
-
-
-
-        if (formData.address) body += `العنوان: ${formData.address}\n`;
-
-
-
-        if (formData.notes) body += `ملاحظات: ${formData.notes}\n`;
-
-
-
-        
-
-
-
-        body += `\n🛒 المنتجات المطلوبة:\n`;
-
-
-
-        body += `─────────────────\n`;
-
-
-
-        this.cart.items.forEach((item, index) => {
-
-
-
-            body += `${index + 1}. ${item.name}\n`;
-
-
-
-            body += `   السعر: ${item.price} درهم × ${item.quantity}\n`;
-
-
-
-            body += `   المجموع: ${item.price * item.quantity} درهم\n\n`;
-
-
-
-        });
-
-
-
-        
-
-
-
-        const total = this.cart.getTotal();
-
-
-
-        body += `\n💰 الإجمالي النهائي: ${total} درهم\n\n`;
-
-
-
-        
-
-
-
-        body += `📋 معلومات النظام:\n`;
-
-
-
-        body += `─────────────────\n`;
-
-
-
-        body += `رقم الطلب: ${orderId}\n`;
-
-
-
-        body += `التاريخ: ${new Date().toLocaleString('ar-EG')}\n`;
-
-
-
-        body += `\n\n---\n`;
-
-
-
-        body += `تم إنشاء هذا الطلب من موقع متجر لوزة بارفوم\n`;
-
-
-
-        body += `للتواصل: 212726827786`;
-
-
-
-        
-
-
-
-        // Open email client
-
-
-
-        const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-
-
-
-        window.open(mailtoLink, '_blank');
-
-
-
-        
-
-
-
-        showNotification('تم فتح بريدك الإلكتروني. يرجى إرسال الرسالة.', 'info');
-
-
-
-    }
-
-
-
-
-
-
-
-    clearCart() {
-
-
-
-        this.cart.items = [];
-
-
-
-        this.cart.saveCart();
-
-
-
-        this.cart.updateCartCount();
-
-
-
-        this.cart.renderCartItems();
-
-
-
-    }
-
-
-
-}
-
-
-
-
-
-
-
-
-
-
-
-// ==============================================
-
-
-
-// MAIN APPLICATION WITH LOAD MORE FUNCTIONALITY
-
-
-
-// ==============================================
-
-
-
-class App {
-
-
-
-    constructor() {
-
-
-
-        this.cart = new ShoppingCart();
-
-
-
-        this.checkout = new CheckoutSystem(this.cart);
-
-
-
-        this.mensProducts = [];  // تخزين جميع منتجات الرجال
-
-
-
-        this.womensProducts = []; // تخزين جميع منتجات النساء
-
-
-
-
-
-        this.mensDisplayCount = 3; // عدد المنتجات المعروضة للرجال
-
-
-
-        this.womensDisplayCount = 3; // عدد المنتجات المعروضة للنساء
-
-
-
-        this.init();
-
-
-
-    }
-
-
-
-
-
-
-
-    init() {
-
-
-
-        this.setupEventListeners();
-
-
-
-        this.loadProducts(); // تحميل وتصنيف المنتجات
-
-
-
-        this.renderMensProducts();    // جديد: عرض عطور الرجال
-
-
-
-        this.renderWomensProducts();  // جديد: عرض عطور النساء
-
-
-
-        this.renderFeaturedProducts();
-
-
-
-        this.updateCopyrightYear();
-
-
-
-        this.setupMobileMenu();
-
-
-
-        this.setupForms();
-
-
-
-        
-
-
-
-        // Initialize sliders
-
-
-
-        this.initHeroSlider();
-
-
-
-        this.initReviewSlider();
-
-
-
-    }
-
-
-
-
-
-
-
-    // تحميل وتصنيف المنتجات
-
-
+        this.loadProducts();
+        this.categorize();
+        return this;
+    },
 
     loadProducts() {
+        try {
+            const saved = localStorage.getItem('adminProducts');
+            this.items = saved ? JSON.parse(saved) : DEFAULT_PRODUCTS;
+            if (!saved) this.save();
+        } catch (e) {
+            this.items = DEFAULT_PRODUCTS;
+        }
+        this.categorize();
+    },
 
-    // Reload from localStorage
+    categorize() {
+        this.mens = this.items.filter(p => p.category === 'mens');
+        this.womens = this.items.filter(p => p.category === 'womens');
+        this.featured = this.items.filter(p => p.featured);
+    },
 
-    const saved = localStorage.getItem('adminProducts');
+    getById(id) {
+        return this.items.find(p => p.id === id);
+    },
 
-    if (saved) {
+    save() {
+        localStorage.setItem('adminProducts', JSON.stringify(this.items));
+    },
+
+    update(products) {
+        this.items = products;
+        this.categorize();
+        this.save();
+        this.notify();
+    },
+
+    notify() {
+        window.dispatchEvent(new CustomEvent('productsUpdated'));
+        localStorage.setItem('productsUpdated', Date.now());
+    }
+};
+
+// Shopping Cart
+class Cart {
+    constructor() {
+        this.items = JSON.parse(localStorage.getItem('cart')) || [];
+        this.listeners = new Set();
+    }
+
+    add(product, qty = 1) {
+        const existing = this.items.find(item => item.id === product.id);
+        if (existing) {
+            existing.quantity += qty;
+        } else {
+            this.items.push({ ...product, quantity: qty });
+        }
+        this.save();
+        this.notify();
+        return this;
+    }
+
+    remove(id) {
+        this.items = this.items.filter(item => item.id !== id);
+        this.save();
+        this.notify();
+        return this;
+    }
+
+    updateQty(id, qty) {
+        const item = this.items.find(item => item.id === id);
+        if (item) {
+            if (qty <= 0) {
+                this.remove(id);
+            } else {
+                item.quantity = qty;
+                this.save();
+                this.notify();
+            }
+        }
+        return this;
+    }
+
+    clear() {
+        this.items = [];
+        this.save();
+        this.notify();
+        return this;
+    }
+
+    get totalItems() {
+        return this.items.reduce((sum, item) => sum + item.quantity, 0);
+    }
+
+    get totalPrice() {
+        return this.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    }
+
+    save() {
+        localStorage.setItem('cart', JSON.stringify(this.items));
+        return this;
+    }
+
+    subscribe(fn) {
+        this.listeners.add(fn);
+        return () => this.listeners.delete(fn);
+    }
+
+    notify() {
+        this.listeners.forEach(fn => fn(this.items));
+    }
+}
+
+// ==============================================
+// UI MANAGER - UPDATED WITH LOAD MORE
+// ==============================================
+
+class UIManager {
+    constructor(cart, products) {
+        this.cart = cart;
+        this.products = products;
+        this.currentSlide = 0;
+        this.currentReview = 0;
+        
+        // إعدادات عرض المزيد
+        this.mensDisplayCount = 3;
+        this.womensDisplayCount = 3;
+    }
+
+    // Notifications
+    notify(message, type = 'success', duration = 3000) {
+        const existing = document.querySelector('.notification');
+        if (existing) existing.remove();
+
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.innerHTML = `
+            <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+            <span>${message}</span>
+        `;
+
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+            notification.style.animation = 'slideOutRight 0.3s ease';
+            setTimeout(() => notification.remove(), 300);
+        }, duration);
+    }
+
+    // Cart UI
+    updateCartUI() {
+        // Update count
+        const countEl = document.getElementById('cartCount');
+        if (countEl) {
+            const count = this.cart.totalItems;
+            countEl.textContent = count;
+            countEl.style.display = count > 0 ? 'flex' : 'none';
+            if (count > 0) {
+                countEl.classList.add('added');
+                setTimeout(() => countEl.classList.remove('added'), 500);
+            }
+        }
+
+        // Update cart items
+        const itemsEl = document.getElementById('cartItems');
+        const totalEl = document.getElementById('cartTotal');
+        
+        if (itemsEl && totalEl) {
+            if (this.cart.items.length === 0) {
+                itemsEl.innerHTML = this.getEmptyCartHTML();
+                totalEl.textContent = '0.00 درهم';
+            } else {
+                itemsEl.innerHTML = this.cart.items.map(item => this.getCartItemHTML(item)).join('');
+                totalEl.textContent = `${this.cart.totalPrice.toFixed(2)} درهم`;
+                this.bindCartEvents();
+            }
+        }
+    }
+
+    getEmptyCartHTML() {
+        return `
+            <div class="empty-cart">
+                <i class="fas fa-shopping-bag"></i>
+                <p>سلة التسوق فارغة</p>
+                <button class="btn btn-primary" onclick="ui.closeCart()">
+                    تسوق الآن
+                </button>
+            </div>
+        `;
+    }
+
+    getCartItemHTML(item) {
+        return `
+            <div class="cart-item" data-id="${item.id}">
+                <div class="cart-item-image">
+                    <img src="${item.image}" alt="${item.name}" loading="lazy">
+                </div>
+                <div class="cart-item-details">
+                    <h4 class="cart-item-title">${item.name}</h4>
+                    <p class="cart-item-price">${item.price} درهم</p>
+                    <div class="cart-item-controls">
+                        <button class="quantity-btn decrease" type="button">-</button>
+                        <span class="quantity">${item.quantity}</span>
+                        <button class="quantity-btn increase" type="button">+</button>
+                        <button class="remove-item" title="إزالة" type="button">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    bindCartEvents() {
+        // Decrease
+        document.querySelectorAll('.decrease').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const id = parseInt(e.target.closest('.cart-item').dataset.id);
+                const item = this.cart.items.find(item => item.id === id);
+                if (item && item.quantity > 1) {
+                    this.cart.updateQty(id, item.quantity - 1);
+                }
+            });
+        });
+
+        // Increase
+        document.querySelectorAll('.increase').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const id = parseInt(e.target.closest('.cart-item').dataset.id);
+                const item = this.cart.items.find(item => item.id === id);
+                if (item) {
+                    this.cart.updateQty(id, item.quantity + 1);
+                }
+            });
+        });
+
+        // Remove
+        document.querySelectorAll('.remove-item').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const id = parseInt(e.target.closest('.cart-item').dataset.id);
+                this.cart.remove(id);
+                this.notify('تم إزالة المنتج من السلة', 'success');
+            });
+        });
+    }
+
+    // Products UI مع وظيفة عرض المزيد
+    renderProducts() {
+        this.renderMensProducts();
+        this.renderWomensProducts();
+        this.renderFeatured();
+    }
+
+    // عرض عطور الرجال
+    renderMensProducts() {
+        const container = document.getElementById('mensGrid');
+        if (!container) return;
+
+        if (this.products.mens.length === 0) {
+            container.innerHTML = this.getEmptyCategoryHTML('رجال');
+            return;
+        }
+
+        // عرض عدد محدود من المنتجات
+        const displayProducts = this.products.mens.slice(0, this.mensDisplayCount);
+        container.innerHTML = displayProducts.map(product => this.getProductHTML(product)).join('');
+        
+        // إضافة زر عرض المزيد إذا لزم الأمر
+        this.addMensLoadMoreButton();
+    }
+
+    // عرض عطور النساء
+    renderWomensProducts() {
+        const container = document.getElementById('womensGrid');
+        if (!container) return;
+
+        if (this.products.womens.length === 0) {
+            container.innerHTML = this.getEmptyCategoryHTML('نساء');
+            return;
+        }
+
+        // عرض عدد محدود من المنتجات
+        const displayProducts = this.products.womens.slice(0, this.womensDisplayCount);
+        container.innerHTML = displayProducts.map(product => this.getProductHTML(product)).join('');
+        
+        // إضافة زر عرض المزيد إذا لزم الأمر
+        this.addWomensLoadMoreButton();
+    }
+
+    // HTML للفئة الفارغة
+    getEmptyCategoryHTML(category) {
+        return `
+            <div class="empty-category">
+                <i class="fas fa-box-open"></i>
+                <h3>لا توجد عطور لل${category} حالياً</h3>
+                <p>سيكون لدينا عطور ${category} قريباً</p>
+            </div>
+        `;
+    }
+
+    // إضافة زر عرض المزيد لعطور الرجال
+    addMensLoadMoreButton() {
+        const mensSection = document.querySelector('#mensGrid')?.closest('.category-section');
+        if (!mensSection) return;
+
+        // إزالة الزر القديم إذا كان موجوداً
+        const existingButton = mensSection.querySelector('.load-more-btn.mens');
+        if (existingButton) existingButton.remove();
+
+        // إزالة رسالة "عرض الكل" إذا كانت موجودة
+        const existingAllShown = mensSection.querySelector('.all-shown-message.mens');
+        if (existingAllShown) existingAllShown.remove();
+
+        // حساب المنتجات المتبقية
+        const remaining = this.products.mens.length - this.mensDisplayCount;
+
+        if (remaining > 0) {
+            // إضافة زر عرض المزيد
+            const loadMoreBtn = document.createElement('button');
+            loadMoreBtn.className = 'load-more-btn mens';
+            loadMoreBtn.innerHTML = `
+                <i class="fas fa-plus"></i>
+                عرض المزيد من عطور الرجال (${remaining} منتج${remaining > 1 ? 'ات' : ''})
+            `;
+            
+            loadMoreBtn.addEventListener('click', () => {
+                this.loadMoreMensProducts();
+            });
+            
+            mensSection.appendChild(loadMoreBtn);
+        } else if (this.mensDisplayCount > 3 && this.products.mens.length > 0) {
+            // إضافة رسالة "تم عرض الكل"
+            const allShown = document.createElement('div');
+            allShown.className = 'all-shown-message mens';
+            allShown.innerHTML = `
+                <i class="fas fa-check-circle"></i>
+                <span>تم عرض جميع منتجات الرجال</span>
+            `;
+            mensSection.appendChild(allShown);
+        }
+    }
+
+    // إضافة زر عرض المزيد لعطور النساء
+    addWomensLoadMoreButton() {
+        const womensSection = document.querySelector('#womensGrid')?.closest('.category-section');
+        if (!womensSection) return;
+
+        // إزالة الزر القديم إذا كان موجوداً
+        const existingButton = womensSection.querySelector('.load-more-btn.womens');
+        if (existingButton) existingButton.remove();
+
+        // إزالة رسالة "عرض الكل" إذا كانت موجودة
+        const existingAllShown = womensSection.querySelector('.all-shown-message.womens');
+        if (existingAllShown) existingAllShown.remove();
+
+        // حساب المنتجات المتبقية
+        const remaining = this.products.womens.length - this.womensDisplayCount;
+
+        if (remaining > 0) {
+            // إضافة زر عرض المزيد
+            const loadMoreBtn = document.createElement('button');
+            loadMoreBtn.className = 'load-more-btn womens';
+            loadMoreBtn.innerHTML = `
+                <i class="fas fa-plus"></i>
+                عرض المزيد من عطور النساء (${remaining} منتج${remaining > 1 ? 'ات' : ''})
+            `;
+            
+            loadMoreBtn.addEventListener('click', () => {
+                this.loadMoreWomensProducts();
+            });
+            
+            womensSection.appendChild(loadMoreBtn);
+        } else if (this.womensDisplayCount > 3 && this.products.womens.length > 0) {
+            // إضافة رسالة "تم عرض الكل"
+            const allShown = document.createElement('div');
+            allShown.className = 'all-shown-message womens';
+            allShown.innerHTML = `
+                <i class="fas fa-check-circle"></i>
+                <span>تم عرض جميع منتجات النساء</span>
+            `;
+            womensSection.appendChild(allShown);
+        }
+    }
+
+    // تحميل المزيد من عطور الرجال
+    loadMoreMensProducts() {
+        const remaining = this.products.mens.length - this.mensDisplayCount;
+        this.mensDisplayCount += Math.min(3, remaining);
+        
+        this.renderMensProducts();
+        
+        // التمرير السلس للقسم
+        const mensSection = document.querySelector('#mensGrid')?.closest('.category-section');
+        if (mensSection) {
+            mensSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    }
+
+    // تحميل المزيد من عطور النساء
+    loadMoreWomensProducts() {
+        const remaining = this.products.womens.length - this.womensDisplayCount;
+        this.womensDisplayCount += Math.min(3, remaining);
+        
+        this.renderWomensProducts();
+        
+        // التمرير السلس للقسم
+        const womensSection = document.querySelector('#womensGrid')?.closest('.category-section');
+        if (womensSection) {
+            womensSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    }
+
+    // إعادة تعيين عدد المنتجات المعروضة
+    resetDisplayCounts() {
+        this.mensDisplayCount = 3;
+        this.womensDisplayCount = 3;
+    }
+
+    // عرض المنتجات المميزة
+    renderFeatured() {
+        const container = document.querySelector('.featured-grid');
+        if (!container) return;
+        
+        container.innerHTML = this.products.featured
+            .map(product => this.getProductHTML(product))
+            .join('');
+    }
+
+    getProductHTML(product) {
+        return `
+            <div class="product-card" data-product-id="${product.id}">
+                <div class="product-image">
+                    <img src="${product.image}" alt="${product.name}" loading="lazy">
+                    ${product.badge ? `<span class="product-badge">${product.badge}</span>` : ''}
+                </div>
+                <div class="product-content">
+                    <h3 class="product-title">${product.name}</h3>
+                    <p class="product-description">${product.description}</p>
+                    <div class="product-price">
+                        <div>
+                            <span class="price">${product.price} درهم</span>
+                            ${product.oldPrice ? `<span class="old-price">${product.oldPrice} درهم</span>` : ''}
+                        </div>
+                        <button class="btn btn-primary add-to-cart" data-id="${product.id}" type="button">
+                            <i class="fas fa-plus"></i>
+                            أضف للسلة
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    // Sliders
+    updateSliders() {
+        // Hero slider
+        document.querySelectorAll('.slide').forEach((slide, i) => {
+            slide.classList.toggle('active', i === this.currentSlide);
+        });
+        
+        document.querySelectorAll('.dot').forEach((dot, i) => {
+            dot.classList.toggle('active', i === this.currentSlide);
+        });
+
+        // Review slider
+        document.querySelectorAll('.review-slide').forEach((slide, i) => {
+            slide.classList.toggle('active', i === this.currentReview);
+        });
+    }
+
+    nextSlide() {
+        const slides = document.querySelectorAll('.slide');
+        this.currentSlide = (this.currentSlide + 1) % slides.length;
+        this.updateSliders();
+    }
+
+    prevSlide() {
+        const slides = document.querySelectorAll('.slide');
+        this.currentSlide = (this.currentSlide - 1 + slides.length) % slides.length;
+        this.updateSliders();
+    }
+
+    goToSlide(index) {
+        const slides = document.querySelectorAll('.slide');
+        this.currentSlide = Math.max(0, Math.min(index, slides.length - 1));
+        this.updateSliders();
+    }
+
+    nextReview() {
+        const slides = document.querySelectorAll('.review-slide');
+        this.currentReview = (this.currentReview + 1) % slides.length;
+        this.updateSliders();
+    }
+
+    prevReview() {
+        const slides = document.querySelectorAll('.review-slide');
+        this.currentReview = (this.currentReview - 1 + slides.length) % slides.length;
+        this.updateSliders();
+    }
+
+    // Modal Controls
+    toggleCart(show) {
+        const modal = document.getElementById('cartModal');
+        if (modal) modal.classList.toggle('active', show);
+        this.toggleBodyScroll(!show);
+    }
+
+    toggleCheckout(show) {
+        const modal = document.getElementById('checkoutModal');
+        if (modal) modal.classList.toggle('active', show);
+        this.toggleBodyScroll(!show);
+    }
+
+    toggleMenu() {
+        const menu = document.querySelector('.nav-links');
+        const icon = document.querySelector('#menuToggle i');
+        const isOpen = menu.classList.toggle('active');
+        
+        if (icon) {
+            icon.classList.toggle('fa-bars', !isOpen);
+            icon.classList.toggle('fa-times', isOpen);
+        }
+    }
+
+    toggleBodyScroll(enable) {
+        document.body.classList.toggle('modal-open', !enable);
+    }
+
+    // Confirm Dialog
+    confirm(message) {
+        return new Promise(resolve => {
+            const overlay = document.getElementById('customConfirm');
+            const messageEl = overlay.querySelector('.confirm-message');
+            const yesBtn = document.getElementById('confirmYes');
+            const noBtn = document.getElementById('confirmNo');
+
+            messageEl.textContent = message;
+            overlay.classList.add('active');
+
+            const cleanup = () => {
+                overlay.classList.remove('active');
+                yesBtn.onclick = null;
+                noBtn.onclick = null;
+            };
+
+            yesBtn.onclick = () => {
+                cleanup();
+                resolve(true);
+            };
+
+            noBtn.onclick = () => {
+                cleanup();
+                resolve(false);
+            };
+        });
+    }
+}
+
+// ==============================================
+// CHECKOUT SYSTEM
+// ==============================================
+
+class CheckoutManager {
+    constructor(cart, ui) {
+        this.cart = cart;
+        this.ui = ui;
+        this.isLoading = false;
+        this.emailConfig = {
+            serviceId: 'service_p19h9ew',
+            templateId: 'template_nbk8rkg',
+            publicKey: 'bz7ixkPUdYnKwcbMm'
+        };
+    }
+
+    init() {
+        this.bindEvents();
+        this.initEmailJS();
+    }
+
+    async initEmailJS() {
+        if (typeof emailjs === 'undefined') {
+            console.warn('EmailJS not loaded');
+            return false;
+        }
+        try {
+            await emailjs.init(this.emailConfig.publicKey);
+            console.log('✅ EmailJS ready');
+            return true;
+        } catch (e) {
+            console.error('❌ EmailJS init failed:', e);
+            return false;
+        }
+    }
+
+    bindEvents() {
+        document.getElementById('checkoutBtn')?.addEventListener('click', () => this.open());
+        document.getElementById('closeCheckout')?.addEventListener('click', () => this.close());
+        document.getElementById('backToCart')?.addEventListener('click', () => this.back());
+        document.getElementById('checkoutForm')?.addEventListener('submit', (e) => this.submit(e));
+        
+        // Close on outside click
+        document.getElementById('checkoutModal')?.addEventListener('click', (e) => {
+            if (e.target === e.currentTarget && !this.isLoading) {
+                this.close();
+            }
+        });
+    }
+
+    open() {
+        if (this.cart.items.length === 0) {
+            this.ui.notify('السلة فارغة، أضف منتجات أولاً', 'error');
+            return;
+        }
+        this.ui.toggleCart(false);
+        this.ui.toggleCheckout(true);
+    }
+
+    close() {
+        this.ui.toggleCheckout(false);
+        document.getElementById('checkoutForm')?.reset();
+        this.setLoading(false);
+    }
+
+    back() {
+        this.ui.toggleCheckout(false);
+        this.ui.toggleCart(true);
+    }
+
+    setLoading(loading) {
+        this.isLoading = loading;
+        const btn = document.querySelector('#checkoutForm button[type="submit"]');
+        if (btn) {
+            if (loading) {
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...';
+                btn.disabled = true;
+            } else {
+                btn.innerHTML = '<i class="fas fa-envelope"></i> إرسال الطلب عبر البريد';
+                btn.disabled = false;
+            }
+        }
+    }
+
+    async submit(e) {
+        e.preventDefault();
+        if (this.isLoading) return;
+
+        const formData = this.getFormData();
+        if (!this.validate(formData)) return;
+
+        const confirmed = await this.ui.confirm('هل تريد إرسال الطلب الآن؟');
+        if (!confirmed) {
+            this.ui.notify('تم إلغاء الإرسال', 'info');
+            return;
+        }
+
+        this.setLoading(true);
 
         try {
-
-            window.products = JSON.parse(saved);
-
-        } catch (e) {
-
-            console.warn('Error loading products');
-
+            await this.sendOrder(formData);
+            this.ui.notify('✅ تم إرسال الطلب بنجاح! سنتواصل معك قريباً.', 'success');
+            this.cart.clear();
+            this.close();
+        } catch (error) {
+            console.error('Order error:', error);
+            this.handleError(error, formData);
+        } finally {
+            this.setLoading(false);
         }
-
     }
 
-    
-
-    this.mensProducts = window.products.filter(product => product.category === 'mens');
-
-    this.womensProducts = window.products.filter(product => product.category === 'womens');
-
-}
-
-
-
-
-
-
-
-    setupEventListeners() {
-
-
-
-        // Cart Modal
-
-
-
-        const cartBtn = document.getElementById('cartBtn');
-
-
-
-        const cartModal = document.getElementById('cartModal');
-
-
-
-        const closeCart = document.getElementById('closeCart');
-
-
-
-
-
-
-
-        if (cartBtn && cartModal) {
-
-
-
-            cartBtn.addEventListener('click', (e) => {
-
-
-
-                e.preventDefault();
-
-
-
-                cartModal.classList.add('active');
-
-
-
-            });
-
-
-
-
-
-
-
-            if (closeCart) {
-
-
-
-                closeCart.addEventListener('click', () => {
-
-
-
-                    cartModal.classList.remove('active');
-
-
-
-                });
-
-
-
-            }
-
-
-
-
-
-
-
-            cartModal.addEventListener('click', (e) => {
-
-
-
-                if (e.target === cartModal) {
-
-
-
-                    cartModal.classList.remove('active');
-
-
-
-                }
-
-
-
-            });
-
-
-
-        }
-
-
-
-
-
-
-
-        // Product clicks - FIXED: No refresh
-
-
-
-        document.addEventListener('click', (e) => {
-
-
-
-            const productCard = e.target.closest('.product-card');
-
-
-
-            const addButton = e.target.closest('.add-to-cart');
-
-
-
-            const categoryBtn = e.target.closest('.category-btn');
-
-
-
-            
-
-
-
-            // Prevent default behavior for all buttons
-
-
-
-            if (addButton || categoryBtn) {
-
-
-
-                e.preventDefault();
-
-
-
-            }
-
-
-
-            
-
-
-
-            // Product card click
-
-
-
-            if (productCard && !addButton) {
-
-
-
-                const productId = parseInt(productCard.dataset.productId);
-
-
-
-                const product = products.find(p => p.id === productId);
-
-
-
-                if (product) {
-
-
-
-                    this.cart.addItem(product);
-
-
-
-                }
-
-
-
-                return false;
-
-
-
-            }
-
-
-
-            
-
-
-
-            // Add button click
-
-
-
-            if (addButton) {
-
-
-
-                const productId = parseInt(addButton.dataset.productId);
-
-
-
-                const product = products.find(p => p.id === productId);
-
-
-
-                if (product) {
-
-
-
-                    // Visual feedback
-
-
-
-                    const originalText = addButton.innerHTML;
-
-
-
-                    const originalBg = addButton.style.background;
-
-
-
-                    
-
-
-
-                    addButton.innerHTML = '<i class="fas fa-check"></i> تمت!';
-
-
-
-                    addButton.style.background = '#28a745';
-
-
-
-                    addButton.disabled = true;
-
-
-
-                    
-
-
-
-                    // Add to cart
-
-
-
-                    this.cart.addItem(product);
-
-
-
-                    
-
-
-
-                    // Restore button
-
-
-
-                    setTimeout(() => {
-
-
-
-                        addButton.innerHTML = originalText;
-
-
-
-                        addButton.style.background = originalBg;
-
-
-
-                        addButton.disabled = false;
-
-
-
-                    }, 1000);
-
-
-
-                }
-
-
-
-                return false;
-
-
-
-            }
-
-
-
-            
-
-
-
-            // Category button click
-
-
-
-            if (categoryBtn) {
-
-
-
-                const category = categoryBtn.dataset.category;
-
-
-
-                this.filterProductsByCategory(category);
-
-
-
-                return false;
-
-
-
-            }
-
-
-
-        });
-
-
-
-
-
-
-
-        // Smooth scroll for anchor links
-
-
-
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-
-
-
-            anchor.addEventListener('click', function(e) {
-
-
-
-                const href = this.getAttribute('href');
-
-
-
-                if (href === '#') return;
-
-
-
-                
-
-
-
-                const targetElement = document.querySelector(href);
-
-
-
-                if (targetElement) {
-
-
-
-                    e.preventDefault();
-
-
-
-                    const headerHeight = document.querySelector('.navbar').offsetHeight;
-
-
-
-                    const targetPosition = targetElement.offsetTop - headerHeight;
-
-
-
-                    
-
-
-
-                    window.scrollTo({
-
-
-
-                        top: targetPosition,
-
-
-
-                        behavior: 'smooth'
-
-
-
-                    });
-
-
-
-                }
-
-
-
-            });
-
-
-
-        });
-
-
-
+    getFormData() {
+        return {
+            name: document.getElementById('fullName')?.value.trim() || '',
+            phone: document.getElementById('phoneNumber')?.value.trim() || '',
+            city: document.getElementById('city')?.value.trim() || '',
+            address: document.getElementById('address')?.value.trim() || '',
+            notes: document.getElementById('notes')?.value.trim() || ''
+        };
     }
 
-
-
-
-
-
-
-    setupMobileMenu() {
-
-
-
-        const menuToggle = document.getElementById('menuToggle');
-
-
-
-        const navLinks = document.querySelector('.nav-links');
-
-
-
-
-
-
-
-        if (menuToggle && navLinks) {
-
-
-
-            menuToggle.addEventListener('click', () => {
-
-
-
-                navLinks.classList.toggle('active');
-
-
-
-                const icon = menuToggle.querySelector('i');
-
-
-
-                icon.classList.toggle('fa-bars');
-
-
-
-                icon.classList.toggle('fa-times');
-
-
-
-            });
-
-
-
-
-
-
-
-            // Close menu when clicking on a link
-
-
-
-            document.querySelectorAll('.nav-links a').forEach(link => {
-
-
-
-                link.addEventListener('click', () => {
-
-
-
-                    navLinks.classList.remove('active');
-
-
-
-                    menuToggle.querySelector('i').classList.remove('fa-times');
-
-
-
-                    menuToggle.querySelector('i').classList.add('fa-bars');
-
-
-
-                });
-
-
-
-            });
-
-
-
+    validate(data) {
+        if (!data.name || !data.phone || !data.city) {
+            this.ui.notify('الرجاء ملء جميع الحقول المطلوبة', 'error');
+            return false;
         }
 
+        if (!this.validPhone(data.phone)) {
+            this.ui.notify('رقم الهاتف غير صحيح', 'error');
+            return false;
+        }
 
-
+        return true;
     }
 
-
-
-
-
-
-
-    setupForms() {
-
-
-
-        // Newsletter form
-
-
-
-        const newsletterForm = document.getElementById('emailForm');
-
-
-
-        if (newsletterForm) {
-
-
-
-            newsletterForm.addEventListener('submit', (e) => {
-
-
-
-                e.preventDefault();
-
-
-
-                const email = newsletterForm.querySelector('input[type="email"]').value;
-
-
-
-                if (this.validateEmail(email)) {
-
-
-
-                    showNotification('شكراً للاشتراك! ستتلقى عروضنا الخاصة قريباً.', 'success');
-
-
-
-                    newsletterForm.reset();
-
-
-
-                } else {
-
-
-
-                    showNotification('الرجاء إدخال بريد إلكتروني صحيح.', 'error');
-
-
-
-                }
-
-
-
-            });
-
-
-
-        }
-
-
-
+    validPhone(phone) {
+        const cleaned = phone.replace(/\s+/g, '');
+        const regex = /^(?:(?:\+|00)212|0)[5-7]\d{8}$/;
+        return regex.test(cleaned);
     }
 
-
-
-
-
-
-
-    initHeroSlider() {
-
-
-
-        const slides = document.querySelectorAll('.hero-slider .slide');
-
-
-
-        const dots = document.querySelectorAll('.slider-dots .dot');
-
-
-
-        const prevBtn = document.querySelector('.prev-btn');
-
-
-
-        const nextBtn = document.querySelector('.next-btn');
-
-
-
-        
-
-
-
-        if (!slides.length) return;
-
-
-
-        
-
-
-
-        let currentSlide = 0;
-
-
-
-        let slideInterval;
-
-
-
-        
-
-
-
-        function showSlide(index) {
-
-
-
-            slides.forEach(slide => slide.classList.remove('active'));
-
-
-
-            dots.forEach(dot => dot.classList.remove('active'));
-
-
-
-            
-
-
-
-            slides[index].classList.add('active');
-
-
-
-            if (dots[index]) dots[index].classList.add('active');
-
-
-
-            currentSlide = index;
-
-
-
-        }
-
-
-
-        
-
-
-
-        function nextSlide() {
-
-
-
-            let nextIndex = currentSlide + 1;
-
-
-
-            if (nextIndex >= slides.length) nextIndex = 0;
-
-
-
-            showSlide(nextIndex);
-
-
-
-        }
-
-
-
-        
-
-
-
-        function prevSlide() {
-
-
-
-            let prevIndex = currentSlide - 1;
-
-
-
-            if (prevIndex < 0) prevIndex = slides.length - 1;
-
-
-
-            showSlide(prevIndex);
-
-
-
-        }
-
-
-
-        
-
-
-
-        if (dots) {
-
-
-
-            dots.forEach((dot, index) => {
-
-
-
-                dot.addEventListener('click', () => {
-
-
-
-                    showSlide(index);
-
-
-
-                    resetAutoSlide();
-
-
-
-                });
-
-
-
-            });
-
-
-
-        }
-
-
-
-        
-
-
-
-        if (prevBtn) {
-
-
-
-            prevBtn.addEventListener('click', () => {
-
-
-
-                prevSlide();
-
-
-
-                resetAutoSlide();
-
-
-
-            });
-
-
-
-        }
-
-
-
-        
-
-
-
-        if (nextBtn) {
-
-
-
-            nextBtn.addEventListener('click', () => {
-
-
-
-                nextSlide();
-
-
-
-                resetAutoSlide();
-
-
-
-            });
-
-
-
-        }
-
-
-
-        
-
-
-
-        function startAutoSlide() {
-
-
-
-            slideInterval = setInterval(nextSlide, 5000);
-
-
-
-        }
-
-
-
-        
-
-
-
-        function resetAutoSlide() {
-
-
-
-            clearInterval(slideInterval);
-
-
-
-            startAutoSlide();
-
-
-
-        }
-
-
-
-        
-
-
-
-        startAutoSlide();
-
-
-
-        
-
-
-
-        const heroSlider = document.querySelector('.hero-slider');
-
-
-
-        if (heroSlider) {
-
-
-
-            heroSlider.addEventListener('mouseenter', () => clearInterval(slideInterval));
-
-
-
-            heroSlider.addEventListener('mouseleave', startAutoSlide);
-
-
-
-        }
-
-
-
-    }
-
-
-
-
-
-
-
-    initReviewSlider() {
-
-
-
-        const slides = document.querySelectorAll('.review-slider .review-slide');
-
-
-
-        const prevBtn = document.querySelector('.prev-review-btn');
-
-
-
-        const nextBtn = document.querySelector('.next-review-btn');
-
-
-
-        
-
-
-
-        if (!slides.length) return;
-
-
-
-        
-
-
-
-        let current = 0;
-
-
-
-        
-
-
-
-        function showSlide(index) {
-
-
-
-            slides.forEach(slide => slide.classList.remove('active'));
-
-
-
-            slides[index].classList.add('active');
-
-
-
-            current = index;
-
-
-
-        }
-
-
-
-        
-
-
-
-        function nextSlide() {
-
-
-
-            let i = current + 1;
-
-
-
-            if (i >= slides.length) i = 0;
-
-
-
-            showSlide(i);
-
-
-
-        }
-
-
-
-        
-
-
-
-        function prevSlide() {
-
-
-
-            let i = current - 1;
-
-
-
-            if (i < 0) i = slides.length - 1;
-
-
-
-            showSlide(i);
-
-
-
-        }
-
-
-
-        
-
-
-
-        if (prevBtn) {
-
-
-
-            prevBtn.addEventListener('click', prevSlide);
-
-
-
-        }
-
-
-
-        
-
-
-
-        if (nextBtn) {
-
-
-
-            nextBtn.addEventListener('click', nextSlide);
-
-
-
-        }
-
-
-
-        
-
-
-
-        // Auto rotate
-
-
-
-        setInterval(nextSlide, 7000);
-
-
-
-    }
-
-
-
-
-
-
-
-    // ==============================================
-
-
-
-    // UPDATED FUNCTIONS WITH LOAD MORE
-
-
-
-    // ==============================================
-
-
-
-
-
-
-
-    // عرض عطور الرجال في الصفحة الرئيسية
-
-
-
-    renderMensProducts() {
-
-
-
-        const mensGrid = document.getElementById('mensGrid');
-
-
-
-        if (!mensGrid) return;
-
-
-
-
-
-
-
-        if (this.mensProducts.length === 0) {
-
-
-
-            mensGrid.innerHTML = `
-
-
-
-                <div class="empty-category">
-
-
-
-                    <i class="fas fa-box-open"></i>
-
-
-
-                    <h3>لا توجد عطور للرجال حالياً</h3>
-
-
-
-                    <p>سيكون لدينا عطور رجالية قريباً</p>
-
-
-
-                </div>
-
-
-
-            `;
-
-
-
-            return;
-
-
-
-        }
-
-
-
-
-
-
-
-        // عرض أول 3 منتجات فقط
-
-
-
-        const displayProducts = this.mensProducts.slice(0, this.mensDisplayCount);
-
-
-
-        
-
-
-
-        mensGrid.innerHTML = displayProducts.map(product => `
-
-
-
-            <div class="product-card" data-product-id="${product.id}">
-
-
-
-                <div class="product-image">
-
-
-
-                    <img src="${product.image}" alt="${product.name}">
-
-
-
-                    ${product.badge ? `<span class="product-badge">${product.badge}</span>` : ''}
-
-
-
-                </div>
-
-
-
-                <div class="product-content">
-
-
-
-                    <h3 class="product-title">${product.name}</h3>
-
-
-
-                    <p class="product-description">${product.description}</p>
-
-
-
-                    <div class="product-price">
-
-
-
-                        <div>
-
-
-
-                            <span class="price">${product.price} درهم</span>
-
-
-
-                            ${product.oldPrice ? `<span class="old-price">${product.oldPrice} درهم</span>` : ''}
-
-
-
-                        </div>
-
-
-
-                        <button class="btn btn-primary add-to-cart" data-product-id="${product.id}" type="button">
-
-
-
-                            <i class="fas fa-plus"></i>
-
-
-
-                            أضف للسلة
-
-
-
-                        </button>
-
-
-
-                    </div>
-
-
-
-                </div>
-
-
-
-            </div>
-
-
-
-        `).join('');
-
-
-
-
-
-
-
-        // إضافة زر "المزيد" إذا كان هناك منتجات أكثر
-
-
-
-        this.addMensLoadMoreButton();
-
-
-
-    }
-
-
-
-
-
-
-
-    addMensLoadMoreButton() {
-
-
-
-        const mensSection = document.querySelector('#mensGrid').closest('.category-section');
-
-
-
-        const existingButton = mensSection.querySelector('.load-more-btn');
-
-
-
-        
-
-
-
-        if (existingButton) {
-
-
-
-            existingButton.remove();
-
-
-
-        }
-
-
-
-
-
-
-
-        // إذا كان هناك منتجات أكثر مما هو معروض
-
-
-
-        if (this.mensProducts.length > this.mensDisplayCount) {
-
-
-
-            const loadMoreBtn = document.createElement('button');
-
-
-
-            loadMoreBtn.className = 'load-more-btn';
-
-
-
-            const remaining = this.mensProducts.length - this.mensDisplayCount;
-
-
-
-            
-
-
-
-            loadMoreBtn.innerHTML = `
-
-
-
-                <i class="fas fa-plus"></i>
-
-
-
-                عرض المزيد من عطور الرجال (${remaining} منتج${remaining > 1 ? 'ات' : ''})
-
-
-
-            `;
-
-
-
-            
-
-
-
-            loadMoreBtn.addEventListener('click', () => {
-
-
-
-                this.loadMoreMensProducts();
-
-
-
-            });
-
-
-
-            
-
-
-
-            mensSection.appendChild(loadMoreBtn);
-
-
-
-        } else {
-
-
-
-            // إذا ظهرت كل المنتجات، أضف رسالة
-
-
-
-            const allShown = document.createElement('div');
-
-
-
-            allShown.className = 'all-shown-message';
-
-
-
-            allShown.innerHTML = `
-
-
-
-                <i class="fas fa-check-circle"></i>
-
-
-
-                <span>تم عرض جميع منتجات الرجال</span>
-
-
-
-            `;
-
-
-
-            mensSection.appendChild(allShown);
-
-
-
-        }
-
-
-
-    }
-
-
-
-
-
-
-
-    loadMoreMensProducts() {
-
-
-
-        // زيادة عدد المنتجات المعروضة ب 3 أو أقل
-
-
-
-        const remaining = this.mensProducts.length - this.mensDisplayCount;
-
-
-
-        this.mensDisplayCount += Math.min(3, remaining);
-
-
-
-        
-
-
-
-        this.renderMensProducts();
-
-
-
-        
-
-
-
-        // التمرير السلس للقسم
-
-
-
-        const mensSection = document.querySelector('#mensGrid').closest('.category-section');
-
-
-
-        mensSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-
-
-
-    }
-
-
-
-
-
-
-
-    // عرض عطور النساء في الصفحة الرئيسية
-
-
-
-    renderWomensProducts() {
-
-
-
-        const womensGrid = document.getElementById('womensGrid');
-
-
-
-        if (!womensGrid) return;
-
-
-
-
-
-
-
-        if (this.womensProducts.length === 0) {
-
-
-
-            womensGrid.innerHTML = `
-
-
-
-                <div class="empty-category">
-
-
-
-                    <i class="fas fa-box-open"></i>
-
-
-
-                    <h3>لا توجد عطور للنساء حالياً</h3>
-
-
-
-                    <p>سيكون لدينا عطور نسائية قريباً</p>
-
-
-
-                </div>
-
-
-
-            `;
-
-
-
-            return;
-
-
-
-        }
-
-
-
-
-
-
-
-        // عرض أول 3 منتجات فقط
-
-
-
-        const displayProducts = this.womensProducts.slice(0, this.womensDisplayCount);
-
-
-
-        
-
-
-
-        womensGrid.innerHTML = displayProducts.map(product => `
-
-
-
-            <div class="product-card" data-product-id="${product.id}">
-
-
-
-                <div class="product-image">
-
-
-
-                    <img src="${product.image}" alt="${product.name}">
-
-
-
-                    ${product.badge ? `<span class="product-badge">${product.badge}</span>` : ''}
-
-
-
-                </div>
-
-
-
-                <div class="product-content">
-
-
-
-                    <h3 class="product-title">${product.name}</h3>
-
-
-
-                    <p class="product-description">${product.description}</p>
-
-
-
-                    <div class="product-price">
-
-
-
-                        <div>
-
-
-
-                            <span class="price">${product.price} درهم</span>
-
-
-
-                            ${product.oldPrice ? `<span class="old-price">${product.oldPrice} درهم</span>` : ''}
-
-
-
-                        </div>
-
-
-
-                        <button class="btn btn-primary add-to-cart" data-product-id="${product.id}" type="button">
-
-
-
-                            <i class="fas fa-plus"></i>
-
-
-
-                            أضف للسلة
-
-
-
-                        </button>
-
-
-
-                    </div>
-
-
-
-                </div>
-
-
-
-            </div>
-
-
-
-        `).join('');
-
-
-
-
-
-
-
-        // إضافة زر "المزيد" إذا كان هناك منتجات أكثر
-
-
-
-        this.addWomensLoadMoreButton();
-
-
-
-    }
-
-
-
-
-
-
-
-    addWomensLoadMoreButton() {
-
-
-
-        const womensSection = document.querySelector('#womensGrid').closest('.category-section');
-
-
-
-        const existingButton = womensSection.querySelector('.load-more-btn');
-
-
-
-        
-
-
-
-        if (existingButton) {
-
-
-
-            existingButton.remove();
-
-
-
-        }
-
-
-
-
-
-
-
-        // إذا كان هناك منتجات أكثر مما هو معروض
-
-
-
-        if (this.womensProducts.length > this.womensDisplayCount) {
-
-
-
-            const loadMoreBtn = document.createElement('button');
-
-
-
-            loadMoreBtn.className = 'load-more-btn';
-
-
-
-            const remaining = this.womensProducts.length - this.womensDisplayCount;
-
-
-
-            
-
-
-
-            loadMoreBtn.innerHTML = `
-
-
-
-                <i class="fas fa-plus"></i>
-
-
-
-                عرض المزيد من عطور النساء (${remaining} منتج${remaining > 1 ? 'ات' : ''})
-
-
-
-            `;
-
-
-
-            
-
-
-
-            loadMoreBtn.addEventListener('click', () => {
-
-
-
-                this.loadMoreWomensProducts();
-
-
-
-            });
-
-
-
-            
-
-
-
-            womensSection.appendChild(loadMoreBtn);
-
-
-
-        } else {
-
-
-
-            // إذا ظهرت كل المنتجات، أضف رسالة
-
-
-
-            const allShown = document.createElement('div');
-
-
-
-            allShown.className = 'all-shown-message';
-
-
-
-            allShown.innerHTML = `
-
-
-
-                <i class="fas fa-check-circle"></i>
-
-
-
-                <span>تم عرض جميع منتجات النساء</span>
-
-
-
-            `;
-
-
-
-            womensSection.appendChild(allShown);
-
-
-
-        }
-
-
-
-    }
-
-
-
-
-
-
-
-    loadMoreWomensProducts() {
-
-
-
-        // زيادة عدد المنتجات المعروضة ب 3 أو أقل
-
-
-
-        const remaining = this.womensProducts.length - this.womensDisplayCount;
-
-
-
-        this.womensDisplayCount += Math.min(3, remaining);
-
-
-
-        
-
-
-
-        this.renderWomensProducts();
-
-
-
-        
-
-
-
-        // التمرير السلس للقسم
-
-
-
-        const womensSection = document.querySelector('#womensGrid').closest('.category-section');
-
-
-
-        womensSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-
-
-
-    }
-
-
-
-
-
-
-
-
-
-    
-
-
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // دالة renderProducts القديمة - يمكن حذفها
-
-
-
-    renderProducts() {
-
-
-
-        const productsGrid = document.getElementById('productsGrid');
-
-
-
-        if (!productsGrid) return;
-
-
-
-
-
-
-
-        // يمكن حذف هذه الدالة إذا لم تعد تحتاجها
-
-
-
-        console.log('renderProducts function is deprecated');
-
-
-
-    }
-
-
-
-
-
-
-
-    renderFeaturedProducts() {
-
-
-
-        const featuredGrid = document.querySelector('.featured-grid');
-
-
-
-        if (!featuredGrid) return;
-
-
-
-
-
-
-
-        const featuredProducts = products.filter(product => product.featured);
-
-
-
-        
-
-
-
-        featuredGrid.innerHTML = featuredProducts.map(product => `
-
-
-
-            <div class="featured-card">
-
-
-
-                <div class="featured-image">
-
-
-
-                    <img src="${product.image}" alt="${product.name}">
-
-
-
-                    <span class="featured-badge">${product.badge}</span>
-
-
-
-                </div>
-
-
-
-                <div class="featured-content">
-
-
-
-                    <h3>${product.name}</h3>
-
-
-
-                    <p>${product.description}</p>
-
-
-
-                    <div class="featured-price">
-
-
-
-                        <span class="price">${product.price} درهم</span>
-
-
-
-                        <button class="btn btn-primary add-to-cart" data-product-id="${product.id}" type="button">
-
-
-
-                            <i class="fas fa-plus"></i>
-
-
-
-                            أضف للسلة
-
-
-
-                        </button>
-
-
-
-                    </div>
-
-
-
-                </div>
-
-
-
-            </div>
-
-
-
-        `).join('');
-
-
-
-    }
-
-
-
-
-
-
-
-    filterProductsByCategory(category) {
-
-
-
-        // هذه الدالة قد تحتاج للتحديث إذا كنت تستخدمها
-
-
-
-        const filteredProducts = products.filter(product => 
-
-
-
-            product.category === category || category === 'all'
-
-
-
+    async sendOrder(data) {
+        const params = this.buildParams(data);
+        return await emailjs.send(
+            this.emailConfig.serviceId,
+            this.emailConfig.templateId,
+            params
         );
+    }
 
+    buildParams(data) {
+        return {
+            full_name: data.name,
+            phone: data.phone,
+            city: data.city,
+            address: data.address || 'لم يتم التحديد',
+            notes: data.notes || 'لا توجد ملاحظات',
+            order_id: 'LOOZA-' + Date.now().toString().slice(-6),
+            order_date: new Date().toLocaleString('ar-EG'),
+            total_items: this.cart.totalItems,
+            total_price: this.cart.totalPrice + ' درهم',
+            products: this.formatProducts(),
+            to_email: 'loozaparfums@gmail.com',
+            to_name: 'إدارة متجر لوزة بارفوم'
+        };
+    }
 
+    formatProducts() {
+        return this.cart.items.map((item, i) => 
+            `${i + 1}. ${item.name} - ${item.quantity} × ${item.price} درهم = ${item.quantity * item.price} درهم`
+        ).join('\n');
+    }
 
+    handleError(error, data) {
+        let message = '❌ حدث خطأ في إرسال الطلب. ';
         
-
-
-
-        const productsGrid = document.getElementById('productsGrid');
-
-
-
-        if (!productsGrid) return;
-
-
-
-
-
-
-
-        productsGrid.innerHTML = filteredProducts.map(product => `
-
-
-
-            <div class="product-card" data-product-id="${product.id}">
-
-
-
-                <div class="product-image">
-
-
-
-                    <img src="${product.image}" alt="${product.name}">
-
-
-
-                    ${product.badge ? `<span class="product-badge">${product.badge}</span>` : ''}
-
-
-
-                </div>
-
-
-
-                <div class="product-content">
-
-
-
-                    <h3 class="product-title">${product.name}</h3>
-
-
-
-                    <p class="product-description">${product.description}</p>
-
-
-
-                    <div class="product-price">
-
-
-
-                        <div>
-
-
-
-                            <span class="price">${product.price} درهم</span>
-
-
-
-                            ${product.oldPrice ? `<span class="old-price">${product.oldPrice} درهم</span>` : ''}
-
-
-
-                        </div>
-
-
-
-                        <button class="btn btn-primary add-to-cart" data-product-id="${product.id}" type="button">
-
-
-
-                            <i class="fas fa-plus"></i>
-
-
-
-                            أضف للسلة
-
-
-
-                        </button>
-
-
-
-                    </div>
-
-
-
-                </div>
-
-
-
-            </div>
-
-
-
-        `).join('');
-
-
-
-        
-
-
-
-        // Scroll to products section
-
-
-
-        const productsSection = document.getElementById('products');
-
-
-
-        if (productsSection) {
-
-
-
-            const headerHeight = document.querySelector('.navbar').offsetHeight;
-
-
-
-            const targetPosition = productsSection.offsetTop - headerHeight;
-
-
-
-            
-
-
-
-            window.scrollTo({
-
-
-
-                top: targetPosition,
-
-
-
-                behavior: 'smooth'
-
-
-
-            });
-
-
-
-        }
-
-
-
-    }
-
-
-
-
-
-
-
-    validateEmail(email) {
-
-
-
-        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-
-
-        return re.test(email);
-
-
-
-    }
-
-
-
-
-
-
-
-    updateCopyrightYear() {
-
-
-
-        const yearElement = document.getElementById('currentYear');
-
-
-
-        if (yearElement) {
-
-
-
-            yearElement.textContent = new Date().getFullYear();
-
-
-
-        }
-
-
-
-    }
-
-
-
-}
-
-
-
-
-
-
-
-// ==============================================
-
-
-
-// INITIALIZE APPLICATION
-
-
-
-// ==============================================
-
-
-
-document.addEventListener('DOMContentLoaded', () => {
-
-
-
-    // Initialize app
-
-
-
-    window.app = new App();
-
-
-
-    
-
-
-
-    console.log('LOOZA PARFUM - Ready!');
-
-
-
-});
-
-
-
-
-
-
-
-// ==============================================
-
-
-
-// ERROR HANDLING
-
-
-
-// ==============================================
-
-
-
-window.addEventListener('error', function(e) {
-
-
-
-    console.error('Error:', e.message);
-
-
-
-});
-
-
-
-
-
-
-
-
-
-
-
-// ==============================================
-
-
-
-
-
-
-
-function customConfirm(message) {
-
-
-
-    return new Promise((resolve) => {
-
-
-
-        const overlay = document.getElementById('customConfirm');
-
-
-
-        const msg = overlay.querySelector('.confirm-message');
-
-
-
-        const yesBtn = document.getElementById('confirmYes');
-
-
-
-        const noBtn = document.getElementById('confirmNo');
-
-
-
-
-
-
-
-        msg.textContent = message;
-
-
-
-        overlay.classList.add('active');
-
-
-
-
-
-
-
-        const close = () => overlay.classList.remove('active');
-
-
-
-
-
-
-
-        yesBtn.onclick = () => { close(); resolve(true); };
-
-
-
-        noBtn.onclick  = () => { close(); resolve(false); };
-
-
-
-    });
-
-
-
-}
-
-
-
-// brrrrr //
-
-// أضف هذا في أي مكان في script.js للتحقق
-console.log('زر checkoutBtn:', document.getElementById('checkoutBtn'));
-
-// تحقق من CSS
-const btn = document.getElementById('checkoutBtn');
-if (btn) {
-    console.log('display:', window.getComputedStyle(btn).display);
-    console.log('visibility:', window.getComputedStyle(btn).visibility);
-    console.log('opacity:', window.getComputedStyle(btn).opacity);
-    console.log('position:', window.getComputedStyle(btn).position);
-    console.log('bottom:', window.getComputedStyle(btn).bottom);
-}
-
-
-
-// إصلاح زر إتمام الطلب
-function forceShowCheckoutBtn() {
-    const checkoutBtn = document.getElementById('checkoutBtn');
-    if (!checkoutBtn) {
-        console.error('❌ زر checkoutBtn غير موجود!');
-        return;
-    }
-    
-    console.log('🔧 إصلاح زر checkoutBtn...');
-    
-    // إجبار إظهار الزر
-    checkoutBtn.style.cssText = `
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        gap: 10px !important;
-        width: 100% !important;
-        padding: 18px 20px !important;
-        background: linear-gradient(135deg, #D4AF37, #8B4513) !important;
-        color: white !important;
-        border: none !important;
-        border-radius: 12px !important;
-        font-size: 18px !important;
-        font-weight: bold !important;
-        margin: 20px 0 0 0 !important;
-        cursor: pointer !important;
-        opacity: 1 !important;
-        visibility: visible !important;
-        position: relative !important;
-        z-index: 1000 !important;
-        box-shadow: 0 4px 20px rgba(139, 69, 19, 0.4) !important;
-        transition: all 0.3s ease !important;
-    `;
-    
-    // للجوال، جعل الزر ثابت في الأسفل
-    if (window.innerWidth <= 768) {
-        checkoutBtn.style.cssText += `
-            position: fixed !important;
-            bottom: 0 !important;
-            left: 0 !important;
-            right: 0 !important;
-            height: 65px !important;
-            border-radius: 0 !important;
-            margin: 0 !important;
-            z-index: 99999 !important;
-            font-size: 20px !important;
-        `;
-        
-        // أضف padding للقائمة لتجنب تغطية الزر
-        const cartItems = document.querySelector('.cart-items');
-        if (cartItems) {
-            cartItems.style.paddingBottom = '75px';
-        }
-    }
-    
-    console.log('✅ تم إصلاح زر checkoutBtn');
-}
-
-// تشغيل عند فتح السلة
-document.getElementById('cartBtn').addEventListener('click', function() {
-    setTimeout(forceShowCheckoutBtn, 500);
-});
-
-// تشغيل عند تحميل الصفحة
-window.addEventListener('load', function() {
-    setTimeout(forceShowCheckoutBtn, 1000);
-});
-
-// تشغيل عند تغيير حجم النافذة
-window.addEventListener('resize', forceShowCheckoutBtn);
-
-// ============================================
-// 🎯 MOBILE ENHANCEMENTS - تحسينات الموبايل
-// ============================================
-
-// 1. Better Cart Badge Animation
-function animateCartBadge() {
-    const badge = document.getElementById('cartCount');
-    if (badge && badge.style.display !== 'none') {
-        badge.classList.add('bounce');
-        setTimeout(() => badge.classList.remove('bounce'), 600);
-    }
-}
-
-// 2. Vibration Feedback (للموبايل)
-function vibrate(duration = 50) {
-    if ('vibrate' in navigator) {
-        navigator.vibrate(duration);
-    }
-}
-
-// 3. Haptic Feedback عند إضافة منتج
-document.addEventListener('click', (e) => {
-    const addBtn = e.target.closest('.add-to-cart');
-    if (addBtn) {
-        vibrate(50);
-        animateCartBadge();
-    }
-});
-
-// 4. Swipe to Close للـ Cart Modal (الموبايل)
-if (window.innerWidth <= 768) {
-    let touchStartY = 0;
-    let touchEndY = 0;
-    
-    const cartContainer = document.querySelector('.cart-container');
-    
-    if (cartContainer) {
-        cartContainer.addEventListener('touchstart', (e) => {
-            touchStartY = e.changedTouches[0].screenY;
-        });
-        
-        cartContainer.addEventListener('touchend', (e) => {
-            touchEndY = e.changedTouches[0].screenY;
-            handleSwipe();
-        });
-        
-        function handleSwipe() {
-            const swipeDistance = touchEndY - touchStartY;
-            // إذا سحب لتحت أكثر من 100px، سد الـ Cart
-            if (swipeDistance > 100) {
-                document.getElementById('cartModal').classList.remove('active');
-                document.body.style.overflow = '';
-                vibrate(30);
-            }
-        }
-    }
-}
-
-// 5. Auto-hide Navbar عند Scroll (الموبايل)
-if (window.innerWidth <= 768) {
-    let lastScroll = 0;
-    const navbar = document.querySelector('.navbar');
-    
-    window.addEventListener('scroll', () => {
-        const currentScroll = window.pageYOffset;
-        
-        if (currentScroll > lastScroll && currentScroll > 100) {
-            // Scrolling down - hide navbar
-            navbar.style.transform = 'translateY(-100%)';
+        if (error.status === 0) {
+            message += 'فشل الاتصال.';
         } else {
-            // Scrolling up - show navbar
-            navbar.style.transform = 'translateY(0)';
+            message += 'حاول مرة أخرى.';
         }
         
-        lastScroll = currentScroll;
-    });
-}
-
-// 6. Double Tap to Add (للموبايل)
-let lastTap = 0;
-document.addEventListener('click', (e) => {
-    const productCard = e.target.closest('.product-card');
-    if (productCard && window.innerWidth <= 768) {
-        const currentTime = new Date().getTime();
-        const tapLength = currentTime - lastTap;
+        this.ui.notify(message, 'error');
         
-        if (tapLength < 300 && tapLength > 0) {
-            // Double tap detected
-            const productId = parseInt(productCard.dataset.productId);
-            const product = products.find(p => p.id === productId);
-            if (product && window.app) {
-                window.app.cart.addItem(product);
-                vibrate([50, 30, 50]); // pattern vibration
-            }
-        }
-        
-        lastTap = currentTime;
-    }
-});
-
-// 7. Pull to Refresh للمنتجات
-if (window.innerWidth <= 768) {
-    let pStart = { x: 0, y: 0 };
-    let pCurrent = { x: 0, y: 0 };
-    
-    document.addEventListener('touchstart', (e) => {
-        pStart.x = e.touches[0].clientX;
-        pStart.y = e.touches[0].clientY;
-    });
-    
-    document.addEventListener('touchmove', (e) => {
-        if (window.scrollY === 0) {
-            pCurrent.x = e.touches[0].clientX;
-            pCurrent.y = e.touches[0].clientY;
-        }
-    });
-    
-    document.addEventListener('touchend', () => {
-        if (window.scrollY === 0 && pCurrent.y - pStart.y > 100) {
-            // Refresh products
-            if (window.app) {
-                showNotification('🔄 جاري تحديث المنتجات...', 'info');
-                setTimeout(() => {
-                    window.app.loadProducts();
-                    window.app.renderMensProducts();
-                    window.app.renderWomensProducts();
-                    window.app.renderFeaturedProducts();
-                    showNotification('✅ تم التحديث بنجاح', 'success');
-                    vibrate(50);
-                }, 500);
-            }
-        }
-    });
-}
-
-// 8. Smart Loading للصور
-document.addEventListener('DOMContentLoaded', () => {
-    const images = document.querySelectorAll('img[data-src]');
-    
-    const imageObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const img = entry.target;
-                img.src = img.dataset.src;
-                img.removeAttribute('data-src');
-                imageObserver.unobserve(img);
-            }
-        });
-    });
-    
-    images.forEach(img => imageObserver.observe(img));
-});
-
-// 9. Connection Status Indicator
-window.addEventListener('online', () => {
-    showNotification('✅ عاد الاتصال بالإنترنت', 'success');
-});
-
-window.addEventListener('offline', () => {
-    showNotification('⚠️ انقطع الاتصال بالإنترنت', 'error');
-});
-
-// 10. Auto-save Cart للـ localStorage بشكل ذكي
-let cartSaveTimeout;
-function autoSaveCart() {
-    clearTimeout(cartSaveTimeout);
-    cartSaveTimeout = setTimeout(() => {
-        if (window.app && window.app.cart) {
-            window.app.cart.saveCart();
-            console.log('💾 Cart saved automatically');
-        }
-    }, 1000);
-}
-
-// استدعاء auto-save عند أي تغيير
-document.addEventListener('click', (e) => {
-    if (e.target.closest('.quantity-btn') || e.target.closest('.remove-item')) {
-        autoSaveCart();
-    }
-});
-
-// 11. Prevent accidental form submission
-document.querySelectorAll('form').forEach(form => {
-    form.addEventListener('submit', (e) => {
-        const submitBtn = form.querySelector('button[type="submit"]');
-        if (submitBtn && submitBtn.disabled) {
-            e.preventDefault();
-            showNotification('⏳ يرجى الانتظار...', 'info');
-        }
-    });
-});
-
-// 12. Smart Scroll to Top
-function scrollToTop() {
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-    });
-}
-
-// زر Scroll to Top (يظهر فاش تسكرولي)
-if (window.innerWidth <= 768) {
-    const scrollBtn = document.createElement('button');
-    scrollBtn.innerHTML = '<i class="fas fa-arrow-up"></i>';
-    scrollBtn.className = 'scroll-to-top';
-    scrollBtn.style.cssText = `
-        position: fixed;
-        bottom: 80px;
-        left: 20px;
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        background: var(--primary-color);
-        color: white;
-        border: none;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        opacity: 0;
-        visibility: hidden;
-        transition: all 0.3s ease;
-        z-index: 9997;
-        cursor: pointer;
-    `;
-    
-    document.body.appendChild(scrollBtn);
-    
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 300) {
-            scrollBtn.style.opacity = '1';
-            scrollBtn.style.visibility = 'visible';
-        } else {
-            scrollBtn.style.opacity = '0';
-            scrollBtn.style.visibility = 'hidden';
-        }
-    });
-    
-    scrollBtn.addEventListener('click', () => {
-        scrollToTop();
-        vibrate(30);
-    });
-}
-
-// 13. Enhanced Add to Cart Feedback
-document.addEventListener('click', (e) => {
-    const addBtn = e.target.closest('.add-to-cart');
-    if (addBtn && !addBtn.classList.contains('adding')) {
-        addBtn.classList.add('adding');
-        
-        // Create flying icon animation
-        const icon = document.createElement('i');
-        icon.className = 'fas fa-shopping-cart';
-        icon.style.cssText = `
-            position: fixed;
-            left: ${e.clientX}px;
-            top: ${e.clientY}px;
-            font-size: 20px;
-            color: var(--primary-color);
-            pointer-events: none;
-            z-index: 100000;
-            animation: flyToCart 0.8s ease-out forwards;
-        `;
-        
-        document.body.appendChild(icon);
-        
+        // Fallback
         setTimeout(() => {
-            icon.remove();
-            addBtn.classList.remove('adding');
-        }, 800);
+            if (confirm('إرسال يدوي عبر البريد؟')) {
+                this.sendManual(data);
+            }
+        }, 2000);
     }
+
+    sendManual(data) {
+        const email = 'loozaparfums@gmail.com';
+        const subject = `طلب جديد - ${data.name}`;
+        const body = this.buildManualBody(data);
+        
+        window.open(`mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`, '_blank');
+        this.ui.notify('افتح البريد وأرسل', 'info');
+    }
+
+    buildManualBody(data) {
+        return `طلب جديد:
+الاسم: ${data.name}
+الهاتف: ${data.phone}
+المدينة: ${data.city}
+${data.address ? `العنوان: ${data.address}` : ''}
+${data.notes ? `ملاحظات: ${data.notes}` : ''}
+
+المنتجات:
+${this.formatProducts()}
+
+المجموع: ${this.cart.totalPrice} درهم`;
+    }
+}
+
+// ==============================================
+// MAIN APP
+// ==============================================
+
+class LoozaApp {
+    constructor() {
+        this.products = ProductManager.init();
+        this.cart = new Cart();
+        this.ui = new UIManager(this.cart, this.products);
+        this.checkout = new CheckoutManager(this.cart, this.ui);
+        this.init();
+    }
+
+    init() {
+        // Setup listeners
+        this.setupEvents();
+        
+        // Initial render
+        this.ui.updateCartUI();
+        this.ui.renderProducts();
+        this.ui.updateSliders();
+        
+        // Start auto sliders
+        this.startSliders();
+        
+        // Init checkout
+        this.checkout.init();
+        
+        // Update year
+        this.updateYear();
+        
+        // Listen for cart changes
+        this.cart.subscribe(() => this.ui.updateCartUI());
+        
+        // Listen for product updates
+        window.addEventListener('productsUpdated', () => {
+            this.ui.resetDisplayCounts();
+            this.ui.renderProducts();
+        });
+        
+        console.log('🚀 LOOZA App Ready');
+    }
+
+    setupEvents() {
+        // Cart toggle
+        document.getElementById('cartBtn')?.addEventListener('click', () => this.ui.toggleCart(true));
+        document.getElementById('closeCart')?.addEventListener('click', () => this.ui.toggleCart(false));
+        
+        // Menu toggle
+        document.getElementById('menuToggle')?.addEventListener('click', () => this.ui.toggleMenu());
+        
+        // Product clicks
+        document.addEventListener('click', (e) => this.handleClick(e));
+        
+        // Slider controls
+        document.querySelector('.prev-btn')?.addEventListener('click', () => this.ui.prevSlide());
+        document.querySelector('.next-btn')?.addEventListener('click', () => this.ui.nextSlide());
+        document.querySelectorAll('.dot').forEach((dot, i) => {
+            dot.addEventListener('click', () => this.ui.goToSlide(i));
+        });
+        
+        // Review controls
+        document.querySelector('.prev-review-btn')?.addEventListener('click', () => this.ui.prevReview());
+        document.querySelector('.next-review-btn')?.addEventListener('click', () => this.ui.nextReview());
+        
+        // Newsletter
+        document.getElementById('emailForm')?.addEventListener('submit', (e) => this.handleNewsletter(e));
+        
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(link => {
+            link.addEventListener('click', (e) => this.scrollTo(e));
+        });
+    }
+
+    handleClick(e) {
+        // Add to cart button
+        const addBtn = e.target.closest('.add-to-cart');
+        if (addBtn) {
+            e.preventDefault();
+            const id = parseInt(addBtn.dataset.id);
+            const product = this.products.getById(id);
+            if (product) {
+                this.addProduct(product, addBtn);
+            }
+            return;
+        }
+
+        // Product card click
+        const card = e.target.closest('.product-card');
+        if (card && !addBtn) {
+            const id = parseInt(card.dataset.productId);
+            const product = this.products.getById(id);
+            if (product) {
+                this.cart.add(product);
+                this.ui.notify(`تم إضافة ${product.name} إلى السلة`, 'success');
+            }
+        }
+    }
+
+    addProduct(product, button) {
+        // Button feedback
+        const original = button.innerHTML;
+        button.innerHTML = '<i class="fas fa-check"></i> تمت!';
+        button.disabled = true;
+        
+        // Add to cart
+        this.cart.add(product);
+        
+        // Restore button
+        setTimeout(() => {
+            button.innerHTML = original;
+            button.disabled = false;
+        }, 1000);
+    }
+
+    handleNewsletter(e) {
+        e.preventDefault();
+        const email = e.target.querySelector('input[type="email"]').value;
+        
+        if (this.validEmail(email)) {
+            this.ui.notify('شكراً للاشتراك!', 'success');
+            e.target.reset();
+        } else {
+            this.ui.notify('بريد إلكتروني غير صحيح', 'error');
+        }
+    }
+
+    validEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    scrollTo(e) {
+        const href = e.currentTarget.getAttribute('href');
+        if (href === '#') return;
+        
+        const target = document.querySelector(href);
+        if (!target) return;
+        
+        e.preventDefault();
+        const header = document.querySelector('.navbar');
+        const top = target.offsetTop - (header?.offsetHeight || 0);
+        
+        window.scrollTo({ top, behavior: 'smooth' });
+        
+        // Close menu if open
+        if (document.querySelector('.nav-links.active')) {
+            this.ui.toggleMenu();
+        }
+    }
+
+    startSliders() {
+        // Auto slide hero
+        setInterval(() => this.ui.nextSlide(), 5000);
+        
+        // Auto slide reviews
+        setInterval(() => this.ui.nextReview(), 7000);
+    }
+
+    updateYear() {
+        const yearEl = document.getElementById('currentYear');
+        if (yearEl) {
+            yearEl.textContent = new Date().getFullYear();
+        }
+    }
+}
+
+// ==============================================
+// INITIALIZE
+// ==============================================
+
+// Create app instance
+window.looza = new LoozaApp();
+
+// Global error handler
+window.addEventListener('error', (e) => {
+    console.error('Error:', e.message);
 });
 
-// CSS للـ flying animation
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes flyToCart {
-        0% {
-            transform: translate(0, 0) scale(1);
-            opacity: 1;
-        }
-        100% {
-            transform: translate(
-                calc(100vw - ${window.innerWidth - 50}px),
-                calc(-100vh + 100px)
-            ) scale(0.3);
-            opacity: 0;
-        }
-    }
-`;
-document.head.appendChild(style);
-
-console.log('✨ Mobile enhancements loaded!');
+// Make UI methods globally accessible
+window.ui = window.looza.ui;
