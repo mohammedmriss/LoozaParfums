@@ -57,8 +57,9 @@ function getSafeFileName(filename){
 function getImageUploadPath(file){
   const extensionMatch = file.name.match(/\.([a-zA-Z0-9]+)$/);
   const extension = extensionMatch ? extensionMatch[1] : 'png';
-  const namePart = getSafeFileName(file.name.replace(/\.([a-zA-Z0-9]+)$/, ''));
-  return `img/${Date.now()}-${namePart}.${extension}`;
+  const randomId = Math.random().toString(36).substring(2, 7);
+  const safeBase = getSafeFileName(file.name.replace(/\.([a-zA-Z0-9]+)$/, '')) || 'image';
+  return `img/image-${Date.now()}-${randomId}-${safeBase}.${extension}`;
 }
 
 function base64EncodeArrayBuffer(buffer){
