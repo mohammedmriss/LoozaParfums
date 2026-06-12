@@ -52,6 +52,7 @@ async function fetchLiveProducts(){
             const price = Number(item.price || item.amount || 0) || 0;
             const oldPrice = Number(item.oldPrice || item.price || 0) || price;
             const image = item.image || item.imageUrl || item.img || '';
+            const ml = String(item.ml || item.size || item.volume || item.weight || '').trim();
 
             // Normalize category: accept Arabic 'رجال'/'نساء' or english 'mens'/'womens'
             let rawCat = (item.category || '').toString().trim();
@@ -78,6 +79,7 @@ async function fetchLiveProducts(){
                 oldPrice,
                 image,
                 category,
+                ml,
                 featured: !!item.featured,
                 badge: item.badge || ''
             };
@@ -548,6 +550,7 @@ class UIManager {
                 </div>
                 <div class="product-content">
                     <h3 class="product-title">${product.name}</h3>
+                    ${product.ml ? `<div class="product-size">الحجم: ${product.ml}</div>` : ''}
                     <p class="product-description">${product.description}</p>
                     <div class="product-price">
                         <div>

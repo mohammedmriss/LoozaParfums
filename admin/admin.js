@@ -27,20 +27,82 @@ function base64DecodeUtf8(b64){
 // Helpers for session config
 function getConfig(){
   return {
-    token: sessionStorage.getItem('gh_token') || '',
-    owner: sessionStorage.getItem('gh_owner') || '',
-    repo: sessionStorage.getItem('gh_repo') || ''
+    token: localStorage.getItem('gh_token') || '',
+    owner: localStorage.getItem('gh_owner') || '',
+    repo: localStorage.getItem('gh_repo') || ''
   };
 }
 function setConfig({token,owner,repo}){
-  if(token) sessionStorage.setItem('gh_token', token);
-  if(owner) sessionStorage.setItem('gh_owner', owner);
-  if(repo) sessionStorage.setItem('gh_repo', repo);
+  if(token) localStorage.setItem('gh_token', token);
+  if(owner) localStorage.setItem('gh_owner', owner);
+  if(repo) localStorage.setItem('gh_repo', repo);
 }
 function clearConfig(){
-  sessionStorage.removeItem('gh_token');
-  sessionStorage.removeItem('gh_owner');
-  sessionStorage.removeItem('gh_repo');
+  localStorage.removeItem('gh_token');
+  localStorage.removeItem('gh_owner');
+  localStorage.removeItem('gh_repo');
+}
+
+function getSafeFileName(filename){
+  return filename
+    .toString()
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g,'-')
+    .replace(/[^a-z0-9\-\.]/g,'')
+    .replace(/\-+/g,'-')
+    .replace(/^\-+|\-+$/g,'') || 'image-file';
+}
+
+function getImageUploadPath(file){
+  const extensionMatch = file.name.match(/\.([a-zA-Z0-9]+)$/);
+  const extension = extensionMatch ? extensionMatch[1] : 'png';
+  const namePart = getSafeFileName(file.name.replace(/\.([a-zA-Z0-9]+)$/, ''));
+  return `img/${Date.now()}-${namePart}.${extension}`;
+}
+
+function base64EncodeArrayBuffer(buffer){
+  const bytes = new Uint8Array(buffer);
+  const chunkSize = 0x8000;
+  let binary = '';
+  for(let i=0;i<bytes.length;i+=chunkSize){
+    binary += String.fromCharCode.apply(null, Array.from(bytes.subarray(i, i+chunkSize)));
+  }
+  return btoa(binary);
+}
+
+async function uploadImageFileToGithub(file){
+  const {token,owner,repo} = getConfig();
+  if(!owner || !repo) throw new Error('Repo info missing');
+  if(!token) throw new Error('GitHub token required to upload image');
+
+  const path = getImageUploadPath(file);
+  const apiPath = path.split('/').map(encodeURIComponent).join('/');
+  const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${apiPath}`;
+  const arrayBuffer = await file.arrayBuffer();
+  const content = base64EncodeArrayBuffer(arrayBuffer);
+
+  const payload = {
+    message: `Upload product image ${file.name}`,
+    content
+  };
+
+  const res = await fetch(apiUrl, {
+    method:'PUT',
+    headers:{
+      'Accept':'application/vnd.github.v3+json',
+      'Authorization':`token ${token}`,
+      'Content-Type':'application/json'
+    },
+    body: JSON.stringify(payload)
+  });
+
+  if(!res.ok){
+    const errorText = await res.text();
+    throw new Error('Image upload failed: ' + (errorText || res.statusText));
+  }
+
+  return path;
 }
 
 // UI helpers
@@ -165,18 +227,34 @@ async function saveProduct(e){
   const ml = document.getElementById('product-ml').value.trim();
   const image = document.getElementById('product-image').value.trim();
   const description = document.getElementById('product-description').value.trim();
+  const imageFileInput = document.getElementById('productImageFile');
+  const selectedFile = imageFileInput?.files?.[0];
+  let imagePath = image;
+
+  if(selectedFile){
+    try{
+      updateConnectionStatus('جارٍ رفع الصورة...', true);
+      imagePath = await uploadImageFileToGithub(selectedFile);
+      document.getElementById('product-image').value = imagePath;
+    }catch(err){
+      console.error(err);
+      alert('فشل رفع الصورة: ' + err.message);
+      return;
+    }
+  }
+
   if(!title) return alert('المرجو إدخال عنوان المنتج');
 
   if(currentProductId){
     // update
     const idx = products.findIndex(p=>p.id===currentProductId);
     if(idx!==-1){
-      products[idx] = {id: currentProductId, title, category, price, ml, image, description};
+      products[idx] = {id: currentProductId, title, category, price, ml, image: imagePath, description};
     }
   } else {
     // create
     const id = Date.now();
-    products.unshift({id, title, category, price, ml, image, description});
+    products.unshift({id, title, category, price, ml, image: imagePath, description});
     currentProductId = id;
   }
 
@@ -198,6 +276,8 @@ async function saveProduct(e){
 
 function clearProductForm(){
   document.getElementById('product-form').reset();
+  const imageFileInput = document.getElementById('productImageFile');
+  if(imageFileInput) imageFileInput.value = '';
   currentProductId = null;
 }
 
@@ -211,6 +291,7 @@ function requestDeleteProduct(id){
 async function confirmDelete(){
   if(!productToDeleteId) return;
   products = products.filter(p=>p.id!==productToDeleteId);
+  updateUI();
   try{
     await persistProductsToGithub('Delete product from admin panel');
     await fetchProducts();
@@ -386,7 +467,20 @@ function init(){
   document.getElementById('confirm-delete').addEventListener('click', confirmDelete);
   document.getElementById('cancel-delete').addEventListener('click', cancelDelete);
 
-  // On load: hide app, show login
+  // On load: auto-login if GitHub config exists
+  const savedConfig = getConfig();
+  if(savedConfig.owner && savedConfig.repo && savedConfig.token){
+    showApp();
+    fetchProducts().then(()=>{
+      updateUI();
+      updateConnectionStatus('متصل - تم تحميل البيانات', true);
+    }).catch(err=>{
+      updateConnectionStatus('فشل في تحميل المنتجات', false);
+      openConfigModal();
+    });
+    return;
+  }
+
   showLogin();
 }
 
