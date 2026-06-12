@@ -4,6 +4,7 @@ let products = [];
 let currentProductId = null;
 let currentSha = null;
 let productToDeleteId = null;
+let currentImageObjectUrl = null; // holds active object URL for preview
 
 // UTF-8 safe Base64 encode/decode
 function base64EncodeUtf8(str){
@@ -133,6 +134,55 @@ function updateConnectionStatus(text, connected=false){
   const el = document.getElementById('connection-status');
   el.textContent = text;
   el.style.color = connected ? '#D4AF37' : '';
+}
+
+// Image preview helpers
+function setImagePreviewSrc(src, isObjectUrl = false){
+  // revoke previous object URL if present and we are setting a normal URL
+  if(currentImageObjectUrl && !isObjectUrl){
+    try{ URL.revokeObjectURL(currentImageObjectUrl); }catch(e){}
+    currentImageObjectUrl = null;
+  }
+
+  let preview = document.getElementById('product-image-preview');
+  const input = document.getElementById('product-image');
+  if(!preview){
+    preview = document.createElement('img');
+    preview.id = 'product-image-preview';
+    preview.style.maxWidth = '100%';
+    preview.style.marginTop = '8px';
+    preview.className = 'rounded border border-slate-700';
+    if(input && input.parentNode) input.parentNode.insertBefore(preview, input.nextSibling);
+  }
+  preview.src = src;
+  if(isObjectUrl) currentImageObjectUrl = src;
+}
+
+function clearImagePreview(){
+  const preview = document.getElementById('product-image-preview');
+  if(preview){
+    if(currentImageObjectUrl){
+      try{ URL.revokeObjectURL(currentImageObjectUrl); }catch(e){}
+      currentImageObjectUrl = null;
+    }
+    preview.remove();
+  }
+}
+
+// Image path resolver for admin context
+const PLACEHOLDER_IMAGE = 'https://via.placeholder.com/400x300';
+function resolveImagePath(path){
+  if(!path) return PLACEHOLDER_IMAGE;
+  const p = String(path).trim();
+  // already absolute URL or data URL
+  if(/^data:|^https?:\/\//i.test(p)) return p;
+  // leading slash -> root-relative (works when served from site root)
+  if(p.startsWith('/')) return p;
+  // paths that point into repo img/ should be referenced from admin via ../img/...
+  if(p.startsWith('img/')) return `../${p}`;
+  if(p.startsWith('./img/')) return `../${p.replace(/^\.\//,'')}`;
+  // fallback: return as-is
+  return p;
 }
 
 // Fetch products with cache-busting timestamp; try raw CDN first then API fallback
@@ -326,10 +376,10 @@ function updateUI(){
   });
 
   grid.innerHTML = filtered.map(p=>{
-    const img = p.image || 'https://via.placeholder.com/400x300?text=No+Image';
+    const imgSrc = resolveImagePath(p.image || PLACEHOLDER_IMAGE);
     return `
       <div class="product-card">
-        <img src="${img}" alt="${escapeHtml(p.title)}" class="product-img mb-3" onerror="this.src='https://via.placeholder.com/400x300?text=No+Image'">
+        <img src="${imgSrc}" alt="${escapeHtml(p.title)}" class="product-img mb-3" onerror="this.src='${PLACEHOLDER_IMAGE}'">
         <h4 class="font-semibold text-lg">${escapeHtml(p.title)}</h4>
         <div class="text-sm text-slate-400">${escapeHtml(p.category)} • ${escapeHtml(p.ml||'')}</div>
         <div class="mt-2 flex items-center justify-between">
@@ -359,6 +409,11 @@ function updateUI(){
       document.getElementById('product-ml').value = prod.ml || '';
       document.getElementById('product-image').value = prod.image || '';
       document.getElementById('product-description').value = prod.description || '';
+      if(prod.image){
+        setImagePreviewSrc(prod.image, false);
+      } else {
+        clearImagePreview();
+      }
       window.scrollTo({top:0,behavior:'smooth'});
     });
   });
@@ -446,6 +501,22 @@ function init(){
   // Product form
   document.getElementById('product-form').addEventListener('submit', saveProduct);
   document.getElementById('reset-form').addEventListener('click', clearProductForm);
+
+  // Image file input: show instant local preview when a file is selected
+  const imageFileInput = document.getElementById('productImageFile');
+  if(imageFileInput){
+    imageFileInput.addEventListener('change', ()=>{
+      const file = imageFileInput.files && imageFileInput.files[0];
+      if(file){
+        // revoke previous object URL if any
+        if(currentImageObjectUrl){ try{ URL.revokeObjectURL(currentImageObjectUrl); }catch(e){} currentImageObjectUrl = null; }
+        const objUrl = URL.createObjectURL(file);
+        setImagePreviewSrc(objUrl, true);
+      } else {
+        clearImagePreview();
+      }
+    });
+  }
 
   // Filters & search
   document.querySelectorAll('.filter-tab').forEach(btn=>{

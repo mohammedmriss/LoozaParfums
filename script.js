@@ -28,6 +28,18 @@ if (!window.CustomEvent) {
     };
 }
 
+// Image placeholder and resolver for main site
+const MAIN_PLACEHOLDER_IMAGE = 'https://images.unsplash.com/photo-1541643600914-78b084683601?w=500';
+function resolveImagePathMain(path){
+    if(!path) return MAIN_PLACEHOLDER_IMAGE;
+    const p = String(path).trim();
+    if(/^data:|^https?:\/\//i.test(p)) return p;
+    if(p.startsWith('/')) return p; // root-relative
+    if(p.startsWith('img/')) return `./${p}`; // site root relative
+    if(p.startsWith('./img/')) return p; // already relative
+    return p;
+}
+
 // ==============================================
 // STATE & UTILITIES
 // ==============================================
@@ -308,7 +320,7 @@ class UIManager {
         return `
             <div class="cart-item" data-id="${item.id}">
                 <div class="cart-item-image">
-                    <img src="${item.image}" alt="${item.name}" loading="lazy">
+                    <img src="${resolveImagePathMain(item.image)}" alt="${item.name}" loading="lazy" onerror="this.src='${MAIN_PLACEHOLDER_IMAGE}'">
                 </div>
                 <div class="cart-item-details">
                     <h4 class="cart-item-title">${item.name}</h4>
@@ -545,7 +557,7 @@ class UIManager {
         return `
             <div class="product-card" data-product-id="${product.id}">
                 <div class="product-image">
-                    <img src="${product.image}" alt="${product.name}" loading="lazy">
+                    <img src="${resolveImagePathMain(product.image)}" alt="${product.name}" loading="lazy" onerror="this.src='${MAIN_PLACEHOLDER_IMAGE}'">
                     ${product.badge ? `<span class="product-badge">${product.badge}</span>` : ''}
                 </div>
                 <div class="product-content">
