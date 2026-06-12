@@ -32,19 +32,63 @@ if (!window.CustomEvent) {
 // STATE & UTILITIES
 // ==============================================
 
-// Default products
-const DEFAULT_PRODUCTS = [
-  { id: 1, name: "Stronger With You 50ml", description: "🔥 Notes chaudes et envoûtantes", price: 50, oldPrice: 50, image: "img/par (5).jpg", category: "mens", featured: true, badge: "الجديد" },
-  { id: 2, name: "Joy by Dior 50ml", description: "L'essence du bonheur en flacon", price: 50, oldPrice: 50, image: "img/par (1).jpg", category: "womens", featured: true, badge: "الجديد" },
-  { id: 3, name: "Good Girl 30ml", description: "Tellement bon d'être audacieuse…", price: 25, oldPrice: 50, image: "img/par (2).jpg", category: "womens", featured: false, badge: "الجديد" },
-  { id: 4, name: "Givenchy 50ml", description: "Une fragrance orientale boisée", price: 50, oldPrice: 50, image: "img/par (3).jpg", category: "mens", featured: false, badge: "الجديد" },
-  { id: 5, name: "Le Male – 50ml", description: "Un parfum iconique", price: 50, oldPrice: 50, image: "img/par (4).jpg", category: "mens", featured: false, badge: "الجديد" },
+// Live products loader
+// Replaces the previous hardcoded DEFAULT_PRODUCTS. This function fetches
+// ./products.json with a cache-busting timestamp and maps the incoming
+// schema to the app's internal format (category -> 'mens'|'womens').
+async function fetchLiveProducts(){
+    try{
+        const res = await fetch(`./products.json?v=${new Date().getTime()}`, {cache: 'no-store'});
+        if(!res.ok) throw new Error('Failed to fetch products.json');
+        const data = await res.json();
 
-  // ✅ البرودويات الجديدة الرجال 30ml
-  { id: 6, name: "DOLCE & GABBANA 30ml", description: "💎 عطرة فاخرة ورجولية، توليفة كلاسيكية دافئة وغنية", price: 30, oldPrice: 50, image: "img/par (6).png", category: "mens", featured: true, badge: "الجديد" },
-  { id: 7, name: "Stronger With You 30ml", description: "🔥 مزيج جذاب من التوابل والروائح الخشبية، مثالي للرجال", price: 30, oldPrice: 50, image: "img/par (7).png", category: "mens", featured: true, badge: "الجديد" },
-  { id: 8, name: "3oud Moud 30ml", description: "🌿 عبير العود العربي الأصيل، قوي وفاخر لكل مناسبة", price: 30, oldPrice: 50, image: "img/par (8).png", category: "mens", featured: false, badge: "الجديد" }
-];
+        if(!Array.isArray(data)) throw new Error('Invalid products.json format');
+
+        // Map incoming items to internal shape used across the app
+        const mapped = data.map(item => {
+            const id = item.id || Date.now() + Math.floor(Math.random()*1000);
+            const title = item.title || item.name || '';
+            const description = item.description || item.desc || item.description_ar || '';
+            const price = Number(item.price || item.amount || 0) || 0;
+            const oldPrice = Number(item.oldPrice || item.price || 0) || price;
+            const image = item.image || item.imageUrl || item.img || '';
+
+            // Normalize category: accept Arabic 'رجال'/'نساء' or english 'mens'/'womens'
+            let rawCat = (item.category || '').toString().trim();
+            rawCat = rawCat.toLowerCase();
+            let category = 'mens';
+            if(rawCat === 'نساء' || rawCat === 'نساء' /* Arabic */ || rawCat.includes('women') || rawCat.includes('womens') || rawCat === 'نساء'){
+                category = 'womens';
+            } else if(rawCat === 'رجال' || rawCat.includes('men') || rawCat.includes('mens')){
+                category = 'mens';
+            } else if(rawCat === 'رجال' || rawCat === 'نساء'){
+                // fallback: check exact Arabic tokens
+                category = rawCat === 'رجال' ? 'mens' : 'womens';
+            } else {
+                // If unknown, attempt to guess using Arabic words
+                if((item.title && item.title.includes('رجال')) || (item.description && item.description.includes('رجال'))) category = 'mens';
+                if((item.title && item.title.includes('نساء')) || (item.description && item.description.includes('نساء'))) category = 'womens';
+            }
+
+            return {
+                id,
+                name: String(title),
+                description: String(description),
+                price,
+                oldPrice,
+                image,
+                category,
+                featured: !!item.featured,
+                badge: item.badge || ''
+            };
+        });
+
+        return mapped;
+    }catch(err){
+        console.warn('fetchLiveProducts error:', err);
+        throw err;
+    }
+}
 
 
 // Product Manager
@@ -57,16 +101,28 @@ const ProductManager = {
     init() {
         this.loadProducts();
         this.categorize();
+
+        // Try to fetch live products.json and update app when available.
+        // This ensures changes from the admin panel (products.json) appear
+        // to clients immediately thanks to cache-busting timestamp.
+        fetchLiveProducts().then(latest => {
+            if(Array.isArray(latest) && latest.length > 0){
+                this.update(latest);
+            }
+        }).catch(err => {
+            // keep local products if fetch failed
+            console.warn('Live products not loaded:', err && err.message);
+        });
+
         return this;
     },
 
     loadProducts() {
         try {
             const saved = localStorage.getItem('adminProducts');
-            this.items = saved ? JSON.parse(saved) : DEFAULT_PRODUCTS;
-            if (!saved) this.save();
+            this.items = saved ? JSON.parse(saved) : [];
         } catch (e) {
-            this.items = DEFAULT_PRODUCTS;
+            this.items = [];
         }
         this.categorize();
     },

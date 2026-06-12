@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>لووزا بارفوم - لوحة التحكم</title>
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+  <link rel="stylesheet" href="admin/admin.css">
+</head>
+<body class="min-h-screen bg-[#0f1724] text-slate-200 font-sans">
+
+  <!-- LOGIN SCREEN (must NOT have aria-hidden="true") -->
+  <div id="login-screen" class="fixed inset-0 flex items-center justify-center bg-gradient-to-b from-[#0f1724]/80 to-[#111827]/90 z-50">
+    <div class="w-full max-w-md p-8 rounded-xl shadow-xl bg-gradient-to-br from-[#111827] to-[#0f1724] border border-[#2b3340]">
+      <h1 class="text-3xl font-extrabold text-[#D4AF37] text-center mb-4">لوحة تحكم looza parfums</h1>
+      <form id="login-form" class="space-y-4" autocomplete="on">
+        <div>
+          <label class="block text-sm mb-1">اسم المستخدم</label>
+          <input id="login-username" required class="w-full px-4 py-2 rounded-md bg-[#0b1220] border border-slate-700 focus:outline-none focus:ring-2 focus:ring-amber-500" placeholder="admin" value="">
+        </div>
+        <div>
+          <label class="block text-sm mb-1">كلمة المرور</label>
+          <input id="login-password" type="password" required class="w-full px-4 py-2 rounded-md bg-[#0b1220] border border-slate-700 focus:outline-none focus:ring-2 focus:ring-amber-500" placeholder="••••••••">
+        </div>
+        <div class="flex justify-between items-center">
+          <button type="submit" class="px-5 py-2 rounded-md bg-[#D4AF37] text-slate-900 font-semibold shadow">تسجيل الدخول</button>
+          <button id="login-guest" type="button" class="text-sm text-slate-400 hover:underline">نسيت كلمة المرور؟</button>
+        </div>
+      </form>
+      <p class="text-xs text-slate-500 mt-3">ملاحظة: اسم المستخدم: <strong>admin</strong> - كلمة المرور: <strong>loozaparfums2026</strong></p>
+    </div>
+  </div>
+
+  <!-- CONFIG / DASHBOARD CONTAINER -->
+  <div id="app" class="hidden min-h-screen p-6">
+    <header class="flex items-center justify-between mb-6">
+      <div class="flex items-center gap-4">
+        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[#1f2937] to-[#111827] flex items-center justify-center text-2xl text-[#D4AF37] shadow">LP</div>
+        <div>
+          <h2 class="text-xl font-bold">looza parfums.store</h2>
+          <div id="connection-status" class="text-sm text-slate-400">غير متصل</div>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <button id="open-config" class="px-3 py-2 rounded-md border border-slate-700 hover:bg-[#111827]">إعدادات GitHub</button>
+        <button id="logout-btn" class="px-3 py-2 rounded-md bg-[#D4AF37] text-slate-900">تسجيل الخروج</button>
+      </div>
+    </header>
+
+    <main class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <section class="lg:col-span-1 bg-[#0b1220] p-4 rounded-lg border border-slate-700 shadow">
+        <h3 class="font-semibold mb-3">حفظ / تعديل منتج</h3>
+        <form id="product-form" class="space-y-3">
+          <input id="product-title" placeholder="عنوان العطر" class="w-full px-3 py-2 rounded bg-[#061023] border border-slate-700 focus:ring-2 focus:ring-amber-500" required>
+          <select id="product-category" class="w-full px-3 py-2 rounded bg-[#061023] border border-slate-700 focus:ring-2 focus:ring-amber-500">
+            <option value="رجال">رجال</option>
+            <option value="نساء">نساء</option>
+          </select>
+          <input id="product-price" type="number" placeholder="السعر" class="w-full px-3 py-2 rounded bg-[#061023] border border-slate-700 focus:ring-2 focus:ring-amber-500" required>
+          <input id="product-ml" placeholder="50ml أو 100ml" class="w-full px-3 py-2 rounded bg-[#061023] border border-slate-700 focus:ring-2 focus:ring-amber-500">
+          <input id="product-image" placeholder="رابط الصورة أو مسار محلي" class="w-full px-3 py-2 rounded bg-[#061023] border border-slate-700 focus:ring-2 focus:ring-amber-500">
+          <textarea id="product-description" rows="4" placeholder="وصف العطر" class="w-full px-3 py-2 rounded bg-[#061023] border border-slate-700 focus:ring-2 focus:ring-amber-500"></textarea>
+          <div class="flex gap-2">
+            <button id="save-product" class="flex-1 px-4 py-2 rounded bg-[#D4AF37] text-slate-900 font-semibold">حفظ المنتج</button>
+            <button id="reset-form" type="button" class="px-4 py-2 rounded border border-slate-700">مسح</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="lg:col-span-2">
+        <div class="flex items-center justify-between mb-4 gap-4">
+          <div class="flex items-center gap-3 w-full">
+            <input id="search-input" placeholder="ابحث عن اسم العطر..." class="flex-1 px-4 py-2 rounded bg-[#061023] border border-slate-700 focus:ring-2 focus:ring-amber-500">
+            <div class="space-x-2">
+              <button data-filter="all" class="filter-tab px-3 py-2 rounded bg-[#111827]">كل العطور</button>
+              <button data-filter="رجال" class="filter-tab px-3 py-2 rounded bg-[#111827]">عطور رجالية</button>
+              <button data-filter="نساء" class="filter-tab px-3 py-2 rounded bg-[#111827]">عطور نسائية</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+      </section>
+    </main>
+  </div>
+
+  <!-- CONFIG MODAL -->
+  <div id="config-modal" class="fixed inset-0 hidden items-center justify-center bg-black/60 z-60">
+    <div class="w-full max-w-lg bg-[#0b1220] p-6 rounded-lg border border-slate-700">
+      <h3 class="text-xl font-bold text-[#D4AF37] mb-4">إعدادات GitHub</h3>
+      <form id="config-form" class="space-y-3">
+        <div>
+          <label class="text-sm">GitHub Personal Access Token</label>
+          <input id="gh-token" placeholder="ghp_xxx..." class="w-full px-3 py-2 rounded bg-[#061023] border border-slate-700 focus:ring-2 focus:ring-amber-500">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-sm">Repo Owner</label>
+            <input id="gh-owner" placeholder="username" class="w-full px-3 py-2 rounded bg-[#061023] border border-slate-700 focus:ring-2 focus:ring-amber-500">
+          </div>
+          <div>
+            <label class="text-sm">Repo Name</label>
+            <input id="gh-repo" placeholder="repository" class="w-full px-3 py-2 rounded bg-[#061023] border border-slate-700 focus:ring-2 focus:ring-amber-500">
+          </div>
+        </div>
+        <div class="flex justify-end gap-2 mt-4">
+          <button id="test-connection" type="button" class="px-4 py-2 rounded bg-[#D4AF37] text-slate-900">اختبار الاتصال</button>
+          <button id="close-config" type="button" class="px-4 py-2 rounded border border-slate-700">إغلاق</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- DELETE CONFIRMATION MODAL -->
+  <div id="delete-modal" class="fixed inset-0 hidden items-center justify-center bg-black/60 z-70">
+    <div class="w-full max-w-md bg-[#0b1220] p-6 rounded-lg border border-slate-700 text-center">
+      <h4 class="text-lg font-bold mb-3">هل أنت متأكد من حذف هذا المنتج؟</h4>
+      <div class="flex justify-center gap-3">
+        <button id="confirm-delete" class="px-4 py-2 rounded bg-red-600">حذف</button>
+        <button id="cancel-delete" class="px-4 py-2 rounded border border-slate-700">إلغاء</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="admin/admin.js" defer></script>
+</body>
+</html>

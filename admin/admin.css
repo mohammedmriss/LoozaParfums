@@ -1,0 +1,42 @@
+/* Admin Panel Custom Styles - Luxury Theme */
+:root{
+  --bg:#0f1724;
+  --card:#0b1220;
+  --accent:#D4AF37;
+  --muted:#94a3b8;
+}
+html,body{height:100%;}
+body{background:var(--bg);color:#e6eef8}
+
+/* Smooth transitions */
+*{transition:all 200ms ease}
+
+/* Custom scrollbars */
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#1f2937,#0b1220);border-radius:8px;border:2px solid rgba(0,0,0,0)}
+
+/* Cards */
+.card{background:var(--card);border:1px solid rgba(255,255,255,0.04);border-radius:12px;padding:16px}
+
+/* Gold buttons */
+.btn-gold{background:var(--accent);color:#0b1220;padding:.5rem 1rem;border-radius:8px;font-weight:600}
+.btn-outline{border:1px solid rgba(255,255,255,0.06);padding:.5rem 1rem;border-radius:8px}
+
+/* Focus rings */
+input:focus,textarea:focus,select:focus{outline:none;box-shadow:0 0 0 4px rgba(212,175,55,0.12)}
+
+/* Active filter */
+.filter-active{background:linear-gradient(90deg,rgba(212,175,55,0.14),rgba(212,175,55,0.05));border:1px solid rgba(212,175,55,0.18);color:var(--accent)}
+
+/* Product card */
+.product-card{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);border-radius:10px;padding:12px;border:1px solid rgba(255,255,255,0.03)}
+.product-img{height:180px;object-fit:cover;border-radius:8px;width:100%}
+
+/* Responsive tweaks */
+@media (max-width:640px){
+  #products-grid{grid-template-columns:repeat(1,1fr)}
+}
+
+/* Modal visible helper */
+.modal-visible{display:flex}
