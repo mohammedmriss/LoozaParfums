@@ -337,19 +337,20 @@ function init(){
     if(u === 'admin' && p === 'loozaparfums2026'){
       // proceed to config or dashboard
       const cfg = getConfig();
+      showApp();
       if(!cfg.owner || !cfg.repo || !cfg.token){
         openConfigModal();
-      } else {
-        // try to fetch products
-        fetchProducts().then(()=>{
-          updateUI();
-          updateConnectionStatus('متصل - تم تحميل البيانات', true);
-          showApp();
-        }).catch(err=>{
-          updateConnectionStatus('فشل في تحميل المنتجات', false);
-          openConfigModal();
-        });
+        return;
       }
+
+      // try to fetch products
+      fetchProducts().then(()=>{
+        updateUI();
+        updateConnectionStatus('متصل - تم تحميل البيانات', true);
+      }).catch(err=>{
+        updateConnectionStatus('فشل في تحميل المنتجات', false);
+        openConfigModal();
+      });
     } else {
       alert('بيانات الدخول غير صحيحة');
     }
