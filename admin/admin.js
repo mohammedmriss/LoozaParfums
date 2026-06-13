@@ -309,6 +309,9 @@ async function saveProduct(e){
     currentProductId = id;
   }
 
+  // persist locally immediately for fallback and instant UI
+  try{ localStorage.setItem('adminProducts', JSON.stringify(products)); }catch(e){}
+
   try{
     updateConnectionStatus('جارٍ حفظ المنتج...', true);
     await persistProductsToGithub('Save product from admin panel');
@@ -342,6 +345,8 @@ function requestDeleteProduct(id){
 async function confirmDelete(){
   if(!productToDeleteId) return;
   products = products.filter(p=>p.id!==productToDeleteId);
+  // persist locally immediately for fallback and instant UI
+  try{ localStorage.setItem('adminProducts', JSON.stringify(products)); }catch(e){}
   updateUI();
   try{
     await persistProductsToGithub('Delete product from admin panel');
@@ -396,33 +401,8 @@ function updateUI(){
     `;
   }).join('');
 
-  // wire up edit/delete buttons
-  document.querySelectorAll('.edit-btn').forEach(btn=>{
-    btn.addEventListener('click', (e)=>{
-      const id = Number(btn.getAttribute('data-id'));
-      const prod = products.find(x=>x.id===id);
-      if(!prod) return;
-      currentProductId = prod.id;
-      document.getElementById('product-title').value = prod.title || '';
-      document.getElementById('product-category').value = prod.category || 'رجال';
-      document.getElementById('product-price').value = prod.price || '';
-      document.getElementById('product-ml').value = prod.ml || '';
-      document.getElementById('product-image').value = prod.image || '';
-      document.getElementById('product-description').value = prod.description || '';
-      if(prod.image){
-        setImagePreviewSrc(prod.image, false);
-      } else {
-        clearImagePreview();
-      }
-      window.scrollTo({top:0,behavior:'smooth'});
-    });
-  });
-  document.querySelectorAll('.delete-btn').forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      const id = Number(btn.getAttribute('data-id'));
-      requestDeleteProduct(id);
-    });
-  });
+  // Edit/delete actions are handled via event delegation attached in init().
+  // This avoids lost handlers after re-rendering the products grid.
 }
 
 // Escape HTML in template interpolations
@@ -538,6 +518,35 @@ function init(){
   // Delete modal
   document.getElementById('confirm-delete').addEventListener('click', confirmDelete);
   document.getElementById('cancel-delete').addEventListener('click', cancelDelete);
+
+  // Delegate edit/delete clicks from products grid to avoid re-binding after renders
+  const productsGridEl = document.getElementById('products-grid');
+  if(productsGridEl){
+    productsGridEl.addEventListener('click', (e)=>{
+      const editBtn = e.target.closest('.edit-btn');
+      if(editBtn){
+        const id = Number(editBtn.getAttribute('data-id'));
+        const prod = products.find(x=>x.id===id);
+        if(!prod) return;
+        currentProductId = prod.id;
+        document.getElementById('product-title').value = prod.title || '';
+        document.getElementById('product-category').value = prod.category || 'رجال';
+        document.getElementById('product-price').value = prod.price || '';
+        document.getElementById('product-ml').value = prod.ml || '';
+        document.getElementById('product-image').value = prod.image || '';
+        document.getElementById('product-description').value = prod.description || '';
+        if(prod.image){ setImagePreviewSrc(prod.image, false); } else { clearImagePreview(); }
+        window.scrollTo({top:0,behavior:'smooth'});
+        return;
+      }
+      const delBtn = e.target.closest('.delete-btn');
+      if(delBtn){
+        const id = Number(delBtn.getAttribute('data-id'));
+        requestDeleteProduct(id);
+        return;
+      }
+    });
+  }
 
   // On load: auto-login if GitHub config exists
   const savedConfig = getConfig();
